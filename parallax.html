@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
+    <title>Parallax</title>
+    <script name="jquery" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script name="parallaxify" src="https://cdnjs.cloudflare.com/ajax/libs/parallaxify/0.0.2/jquery.parallaxify.min.js"></script>
+    
+    <style>
+         :root
+        {
+            --box-size:25px;
+            --box-blur:3px;
+        }
+
+        body
+        {
+            margin:0;
+            color:#eee;
+            background-color:#333;
+            font-family: fantasy;
+        }
+
+        .test{border:solid red 1px;}
+        .test2{border:solid blue 1px;}
+
+        .flex { display:flex; }
+            .column { flex-direction:column; }
+            .row { flex-direction:row; }
+            .center { justify-content:center; align-items:center; }
+            .spaced { justify-content:center; }
+
+        /*------------------------------------------------------------------*/
+        .box
+        {
+            width:var(--box-size);
+            height:var(--box-size);
+            background-color: #fff;
+            border-radius:50%;
+            position:absolute;
+            filter:blur(var(--box-blur));
+        }
+    </style>
+</head>
+<body>
+    <div id="box" class="box"></div>
+    
+    <script>
+        // source >> https://github.com/hwthorn/parallaxify
+
+        $('.parallax').parallaxify();
+        /* $('.parallax-h').hover(
+        function(){
+            $(this).parallaxify(args);
+        },
+        function(){
+            $(this).parallaxify('destroy');
+        }); */
+
+        $(document).mousemove(function(e)
+        {
+            //console.log("x = "+e.pageX+" | y = "+e.pageY);
+            var h = $("#box").css("height")*1
+            $("#box").css("top",e.pageY - (parseInt( $("#box").css("width") )/2) );
+            $("#box").css("left",e.pageX - (parseInt( $("#box").css("height") )/2) );
+        });
+
+    </script>
+</body>
+</html>
+
+<!--
+https://www.elementaryos-fr.org/wp-content/uploads/2013/09/wallpaper-1923233.jpg
+http://4.bp.blogspot.com/-hj4dgHpodcs/UY7qxV46BnI/AAAAAAAAISM/iGYzxMj_yII/s1600/Tron%2BWallpaper-708641.jpg
+https://images.alphacoders.com/769/thumb-1920-769707.jpg
+-->

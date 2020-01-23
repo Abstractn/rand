@@ -1,0 +1,21 @@
+:root
+{
+    --main-color-b1:#111;
+    --main-color-b2:#222;
+    --main-color-b3:#333;
+    --main-color-g:#555;
+    --main-color-lg:#aaa;
+    --main-color-lw:#ccc;
+    --main-color-w:#eee;
+
+    --main-color-noixe:#7700cc;
+
+    --main-font-std:arial;
+}
+
+body
+{
+    color:var(--main-color-w);
+    background-color:var(--main-color-b3);
+    
+}

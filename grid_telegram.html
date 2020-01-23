@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Fakegram</title>
+        <style>
+            body { color:#eee; background-color:#222; font-family:fantasy; margin:0; }
+            .test {border:solid red 1px;}
+            .test2 {border:solid blue 1px;}
+            .grid1
+            {
+                display:grid;
+                    grid-template-columns:1fr 2fr 4fr 1fr;
+                    grid-template-rows:3em 1fr;
+                height:100vh;
+            }
+
+            .grid-elem
+            {
+                padding:0.5em;
+                text-align:center;
+            }
+
+            .grid-elem:nth-child(2), .grid-elem:nth-child(3)
+            {
+                background-color:lightskyblue;
+            }
+
+            .grid-elem:nth-child(6), .grid-elem:nth-child(7)
+            {
+                background-color:#333;
+            }
+
+            #contacts
+            {
+                display:flex;
+                    flex-direction:column;
+                padding:0;
+                height:95%;
+                overflow-y:auto;
+                background-color:#222;
+            }
+            .contact
+            {
+                margin:0;
+                padding:0.6em;
+                height:3em;
+
+                display:grid;
+                    grid-template-columns: 1fr 2fr 1fr;
+                    grid-template-rows: 0.5fr 1fr 0.5fr;
+            }
+            .contact:hover
+            {
+                background-color:rgba(100,100,255,0.2);
+            }
+
+            .contact-propic
+            {
+                border: solid white 2px;
+                border-radius:50%;
+                grid-row-start: 1;
+                grid-row-end: 4;
+            }
+
+            .contact-timestamp
+            {
+                grid-column-start:3;
+            }
+            
+            #chatbox
+            {
+                display:grid;
+                    grid-template-rows: 7fr 1fr 0.5fr;
+                    grid-template-columns: 0.5fr 1fr 4fr 1fr 0.5fr;
+                height:95%;
+            }
+
+            #chatbox-container
+            {
+                grid-column-start:2;
+                grid-column-end:5;
+                grid-row-start:1;
+                display:flex;
+            }
+
+            #chatbox-input
+            {
+                grid-column-start:3;
+                grid-row-start:2;
+                width:100%;
+            }
+
+            #chatbox-options
+            {
+                grid-column-start:3;
+                grid-row-start:3;
+                display:flex;
+                    flex-direction:row;
+                    justify-content:space-between;
+            }
+            
+            #chatbox-input input
+            {
+                width:100%;
+                height:4em;
+                background-color:transparent;
+                border:none;
+                border-bottom:solid gray 3px;
+                border-right:solid gray 1px;
+            }
+            #chatbox-input input[placeholder]
+            { color:white; }
+
+            .chatbox-message
+            {
+                display: grid;
+                    grid-template-columns: 1fr 3fr 1fr;
+                    grid-template-rows: 1fr;
+                width:4em;
+                border:solid green 1px;
+            }
+            .chatbox-message-propic
+            {
+                grid-column-start: 1;
+            }
+            .chatbox-message-text
+            {
+                grid-column-start: 2;
+            }
+            .chatbox-message-timestamp
+            {
+                grid-column-start: 3;
+            }
+
+        </style>
+    </head>
+    <body>
+        <div class="grid1">
+            <div class="grid-elem"></div>
+            <div class="grid-elem">= FAKEGRAM</div>
+            <div class="grid-elem">the user you are chatting with</div>
+            <div class="grid-elem"></div>
+
+            <div class="grid-elem"></div>
+            <div class="grid-elem">
+                <div id="contacts">
+                    <div class="contact">
+                        <span class="contact-timestamp">17:02</span>
+                        <span class="contact-propic">FP</span>
+                        <span class="contact-name">Federico Pani</span>
+                    </div>
+                    <!-- -->
+                    <div class="contact">
+                        <span class="contact-timestamp">17:02</span>
+                        <span class="contact-propic">FP</span>
+                        <span class="contact-name">Federico Pani</span>
+                    </div>
+                    <div class="contact">
+                        <span class="contact-timestamp">17:02</span>
+                        <span class="contact-propic">FP</span>
+                        <span class="contact-name">Federico Pani</span>
+                    </div>
+                    <div class="contact">
+                        <span class="contact-timestamp">17:02</span>
+                        <span class="contact-propic">FP</span>
+                        <span class="contact-name">Federico Pani</span>
+                    </div>
+                </div>    
+            </div>
+            <div class="grid-elem">
+                <div id="chatbox">
+                    <div id="chatbox-container" class="test">
+                        <div class="chatbox-message">
+                            <span class="chatbox-message-propic test">EM</span>
+                            <span class="chatbox-message-text test">ciao</span>
+                            <span class="chatbox-message-timestamp test">09:04</span>
+                        </div>
+                    </div>
+                    <div id="chatbox-input">
+                        <input type="text" placeholder="type something...">
+                    </div>
+                    <div id="chatbox-options">
+                        <span>[file]</span>
+                        <span>[photo]</span>
+                        <span>[audio]</span>
+                        <span>[emojis]</span>
+                        <span>SEND</span>
+                    </div>
+                </div>
+            </div>
+            <div class="grid-elem"></div>
+        </div></div>
+    </body>
+</html>

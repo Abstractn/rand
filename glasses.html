@@ -1,0 +1,52 @@
+<style>body{transition-duration:1s;}</style>
+<button onclick="glasses()">glasses</button>
+<p id="glasses">(⌐■_■)</p>
+
+<script>
+
+var e = document.getElementById("glasses");
+var body = document.body.style;
+
+function glasses()
+{
+    if( e.innerHTML == "(⌐■_■)" )
+    {
+        e.innerHTML = "( •_•)>⌐■-■";
+        theme("light");
+    }
+    else
+    {
+        e.innerHTML = "(⌐■_■)";
+        theme("dark");
+    }
+}
+
+function theme(id)
+{
+    switch(id)
+    {
+        case "dark":
+            body.backgroundColor = "#333";
+            body.color = "#eee";
+        break;
+
+        case "light":
+            body.backgroundColor = "white";
+            body.color = "black";
+        break;
+
+
+        case "day":
+            body.backgroundColor = "#fea";
+            body.color = "red";
+        break;
+
+        case "night":
+            body.backgroundColor = "#112";
+            body.color = "lightblue";
+        break;
+    }
+
+}
+</script>
+

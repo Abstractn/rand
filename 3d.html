@@ -1,0 +1,39 @@
+<html>
+    <head>
+        <style>
+            body{color:#eee;background-color:#333;font-family:arial;}
+
+            div
+            {
+                width: 100px;
+                height: 100px;
+                background-color: darkolivegreen;
+                border: solid black 3px;;
+                
+                position:absolute;
+                top:50px;
+                left:150px;
+                
+                transform:rotateZ(0deg);
+            }
+        </style>
+    </head>
+    <body>
+
+        <div id="box">U spin me 'round 'round baby 'round 'round</div>
+
+    </body>
+    <script>
+        console.log("script!");
+        var box = document.getElementById("box");
+        var rotator = 0;
+
+        function animate()
+        {
+            box.style.transform = "rotateZ("+rotator+"deg)";
+            rotator++;
+        }
+
+        var interval = setInterval(animate,1);
+    </script>
+</html>

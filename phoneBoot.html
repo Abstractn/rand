@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>&Omega;mium</title>
+
+    <script src="https://kit.fontawesome.com/e97eac13ba.js" crossorigin="anonymous"></script>
+
+    <style>
+        :root
+        {
+            --main-grid-size:50px 50px 50px 50px;
+            --omium-pink:#FFC0CB;
+            --omium-gold:#FFE59C;
+        }
+
+        body
+        {
+            color:white;
+            background-color:gray;
+            margin:0;
+        }
+
+        .test{border:solid red 1px;}
+
+        .flex { display:flex; }
+        .column { flex-direction:column; }
+        .row { flex-direction:row; }
+        .center { justify-content:center; align-items:center; }
+        .end { align-items:flex-end; }
+        .spaced { justify-content:space-between; }
+
+        #brand
+        {
+            margin-left:25%;
+        }
+        .brand
+        {
+            font-size:2em;
+            color: #FFC0CB;
+            animation: omium_color alternate infinite 1s;
+            font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif; 
+        }
+        #loading
+        {
+            height:75px;
+            width:75px;
+            border-bottom: solid var(--omium-pink) 3px;
+            border-top: solid var(--omium-gold) 3px;
+            border-radius:50%;
+            position:absolute;
+            animation: spin linear infinite 2s, breathe 3s ease-in-out alternate infinite;
+        }
+        @keyframes omium_color { from { color:var(--omium-pink) } to { color:var(--omium-gold) } }
+        @keyframes omium_border { from { border-color:var(--omium-pink) } to { border-color:var(--omium-gold); } }
+
+        @keyframes spin
+        {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        @keyframes breathe
+        {
+            from { height:75px; width:75px; }
+            to { height:100px; width:100px; }
+        }
+
+        /* ----------------------------------------------------------------------- */
+
+        #screen
+        {
+            width:280px;
+            height:510px;
+            background-color:#222;
+        }
+    </style>
+</head>
+<body>
+    <div id="screen" class="flex center">
+        <span class="brand">&Omega;</span>
+        <span id="loading"></span>
+    </div>
+</body>
+</html>

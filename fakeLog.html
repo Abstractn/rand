@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title></title>
+        <style>
+            body
+            {
+                margin:0;
+                color:#aaa;
+                background-color:#222;
+                font-family:monospace;
+                font-size:.8em;
+            }
+
+            index { color:#0f0; }
+            data { color:#ddf; }
+            row {display:block;transform:scale(1,1.5);}
+            row:hover{background-color:black;}
+        </style>
+    </head>
+    <body>
+        
+        <script>
+
+            var chars = "abcdefghijklmnopqrstuvwxyz";
+            var dataLen = 64;
+            var data = "";
+
+            function randomInteger(min, max)
+            {
+                let rand = min - 0.5 + Math.random() * (max - min + 1);
+                return Math.round(rand);
+            }
+            
+            for(var i = 0; i<chars.length; i++)
+            {
+                for(var j = 0; j<chars.length; j++)
+                {
+                    for(var k = 0; k<chars.length; k++)
+                    {
+                        data = "";
+                        for( var c=0; c<dataLen; c++ )
+                        {
+                            data = data + randomInteger(0,9);
+                        }
+                        document.write( "<row><index>" + chars[i] + chars[j] + chars[k] + "</index> : <data>" + data + "</data></row>" );
+                        //document.write("<br>");
+                        data = "";
+                    }
+                }
+            }
+
+            /*
+            function randomInteger(min, max)
+            {
+                let rand = min - 0.5 + Math.random() * (max - min + 1);
+                return Math.round(rand);
+            }
+
+            while(true)
+            {
+                document.write( chars[ randomInteger(0,chars.length) ] );
+            }*/
+        </script>
+    </body>
+</html>

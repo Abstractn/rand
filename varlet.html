@@ -1,0 +1,16 @@
+<script>
+	function checkVars()
+	{
+		console.log(">>before declare:");
+		console.log("_var = " + _var);
+		// console.log("_let = " + _let); // ReferenceError
+		var _var="var";
+		let _let="let";
+		console.log(">>after declare:");
+		console.log("_var = " + _var);
+		console.log("_let = " + _let);
+	}
+
+	checkVars();
+
+</script>

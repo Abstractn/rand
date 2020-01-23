@@ -1,0 +1,98 @@
+<!--
+    source
+https://codepen.io/juliangarnier/pen/XvjWvx
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
+    <title>AnimeJS</title>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.2.0/anime.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/animejs@3.0.1/lib/anime.min.js"></script>
+    <style>
+        :root
+        {
+            --col-bg:#333;
+            --col-elem-in:white;
+            --col-elem-out:white;
+        }
+        body,
+        html{
+        position: absolute;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100vh;
+        background-color: var(--col-bg);
+        }
+
+        .test { border:solid red 1px; }
+
+        .stagger-visualizer {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        width: 500px;
+        height: 500px;
+        }
+
+        .stagger-visualizer * {
+        /*position: absolute;*/
+        width: 25px;
+        height: 25px;
+        border: 1px solid var(--col-elem-out);
+        background-color: var(--col-elem-in);
+        box-shadow:white 0 0 50px;
+        }
+    </style>
+</head>
+<body>
+    <div class="stagger-visualizer"></div>
+    <script>
+        const staggerVisualizerEl = document.querySelector('.stagger-visualizer');
+        const fragment = document.createDocumentFragment();
+        const grid = [18, 18];
+        const col = grid[0];
+        const row = grid[1];
+        const numberOfElements = col * row;
+
+        for (let i = 0; i < numberOfElements; i++) {
+        fragment.appendChild(document.createElement('div'));
+        }
+
+        staggerVisualizerEl.appendChild(fragment);
+
+        const staggersAnimation = anime.timeline({
+        targets: '.stagger-visualizer div',
+        easing: 'easeInOutSine',
+        delay: anime.stagger(0),
+        loop: true,
+        autoplay: false
+        })
+
+        .add({
+            translateX: anime.stagger('5px', {grid: grid, from: 'center', axis: 'x'}),
+            translateY: anime.stagger('5px', {grid: grid, from: 'center', axis: 'y'}),
+            scale:.5,
+            delay: anime.stagger(20, {grid:grid, from: 'center'})
+        })
+
+        //------------------------------
+        .add({
+            translateX: anime.stagger('0px', {grid: grid, from: 'center', axis: 'x'}),
+            translateY: anime.stagger('0px', {grid: grid, from: 'center', axis: 'y'}),
+            scale:1,
+            delay: anime.stagger(20, {grid:grid, from: 'center'})
+        })
+
+        staggersAnimation.play();
+    </script>
+</body>
+</html>

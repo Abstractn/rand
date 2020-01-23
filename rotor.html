@@ -1,0 +1,148 @@
+<!--
+    https://jsfiddle.net/kabanoki/q3Ld964x/
+    https://speckyboy.com/custom-hover-click-effects-css-javascript/
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Rotor</title>
+
+    <style>
+        :root
+        {
+            --rotor-size:50px;
+            --rotor-size-2:80px;
+            --box-size:15px;
+            --box-color:white;
+        }
+
+        body
+        {
+            margin:0;
+            color:#eee;
+            background-color:#333;
+            font-family: fantasy;
+        }
+
+        .test{border:solid red 1px;}
+        .test2{border:solid blue 1px;}
+
+        .flex { display:flex; }
+            .column { flex-direction:column; }
+            .row { flex-direction:row; }
+            .center { justify-content:center; align-items:center; }
+            .spaced { justify-content:center; }
+
+        /* ---------------------------------------------------------- */
+
+        #text
+        {
+            position:absolute;
+            width:100%;
+            margin-top:200px;
+            text-align:center;
+            text-transform:uppercase;
+        }
+
+        #container
+        {
+            height:100vh
+        }
+
+        #rotor
+        {
+            width:var(--rotor-size);
+            height:var(--rotor-size);
+            margin:0 auto;
+            position:relative;
+
+            animation: rotor 1s infinite, breathe .6s infinite alternate ease-in-out;
+        }
+
+        .box
+        {
+            width:var(--box-size);
+            height:var(--box-size);
+            background-color:var(--box-color);
+            position:absolute;
+            border-radius:50%;
+            /* animation: rotor-rev 1s infinite; */
+        }
+
+        #box-1
+        {
+            right:0;
+            bottom:50%;
+            translate:0 50%;
+        }
+        #box-2
+        {
+            right:50%;
+            bottom:0;
+            translate:50%;
+        }
+        #box-3
+        {
+            left:0;
+            top:50%;
+            translate:0 -50%;
+        }
+        #box-4
+        {
+            left:50%;
+            top:0;
+            translate:-50%;
+        }
+
+        @keyframes rotor
+        {
+            from { rotate:0deg; }
+            to { rotate:360deg; }
+        }
+        @keyframes rotor-rev
+        {
+            from { rotate:0deg; }
+            to { rotate:-360deg; }
+        }
+
+        @keyframes breathe
+        {
+            from { width:var(--rotor-size); height:var(--rotor-size); }
+            to { width:var(--rotor-size-2); height:var(--rotor-size-2); }
+        }
+    </style>
+</head>
+<body>
+    <div id="text">loading</div>
+    <div id="container" class="flex column center">
+        <div id="rotor" class="">
+            <div id="box-1" class="box"></div>
+            <div id="box-2" class="box"></div>
+            <div id="box-3" class="box"></div>
+            <div id="box-4" class="box"></div>
+        </div>
+    </div>
+
+    <script>
+        var isColoured=true;
+        
+        if(isColoured)
+        {
+            document.getElementById("box-1").style.background="lightcoral";
+            document.getElementById("box-2").style.background="lightblue";
+            document.getElementById("box-3").style.background="lightgreen";
+            document.getElementById("box-4").style.background="lightyellow";
+        }
+
+        function getCursorXY(e)
+        {
+            CurX = (window.Event) ? e.pageX : event.clientX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
+            CurY = (window.Event) ? e.pageY : event.clientY + (document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop);
+        }
+    </script>
+</body>
+</html>

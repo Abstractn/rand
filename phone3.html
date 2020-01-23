@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Brand - Model</title>
+    <script src="https://kit.fontawesome.com/e97eac13ba.js" crossorigin="anonymous"></script>
+    <style>
+        :root
+        {
+            --main-grid-size:50px 50px 50px 50px;
+        }
+
+        body
+        {
+            color:white;
+            background-color:gray;
+        }
+
+        .test{border:solid red 1px;}
+
+        .flex { display:flex; }
+        .column { flex-direction:column; }
+        .row { flex-direction:row; }
+        .center { justify-content:center; align-items:center; }
+        .spaced { justify-content:center; }
+
+        #phoneFrame
+        {
+            width:280px;
+            height:520px;
+            
+            border:solid black 3px;
+            border-radius:30px;
+            background-color:#222;
+        }
+
+        #phoneTop
+        {
+            color:gray;
+            height:30px;
+        }
+
+        #phoneScreen
+        {
+            margin-top:5px;
+            border-radius:25px;
+            position:relative;
+            height:510px;
+            width:100%;
+            background-color: #111;
+        }
+
+        #phoneBottom
+        {
+            padding-top:5px;
+            height:30px;
+        }
+        
+        #homeButton
+        {
+            width:50px;
+            height:20px;
+            background-color:#111;
+            border:solid gray 1.5px;
+            border-bottom:solid lightgray 1.5px;
+            border-top:solid #444 1.5px;
+            border-radius:20px;
+        }
+        #homeButton:active
+        {
+            background-color:#000;
+            border:solid #444 1.5px;
+            border-bottom:solid gray 1.5px;
+        }
+
+        .opt-btn
+        {
+            padding:0;
+            /*width:2px;*/
+            width:20px;
+            height:40px;
+
+            border:none;
+            color:#444;
+            background-color:#222;
+
+            transform:rotateY(80deg);
+            margin-left:-8px;
+            transition:.1s;
+
+            font-weight:bold;
+        }
+        .opt-btn:hover
+        {
+            /*width:20px;*/
+            transform:rotateY(0deg);
+            margin-left:0px;
+        }
+        .opt-btn:active
+        {
+            padding-right:1px;
+            color:white;
+            text-shadow: 0 0 5px white;
+        }
+
+        #phoneWallpaper
+        {
+            position:fixed;
+            height:510px;
+            width:280px;
+            background-image:url("https://www.pixelstalk.net/wp-content/uploads/2016/10/Abstract-iphone-6s-wallpaper-hd-768x1434.jpg");
+            background-position:center;
+            background-repeat:no-repeat;
+            background-size:cover;
+            z-index:1;
+
+            border-radius:25px;
+        }
+
+        #shapes
+        {
+            z-index:3;
+        }
+        #shapes span
+        {
+            width:50px;
+        }
+
+        #refl
+        {
+            position:fixed;
+            width:280px;
+            height:520px;
+            filter:blur(10px);
+            pointer-events:none; /* click through */
+            z-index:5;
+        }
+    </style>
+</head>
+<body>
+    <div id="phone" class="flex spaced">
+        <div id="phoneFrame">
+            <div id="phoneFront" class="flex column center">
+                <!-- <div id="phoneTop" class="flex row spaced">
+                    <span> ____ </span>
+                </div> -->
+                <div id="phoneScreen" style="align-items:flex-end">
+                    <div id="phoneWallpaper"></div>
+                    <span id="shapes" class="flex row spaced">
+                        <span><</span>
+                        <span>O</span>
+                        <span>[]</span>
+                    </span>
+                </div>
+                <!-- <div id="phoneBottom">
+                    <button id="homeButton"></button>
+                </div> -->
+                <svg id="refl">
+                    <polygon points="0,100 0,300 250,0 150,0" style="fill:rgba(255,255,255,0.1);" />
+                </svg>
+            </div>
+        </div>
+
+        <span class="flex column" style="margin-top:80px;width:100px;">
+            <button class="opt-btn"> + </button>
+            <button class="opt-btn"> - </button>
+            <button class="opt-btn" style="margin-top:3px;"> <i class="fas fa-power-off"></i> </button>
+        </span>
+    </div>
+
+    <div>
+        <button onclick="bg(1)">1</button>
+        <button onclick="bg(2)">2</button>
+        <button onclick="bg(3)">3</button>
+        <br>
+        <button onclick="bg(4)">4</button>
+        <button onclick="bg(5)">5</button>
+        <button onclick="bg(6)">6</button>
+        <br>
+        <button onclick="bg(7)">7</button>
+        <button onclick="bg(8)">8</button>
+        <button onclick="bg(9)">9</button>
+    </div>
+</body>
+</html>
+
+<script>
+/*
+https://www.droidviews.com/wp-content/uploads/2018/10/asus-rog-default-wallpaper-2-droidviews.jpg
+https://www.stechguide.com/wp-content/uploads/2018/10/Default-ROG-Phone-Wallpaper-X-Mode.jpg
+
+https://wallpapercave.com/wp/wp2679565.jpg
+    > https://www.pixelstalk.net/abstract-phone-backgrounds-download/
+    > https://www.pixelstalk.net/abstract-iphone-backgrounds/
+    > http://wallpapernpictures.blogspot.com/2012/08/iphone-abstract-wallpaper-hd.html
+*/
+</script>
+
+<script>
+    var backgrounds = 
+    [
+        "https://media.idownloadblog.com/wp-content/uploads/2018/01/Virtual-Flower-for-ALL-iPhone-AR72014.jpg",
+        "https://www.pixelstalk.net/wp-content/uploads/2016/10/Abstract-iphone-6s-wallpaper-hd-768x1434.jpg",
+        "https://wallpapercave.com/wp/wp2679565.jpg",
+        "https://s4827.pcdn.co/wp-content/uploads/2018/03/Abstract_iPhone_Wallpaper_7.jpg",
+        "http://3.bp.blogspot.com/--i71NrJzw1I/UB4botPOSRI/AAAAAAAAG0c/7OPm4HXBH84/s1600/iphone+abstract+wallpaper++%2816%29.jpg",
+        "",
+        "https://www.pixelstalk.net/wp-content/uploads/images3/Abstract_Wallpapers_For_Phone-696x1237.jpg",
+        "https://www.pixelstalk.net/wp-content/uploads/images3/Abstract_Phone_Free_Backgrounds-696x1237.jpg",
+        "https://www.pixelstalk.net/wp-content/uploads/2016/10/Android-phone-wallpaper-hd-abstract-768x1365.jpg"
+    ];
+    var phoneBg = document.getElementById("phoneWallpaper");
+    function bg(id)
+    {
+        phoneBg.style.backgroundImage = "url('"+backgrounds[id-1]+"')";
+    }
+</script>

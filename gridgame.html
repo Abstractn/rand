@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title></title>
+    <style>
+        body
+        {
+            background-color:black;
+            margin:0;
+        }
+        .cell
+        {
+            display:inline-block;
+            padding:0;
+            margin:0;
+
+            border:solid gray 1px;
+            width:50px;
+            height:50px;
+        }
+        .cell:hover
+        {
+            border:solid white 1px;
+            border-radius:15px;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        const size=prompt("grid size");
+        const randomize=prompt("randomize? (y/n)");
+
+        var matrix=[];
+        matrix.push([]);
+
+        // create table + populate array
+        for(var x=0; x<size; x++)
+        {
+            matrix[x]=[];
+
+            for(var y=0; y<size; y++)
+            {
+                document.write('<div id="'+x+'-'+y+'" class="cell" onclick="game('+x+','+y+')"></div>');
+                matrix[x].push(0);
+            }
+            document.write("<br>");
+        }
+
+        function toggle(x,y)
+        {
+            if( (x>=0 && y>=0) && (x<size && y<size) )
+            {
+                if( matrix[x][y] == 0 )
+                {
+                    document.getElementById(x+"-"+y).style.background = "white";
+                    matrix[x][y] = 1;
+                }
+                else
+                {
+                    document.getElementById(x+"-"+y).style.background = "black";
+                    matrix[x][y] = 0;
+                }
+            }
+        }
+
+        // randomize grid
+        if(randomize=="y")
+        {
+            for(var x=0; x<size; x++)
+            {
+                for(var y=0; y<size; y++)
+                {
+                    var rand = Math.random()
+                    rand > 0.5 ? matrix[x][y]=1 : matrix[x][y]=0 ;
+                    toggle(x,y); //update grid
+                }
+            }
+        }
+
+        function game(x,y)
+        {
+            //console.log("game("+x+"-"+y+")");
+            toggle(x,y);
+            toggle(x-1,y);
+            toggle(x,y-1);
+            toggle(x+1,y);
+            toggle(x,y+1);
+        }
+    </script>
+</body>
+</html>

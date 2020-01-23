@@ -1,0 +1,227 @@
+<style>
+	:root
+	{
+		--blur-size:1px;
+		--fx-blue:	-1px -1px var(--blur-size) blue,
+					 1px -1px var(--blur-size) blue,
+					-1px  1px var(--blur-size) blue,
+					 1px  1px var(--blur-size) blue;
+		--fx-red:	-1px -1px var(--blur-size) red,  
+					 1px -1px var(--blur-size) red,
+					-1px  1px var(--blur-size) red,
+					 1px  1px var(--blur-size) red;
+		--fx-amber: -1px -1px var(--blur-size) orange,  
+					 1px -1px var(--blur-size) orange,
+					-1px  1px var(--blur-size) orange,
+					 1px  1px var(--blur-size) orange;
+	}
+	
+	body
+	{
+		background-color:black;
+		color:white;
+		font-family:arial;
+	}
+	
+	.flex-hor
+	{
+		display:flex;
+			justify-content:space-around;
+			flex-direction:row;
+			
+	}
+
+	/*############################################*/
+	
+	.panel
+	{
+		height:10em;
+	
+		background-color:gray;
+		color:white;
+		
+		font-family:monospace;
+		font-weight:bold;
+		text-align:center;
+		
+		border:solid #333 10px;
+		border-radius:10%;
+		padding:15px;
+	}
+	
+	.panel button
+	{
+		width:2em;
+		height:2em;
+		border-width:4px;
+		border-radius:4px;
+		padding:0;
+	}
+	
+	.panel button:disabled
+	{
+		color:#aaa;
+	}
+	
+	#view
+	{
+		width:18em;
+		width:50%;
+	}
+	
+	/*############################################*/
+
+	.leo
+	{
+		font-family:impact;
+		font-weight:lighter;
+		font-size:1.2em;
+		animation-duration:0.8s;
+		animation-iteration-count:infinite;
+	}
+	
+	.leo-pulse { animation-name:polFX-pulse; }
+	.leo-dual { animation-name:polFX-dual; }
+	.leo-amber { animation-name:polFX-hazard; }
+	.leo-off { animation-name:polFX-off; }
+	
+	@keyframes polFX-off
+	{
+		from { text-shadow:none; }
+		to { text-shadow:none; }
+	}
+	@keyframes polFX-pulse
+	{
+		0%	{ text-shadow: var(--fx-blue); }
+		49%	{ text-shadow: var(--fx-blue); }
+		50% { text-shadow: var(--fx-red); }
+		100%{ text-shadow: var(--fx-red); }
+	}
+	@keyframes polFX-dual
+	{
+		0%	{ text-shadow: var(--fx-blue); }
+		11%	{ text-shadow: var(--fx-blue); }
+		
+		12% { text-shadow:none; }
+		14% { text-shadow:none; }
+		
+		15%	{ text-shadow: var(--fx-red); }
+		26%	{ text-shadow: var(--fx-red); }
+		
+		27% { text-shadow:none; }
+		49% { text-shadow:none; }
+		
+		50%	{ text-shadow: var(--fx-red); }
+		61%	{ text-shadow: var(--fx-red); }
+		
+		62% { text-shadow:none; }
+		64% { text-shadow:none; }
+		
+		65%	{ text-shadow: var(--fx-blue); }
+		76%	{ text-shadow: var(--fx-blue); }
+		
+		77% { text-shadow:none; }
+		100% { text-shadow:none; }
+	}
+	@keyframes polFX-hazard
+	{
+		0%	{ text-shadow: var(--fx-amber); }
+		74%	{ text-shadow: var(--fx-amber); }
+		75% { text-shadow:none; }
+		100%{ text-shadow:none; }
+	}
+
+	/* document.getElementById("view").style="animation-duration:0.2s;" */
+</style>
+
+
+
+<div class="flex-hor">
+	<div id="view" class="leo leo-off">
+		<span id="fx-name" style="float:right;">-</span>
+		<br>
+		<pre id="custom" class="leo"></pre>
+		<br><br>
+		<hr>
+		<br>
+		<textarea id="custom-in" onchange="setCustom()" cols="40" rows="10">LEO-FX text&#13;&#10;woop woop&#13;&#10;it's the Lolice, you're under arrest!&#13;&#10;Maritime RP: You've been jailed for #N seconds&#13;&#10;&#13;&#10;911: what's your emergency?</textarea>
+	</div>
+	
+	<div class="panel">
+		- CONTROL PANEL -
+		<br>
+		<button onclick="power('on')">+</button>
+		<button onclick="mode(1)">1</button>
+		<button onclick="mode(2)">2</button>
+		<button disabled>3</button>
+		<br>
+		<button onclick="power('off')">-</button>
+		<button disabled>4</button>
+		<button disabled>5</button>
+		<button disabled>6</button>
+		<br>
+		<button disabled>.</button>
+		<button disabled>7</button>
+		<button disabled>8</button>
+		<button onclick="mode(9)">9</button>
+		<br>
+		<button disabled>.</button>
+		<button disabled>.</button>
+		<button disabled>0</button>
+		<button disabled>F</button>
+	</div>
+	
+	<script>
+		var polText = document.getElementById("view");
+		var fxName = document.getElementById("fx-name");
+		var fx_mem = "- pulse -";
+		
+		var custom_in = document.getElementById("custom-in");
+		var custom_out = document.getElementById("custom");
+
+		custom_out.innerHTML = custom_in.innerHTML;
+		
+		function power(status)
+		{
+			if(status=="on")
+			{
+				polText.classList.remove("leo-off");
+				fxName.innerHTML = fx_mem;
+			}
+			else
+			{
+				polText.classList.add("leo-off");
+				fx_mem = fxName.innerHTML;
+				fxName.innerHTML="-";
+			}
+		}
+		
+		function mode(id)
+		{
+			switch(id)
+			{
+				case 1:
+					fx_mem = "- pulse -";
+					fxName.innerHTML=fx_mem;
+					polText.className = "leo leo-pulse";
+					break;
+				
+				case 2:
+					fx_mem = "- dual -";
+					fxName.innerHTML=fx_mem;
+					polText.className = "leo leo-dual";
+					break;
+				case 9:
+					fx_mem = "- amber -";
+					fxName.innerHTML=fx_mem;
+					polText.className = "leo leo-amber";
+					break;
+			}
+		}
+
+		function setCustom()
+		{
+			custom_out.innerHTML = custom_in.value;
+		}
+	</script>
+</div>

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>&Omega;mium - F3 "Miko"</title>
+    <script src="https://kit.fontawesome.com/e97eac13ba.js" crossorigin="anonymous"></script>
+    <style>
+        :root
+        {
+            --main-grid-size:50px 50px 50px 50px;
+        }
+
+        body
+        {
+            color:white;
+            background-color:gray;
+            margin:0;
+        }
+
+        .test{border:solid red 1px;}
+
+        .flex { display:flex; }
+        .column { flex-direction:column; }
+        .row { flex-direction:row; }
+        .center { justify-content:center; align-items:center; }
+        .end { align-items:flex-end; }
+        .spaced { justify-content:space-between; }
+
+        #brand
+        {
+            margin-left:25%;
+            font-size:2em;
+            color: #FFC0CB;
+            animation: omium alternate infinite 1s;
+            font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        }
+        @keyframes omium { from { color:#FFC0CB; } to { color:#FFE59C; } }
+
+        /* ---------------------------------------------------------------------- */
+
+        #phoneFrame
+        {
+            width:280px;
+            height:520px;
+            border:solid black 3px;
+            border-radius:20px;
+            background-color:#222;
+        }
+
+        #phoneScreen
+        {
+            margin-top:2px;
+            position:relative;
+            height:510px;
+            width:100%;
+            background-color: #111;
+            border-radius:20px;
+        }
+
+        #phoneWallpaper
+        {
+            position:absolute;
+            height:510px;
+            width:280px;
+            background-image:url("https://www.pixelstalk.net/wp-content/uploads/2016/10/Abstract-iphone-6s-wallpaper-hd-768x1434.jpg");
+            background-position:center;
+            background-repeat:no-repeat;
+            background-size:cover;
+            z-index:1;
+
+            border-radius:20px;
+        }
+
+        #shapes
+        {
+            z-index:3;
+            width:200px;
+            margin-bottom:10px;
+            font-size:20px;
+        }
+        #shapes i
+        {
+            text-align:center;
+            width:1.5em;
+        }
+        #shapes i:hover
+        {
+            cursor:pointer;
+            text-shadow:0 0 5px white;
+        }
+
+        #notch
+        {
+            position:absolute;
+            height:10px;
+            width:50px;
+            top:0;
+            z-index:4;
+
+            text-align:center;
+            background-color:#222;
+            border-bottom-left-radius:20px;
+            border-bottom-right-radius:20px;
+            font-size:20px;
+            line-height:1px;
+        }
+
+        #refl
+        {
+            position:fixed;
+            width:280px;
+            height:520px;
+            filter:blur(10px);
+            pointer-events:none; /* click through */
+            z-index:5;
+        }
+    </style>
+</head>
+<body>
+    <script>document.write( '<div id="brand">'+document.title+'</div>' );</script>
+    <div id="phone" class="flex row center">
+        <div id="phoneFrame">
+            <div id="phoneScreen" class="flex row center end">
+                <div id="phoneWallpaper"></div>
+                <div id="notch">___</div>
+                <div id="shapes" class="flex row spaced">
+                    <i class="fas fa-chevron-left" onclick="sysf.back()"></i>
+                    <i class="far fa-dot-circle" onclick="sysf.home()"></i>
+                    <!-- <span onclick="mobi_sysf_home()">&Omega;</span> -->
+                    <i class="fas fa-square" onclick="sysf.opt()"></i>
+                </div>
+                <svg id="refl">
+                    <polygon points="0,100 0,300 250,0 150,0" style="fill:rgba(255,255,255,0.1);" />
+                </svg>
+            </div>
+        </div>
+    </div>
+
+        <!-- <span class="flex column" style="margin-top:80px;width:100px;">
+            <button class="opt-btn"> + </button>
+            <button class="opt-btn"> - </button>
+            <button class="opt-btn" style="margin-top:3px;"> <i class="fas fa-power-off"></i> </button>
+        </span> -->
+    </div>
+
+    <div>
+        <button onclick="bg(1)">1</button>
+        <button onclick="bg(2)">2</button>
+        <button onclick="bg(3)">3</button>
+        <br>
+        <button onclick="bg(4)">4</button>
+        <button onclick="bg(5)">5</button>
+        <button onclick="bg(6)">6</button>
+        <br>
+        <button onclick="bg(7)">7</button>
+        <button onclick="bg(8)">8</button>
+        <button onclick="bg(9)">9</button>
+    </div>
+</body>
+</html>
+
+<script>
+    /* --- OMIUM OS --- */
+    sysf = { back:null, home:null, opt:null }
+
+    sysf.back = function()
+    { console.log("pressed back button"); }
+    sysf.home = function()
+    { console.log("pressed home button"); }
+    sysf.opt = function()
+    { console.log("pressed option button"); }
+</script>
+
+<script>
+/*
+https://www.droidviews.com/wp-content/uploads/2018/10/asus-rog-default-wallpaper-2-droidviews.jpg
+https://www.stechguide.com/wp-content/uploads/2018/10/Default-ROG-Phone-Wallpaper-X-Mode.jpg
+
+https://wallpapercave.com/wp/wp2679565.jpg
+    > https://www.pixelstalk.net/abstract-phone-backgrounds-download/
+    > https://www.pixelstalk.net/abstract-iphone-backgrounds/
+    > http://wallpapernpictures.blogspot.com/2012/08/iphone-abstract-wallpaper-hd.html
+*/
+</script>
+
+<script>
+    var backgrounds = 
+    [
+        "https://media.idownloadblog.com/wp-content/uploads/2018/01/Virtual-Flower-for-ALL-iPhone-AR72014.jpg",
+        "https://www.pixelstalk.net/wp-content/uploads/2016/10/Abstract-iphone-6s-wallpaper-hd-768x1434.jpg",
+        "https://wallpapercave.com/wp/wp2679565.jpg",
+        "https://s4827.pcdn.co/wp-content/uploads/2018/03/Abstract_iPhone_Wallpaper_7.jpg",
+        "http://3.bp.blogspot.com/--i71NrJzw1I/UB4botPOSRI/AAAAAAAAG0c/7OPm4HXBH84/s1600/iphone+abstract+wallpaper++%2816%29.jpg",
+        "",
+        "https://www.pixelstalk.net/wp-content/uploads/images3/Abstract_Wallpapers_For_Phone-696x1237.jpg",
+        "https://www.pixelstalk.net/wp-content/uploads/images3/Abstract_Phone_Free_Backgrounds-696x1237.jpg",
+        "https://www.pixelstalk.net/wp-content/uploads/2016/10/Android-phone-wallpaper-hd-abstract-768x1365.jpg"
+    ];
+    var phoneBg = document.getElementById("phoneWallpaper");
+    function bg(id)
+    {
+        phoneBg.style.backgroundImage = "url('"+backgrounds[id-1]+"')";
+    }
+</script>

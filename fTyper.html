@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>FTyper</title>
+    <style>
+        body
+        {
+            margin:0;
+            background-color: #333;
+            color:#eee;
+            font-family:fantasy;
+
+            overflow-y:hidden;
+        }
+
+        .test{border:solid red 1px;}
+
+        .flex { display:flex; }
+        .column { flex-direction:column; }
+        .row { flex-direction:row; }
+        .center { justify-content:center; align-items:center; }
+        .end { align-items:flex-end; }
+        .spaced { justify-content:space-between; }
+
+        /* ------------------------------------------------ */
+
+        #textfield, #output
+        {
+            width:50%;
+            height:100vh;
+            max-width:50%;
+            max-height:100%;
+
+            overflow-y:scroll;
+            overflow-x:hidden;
+            margin:0;
+        }
+
+        #textfield
+        {
+            background-color: #111;
+            color:inherit;
+            font-family:monospace;
+            border:none;
+
+            resize:none;
+        }
+
+        #output
+        {
+            font-family:fantasy;
+            word-wrap:break-word;
+        }
+
+        /* -------------- */
+
+        sup, sub
+        {
+            opacity:0.8;
+        }
+
+        /* -------------- */
+
+        #menu-button
+        {
+            position:fixed;
+                bottom:30px;
+                right:30px;
+            
+            width:50px;
+            height:50px;
+            border:none;
+            border-radius:50%;
+
+            color:white;
+            background-color:deepskyblue;
+            font-family:arial;
+            font-weight:bold;
+            font-size:1.5em;
+        }
+        #menu-button:active
+        {
+            background-color:dodgerblue;
+        }
+    </style>
+</head>
+<body>
+    <div class="flex row spaced">
+        <textarea id="textfield" oninput="setTxt()" placeholder="type here...">
+            #bold#
+            _underline_
+            ~deleted~
+            *italic*
+            `code`
+        </textarea>
+        <span id="output"></span>
+    </div>
+    <button id="menu-button">M</button>
+
+    <script>
+        var str = "";
+        var textfield = document.getElementById("textfield");
+        var output = document.getElementById("output");
+
+
+        function setTxt()
+        {
+            str = textfield.value;
+            getTxt(str);
+        }
+
+        function getTxt(str)
+        { output.innerHTML = format.all(str); }
+
+        // --------------------------------------------
+
+        var format =
+        {
+            all:null,
+            chars:
+            {
+                underlined:'_',
+                bold:'#',
+                italic:'*',
+                deleted:'~',
+                coded:'`',
+                super:'^',
+                sub:'|',
+            },
+            newLine:null,
+            space:null,
+            bold:null,
+            italic:null,
+            deleted:null,
+            code:null,
+            super:null,
+            sub:null,
+            underscore:null
+        };
+
+        format.newLine = function(str)
+        //{ return str.split("\n").join("<br>"); };
+        { return str.replace(/\n/g,"<br>"); };
+
+        format.space = function(str)
+        { return str.replace(/ /g,"&nbsp;"); };
+
+        format.underscore = function(str)
+        {
+            var f_status = false;
+            for(var i=0; i<str.length; i++)
+            {
+                if( str.charAt(i) == format.chars.underlined && f_status == true )
+                { str = str.replace(format.chars.underlined,"</u>");     f_status=false; }
+                if( str.charAt(i) == format.chars.underlined )
+                { str = str.replace(format.chars.underlined,"<u>");     f_status=true; }
+            }
+            if(f_status) { str = str + "</u>"; }
+            return str;
+        }
+
+        format.bold = function(str)
+        {
+            var f_status = false;
+            for(var i=0; i<str.length; i++)
+            {
+                if( str.charAt(i) == format.chars.bold && f_status == true )
+                { str = str.replace(format.chars.bold,"</b>");     f_status=false; }
+                if( str.charAt(i) == format.chars.bold )
+                { str = str.replace(format.chars.bold,"<b>");     f_status=true; }
+            }
+            if(f_status) { str = str + "</b>"; }
+            return str;
+        }
+
+        format.deleted = function(str)
+        {
+            var f_status = false;
+            for(var i=0; i<str.length; i++)
+            {
+                if( str.charAt(i) == format.chars.deleted && f_status == true )
+                { str = str.replace(format.chars.deleted,"</del>");     f_status=false; }
+                if( str.charAt(i) == format.chars.deleted )
+                { str = str.replace(format.chars.deleted,"<del>");     f_status=true; }
+            }
+            if(f_status) { str = str + "</del>"; }
+            return str;
+        }
+
+        format.italic = function(str)
+        {
+            var f_status = false;
+            for(var i=0; i<str.length; i++)
+            {
+                if( str.charAt(i) == format.chars.italic && f_status == true )
+                { str = str.replace(format.chars.italic,"</i>");     f_status=false; }
+                if( str.charAt(i) == format.chars.italic )
+                { str = str.replace(format.chars.italic,"<i>");     f_status=true; }
+            }
+            if(f_status) { str = str + "</i>"; }
+            return str;
+        }
+
+        format.code = function(str)
+        {
+            var f_status = false;
+            for(var i=0; i<str.length; i++)
+            {
+                if( str.charAt(i) == format.chars.coded && f_status == true )
+                { str = str.replace(format.chars.coded,"</pre>");     f_status=false; }
+                if( str.charAt(i) == format.chars.coded )
+                { str = str.replace(format.chars.coded,"<pre>");     f_status=true; }
+            }
+            if(f_status) { str = str + "</pre>"; }
+            return str;
+        }
+
+        format.super = function(str)
+        {
+            var f_status = false;
+            for(var i=0; i<str.length; i++)
+            {
+                if( str.charAt(i) == format.chars.super && f_status == true )
+                { str = str.replace(format.chars.super,"</sup>");     f_status=false; }
+                if( str.charAt(i) == format.chars.super )
+                { str = str.replace(format.chars.super,"<sup>");     f_status=true; }
+            }
+            if(f_status) { str = str + "</sup>"; }
+            return str;
+        }
+
+        format.sub = function(str)
+        {
+            var f_status = false;
+            for(var i=0; i<str.length; i++)
+            {
+                if( str.charAt(i) == format.chars.sub && f_status == true )
+                { str = str.replace(format.chars.sub,"</sub>");     f_status=false; }
+                if( str.charAt(i) == format.chars.sub )
+                { str = str.replace(format.chars.sub,"<sub>");     f_status=true; }
+            }
+            if(f_status) { str = str + "</sub>"; }
+            return str;
+        }
+
+        format.all = function(str)
+        {
+            str = format.newLine(str);
+            str = format.space(str);
+            str = format.underscore(str);
+            str = format.bold(str);
+            str = format.deleted(str);
+            str = format.italic(str);
+            str = format.code(str);
+            str = format.super(str);
+            str = format.sub(str);
+            return str;
+        }
+    </script>
+
+<script>
+    
+    /*
+        DRAGGABLE module source:
+        https://www.kirupa.com/html5/drag.htm
+    */
+
+    var dragItem = document.querySelector("#menu-button");
+    // var container = document.querySelector("#container");
+    var container = document.body;
+
+    var active = false;
+    var currentX;
+    var currentY;
+    var initialX;
+    var initialY;
+    var xOffset = 0;
+    var yOffset = 0;
+
+    container.addEventListener("touchstart", dragStart, false);
+    container.addEventListener("touchend", dragEnd, false);
+    container.addEventListener("touchmove", drag, false);
+
+    container.addEventListener("mousedown", dragStart, false);
+    container.addEventListener("mouseup", dragEnd, false);
+    container.addEventListener("mousemove", drag, false);
+
+    function dragStart(e) {
+      if (e.type === "touchstart") {
+        initialX = e.touches[0].clientX - xOffset;
+        initialY = e.touches[0].clientY - yOffset;
+      } else {
+        initialX = e.clientX - xOffset;
+        initialY = e.clientY - yOffset;
+      }
+
+      if (e.target === dragItem) {
+        active = true;
+      }
+    }
+
+    function dragEnd(e) {
+      initialX = currentX;
+      initialY = currentY;
+
+      active = false;
+    }
+
+    function drag(e) {
+      if (active) {
+      
+        e.preventDefault();
+      
+        if (e.type === "touchmove") {
+          currentX = e.touches[0].clientX - initialX;
+          currentY = e.touches[0].clientY - initialY;
+        } else {
+          currentX = e.clientX - initialX;
+          currentY = e.clientY - initialY;
+        }
+
+        xOffset = currentX;
+        yOffset = currentY;
+
+        setTranslate(currentX, currentY, dragItem);
+      }
+    }
+
+    function setTranslate(xPos, yPos, el) {
+      el.style.transform = "translate3d(" + xPos + "px, " + yPos + "px, 0)";
+    }
+  </script>
+</body>
+</html>

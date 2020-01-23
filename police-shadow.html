@@ -1,0 +1,94 @@
+<style>
+	body
+	{
+		background-color:black;
+		color:white;
+		font-family:arial;
+	}
+
+	.leo
+	{
+		font-family:impact;
+		font-weight:lighter;
+		font-size:1.2em;
+		animation-duration:1s;
+		animation-iteration-count:infinite;
+	}
+	
+	.leo-pulse { animation-name:polFX-pulse; }
+	.leo-dual { animation-name:polFX-dual; }
+	
+	@keyframes polFX-pulse
+	{
+		0% { text-shadow:2px 2px 3px blue; }
+		49% { text-shadow:2px 2px 3px blue; }
+		50% { text-shadow:2px 2px 3px red; }
+		100% { text-shadow:2px 2px 3px red; }
+	}
+	@keyframes polFX-dual
+	{
+		0% { text-shadow:2px 2px 3px blue; }
+		9% { text-shadow:2px 2px 3px blue; }
+		
+		10% { text-shadow:none; }
+		14% { text-shadow:none; }
+		
+		15% { text-shadow:2px 2px 3px red; }
+		24% { text-shadow:2px 2px 3px red; }
+		
+		25% { text-shadow:none; }
+		49% { text-shadow:none; }
+		
+		50% { text-shadow:2px 2px 3px red; }
+		59% { text-shadow:2px 2px 3px red; }
+		
+		60% { text-shadow:none; }
+		64% { text-shadow:none; }
+		
+		65% { text-shadow:2px 2px 3px blue; }
+		74% { text-shadow:2px 2px 3px blue; }
+		
+		75% { text-shadow:none; }
+		100% { text-shadow:none; }
+	}
+</style>
+<!--
+	0 > 9		blue
+	10 > 14		none
+	15 > 24		red
+	25 > 29		none
+	
+	30 > 49		none // interval
+	
+	50 > 59		red
+	60 > 64		none
+	65 > 74		blue
+	75 > 79		none
+-->
+<!-- ############################################# -->
+<!-- ##  change classes for different fxs       ## -->
+<!-- ##                                         ## -->
+<!-- ##  classes list:                          ## -->
+<!-- ##                                         ## -->
+<!-- ##  leo : base font                        ## -->
+<!-- ##  leo-pulse : RB pulse                   ## -->
+<!-- ##  leo-dual : RBBR staccato               ## -->
+<!-- ##                                         ## -->
+<!-- ############################################# -->
+<span class="leo leo-pulse">
+	<span style="float:right;">- pulse fx -</span>
+	<br>
+	LEO-FX text
+	<br>
+	woop woop
+	<br>
+	it's the Lolice, you're under arrest!
+</span>
+<hr>
+<span class="leo leo-dual">
+	<span style="float:right;">- dual pattern fx -</span>
+	<br>
+	Maritime RP: You've been jailed for #N seconds
+	<br> <br>
+	911: what's your emergency?
+<span>

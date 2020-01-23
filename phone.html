@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>&Omega;mium - M1 "Ada"</title>
+    <script src="https://kit.fontawesome.com/e97eac13ba.js" crossorigin="anonymous"></script>
+    <style>
+        :root
+        {
+            --main-grid-size:50px 50px 50px 50px;
+        }
+
+        body
+        {
+            color:white;
+            background-color:gray;
+        }
+
+        .test{border:solid red 1px;}
+
+        .flex { display:flex; }
+            .column { flex-direction:column; }
+            .row { flex-direction:row; }
+            .center { justify-content:center; align-items:center; }
+            .spaced { justify-content:center; }
+
+        #brand
+        {
+            margin-left:25%;
+            font-size:2em;
+            color: #FFC0CB;
+            animation: omium alternate infinite 1s;
+            font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        }
+        @keyframes omium { from { color:#FFC0CB; } to { color:#FFE59C; } }
+
+        /* ------------------------------------------------------ */
+
+        #phoneBody
+        {
+            position:relative;
+            width:280px;
+            height:520px;
+            margin:0 auto;
+            border:solid black 3px;
+            border-radius:30px;
+            background-color:#222;
+        }
+
+        #phoneTop
+        {
+            color:gray;
+            height:30px;
+        }
+
+        #phoneScreen
+        {
+            position:relative;
+            height:450px;
+            width:100%;
+            background-color: #111;
+        }
+
+        #phoneBottom
+        {
+            padding-top:5px;
+            height:30px;
+        }
+        
+        #homeButton
+        {
+            width:50px;
+            height:20px;
+            background-color:#111;
+            border:solid gray 1.5px;
+            border-bottom:solid lightgray 1.5px;
+            border-top:solid #444 1.5px;
+            border-radius:20px;
+        }
+        #homeButton:active
+        {
+            background-color:#000;
+            border:solid #444 1.5px;
+            border-bottom:solid gray 1.5px;
+        }
+
+        #opt-btns
+        {
+            position:absolute;
+            top:25px;
+            right:-102px;
+        }
+        .opt-btn
+        {
+            padding:0;
+            /*width:2px;*/
+            width:20px;
+            height:40px;
+            margin-left:0px;
+
+            border:none;
+            color:#444;
+            background-color:#222;
+
+            transform:rotateY(80deg);
+            margin-left:-8px;
+            transition:.1s;
+
+            font-weight:bold;
+        }
+        .opt-btn:hover
+        {
+            /*width:20px;*/
+            transform:rotateY(0deg);
+            margin-left:0px;
+        }
+        .opt-btn:active
+        {
+            padding-right:1px;
+            color:white;
+            text-shadow: 0 0 5px white;
+        }
+
+        #phoneWallpaper
+        {
+            height:100%;
+            width:100%;
+            background-image:url("http://getwallpapers.com/wallpaper/full/6/4/1/888034-top-oneplus-wallpapers-1080x1920-for-phone.jpg");
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            z-index:0;
+        }
+
+        #refl
+        {
+            position:fixed;
+            width:280px;
+            height:520px;
+            filter:blur(10px);
+            pointer-events:none; /* click through */
+        }
+
+        /*
+        #gridContainer
+        {
+            position:absolute;
+            z-index:1;
+            width:100%;
+            height:100%;
+            top:0;
+            left:0;
+            padding:15px;
+
+            display:grid;
+                grid-gap:1em;
+                grid-template-columns: var(--main-grid-size);
+                grid-template-rows: var(--main-grid-size);
+        }
+
+        .grid-item
+        {
+            border:solid red 1px;
+            text-align:center;
+        }
+        */
+    </style>
+</head>
+<body>
+    <script>document.write( '<div id="brand">'+document.title+'</div>' );</script>
+    <div id="phoneBody">
+        <div id="phoneFront" class="flex column center">
+            <div id="phoneTop" class="flex row spaced">
+                <span> ____ </span>
+            </div>
+            <div id="phoneScreen">
+                <div id="phoneWallpaper"></div>
+            </div>
+            <div id="phoneBottom">
+                <button id="homeButton"></button>
+            </div>
+            <svg id="refl">
+                <polygon points="0,100 0,300 250,0 150,0" style="fill:rgba(255,255,255,0.1);" />
+            </svg>
+        </div>
+        <span id="opt-btns" class="flex column" style="margin-top:80px;width:100px;">
+            <button class="opt-btn"> + </button>
+            <button class="opt-btn"> - </button>
+            <button class="opt-btn" style="margin-top:3px;"> <i class="fas fa-power-off"></i> </button>
+        </span>
+    </div>
+
+    <div>
+        <button onclick="bg(1)">1</button>
+        <button onclick="bg(2)">2</button>
+        <button onclick="bg(3)">3</button>
+        <br>
+        <button onclick="bg(4)">4</button>
+        <button onclick="bg(5)">5</button>
+        <button onclick="bg(6)">6</button>
+        <br>
+        <button onclick="bg(7)">7</button>
+        <button onclick="bg(8)">8</button>
+        <button onclick="bg(9)">9</button>
+    </div>
+</body>
+</html>
+
+<script>
+/*
+https://www.droidviews.com/wp-content/uploads/2018/10/asus-rog-default-wallpaper-2-droidviews.jpg
+https://www.stechguide.com/wp-content/uploads/2018/10/Default-ROG-Phone-Wallpaper-X-Mode.jpg
+*/
+</script>
+
+<script>
+    var backgrounds = 
+    [
+        "https://i.ytimg.com/vi/mhjrYJOT7Tc/maxresdefault.jpg",
+        "https://www.technocrazed.com/wp-content/uploads/2015/11/HD-Phone-Wallpapers-1080p-127.jpg",
+        "https://wallpaper.wiki/wp-content/uploads/2017/05/iPhone-Wallpaper-Landscape-Night.jpg",
+        "https://wallpaperaccess.com/full/695978.jpg",
+        "http://getwallpapers.com/wallpaper/full/6/4/1/888034-top-oneplus-wallpapers-1080x1920-for-phone.jpg",
+        "http://www.pixelstalk.net/wp-content/uploads/2016/06/Download-Wallpapers-For-Phone.jpg",
+        "http://cdn.wonderfulengineering.com/wp-content/uploads/2016/01/phone-wallpapers-29-610x915.jpg",
+        "",
+        ""
+    ];
+    var phoneBg = document.getElementById("phoneWallpaper");
+    function bg(id)
+    {
+        phoneBg.style.backgroundImage = "url('"+backgrounds[id-1]+"')";
+    }
+</script>

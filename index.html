@@ -1,0 +1,206 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Abstractn/rand/</title>
+        <link rel="stylesheet" type="text/css" href="https://abstractn.github.io/repo/abs.css">
+        <style>
+            #content
+            {
+                width:300px;
+            }
+            
+            #index
+            {
+                list-style-type:none;
+            }
+
+            #index li
+            {
+                margin:5px 0;
+            }
+
+            #index li, #index a
+            {
+                width:max-content;
+            }
+
+            #index a
+            {
+                /* padding: 0 15px; */
+                width:max-content;
+                color:var(--main-color-b3);
+                /* background-color:var(--main-color-w); */
+                text-decoration:none;
+            }
+            
+            #index a:hover
+            {
+                background-color:var(--main-color-w);
+            }
+
+            .file { background-color:orange; }
+            .dir { background-color:orangered; }
+
+        </style>
+    </head>
+    
+    <body>
+        <div id="title" class="flex spaced center">index of: abstractn/rand/</div>
+        <div id="content">
+            <ul id="index">
+            </ul>
+        </div>
+        
+        <script>
+            const DONE = 4;
+            const OK = 200; // status 200 is a successful return.
+
+            window.onload = init;
+            
+            function init()
+            {
+                loadIndex();
+            }
+            /*
+            function loadIndex()
+            {
+                console.log("loadIndex()");
+                var files = ajax('GET','https://api.github.com/repos/Abstractn/rand/contents/');
+                console.log("requested call");
+                while(files == undefined)
+                {
+                    console.log("waiting");
+                    if(files == false)
+                    {
+                        console.warn("ajax call failed");
+                    }
+                    else
+                    // if(files != false && files != undefined)
+                    {
+                        console.log("recieved");
+                        let list = document.getElementById("index");
+                        let res = "";
+                        for(let i=0; i<files.length; i++)
+                        {
+                            res = res + '<li> <a href="'+files[i].name+'">'+files[i].name+'</a> </li>';
+                        }
+                        list.innerHTML = res;
+                    }
+                }
+            }
+            
+            function ajax(method,url)
+            {
+                console.log("ajax()");
+                console.log("url="+url);
+                let xhr = new XMLHttpRequest();
+                xhr.open(method, url);
+                xhr.send(null);
+
+                xhr.onreadystatechange = function ()
+                {
+                    if (xhr.readyState === xhr.DONE)
+                    {
+                        console.log("call DONE");
+                        if (xhr.status === OK)
+                        {
+                            console.log("call OK");
+                            // console.warn( JSON.parse(xhr.responseText) );
+                            return JSON.parse(xhr.responseText);
+                        }
+                        else
+                        {
+                            console.error('Ajax error: ' + xhr.status);
+                            return false;
+                        }
+                    }
+                };
+            }
+            */
+            function loadIndex()
+            {
+                // console.log('ajax call started');
+                let xhr = new XMLHttpRequest();
+                xhr.open('GET', 'https://api.github.com/repos/Abstractn/rand/contents/');
+                xhr.send(null);
+
+                xhr.onreadystatechange = function ()
+                {
+                    if (xhr.readyState === DONE)
+                    {
+                        if (xhr.status === OK)
+                        {
+                            var ignoredFiles=[
+                                "README.md",
+                                "_config.yml"
+                            ];
+                            var f_ignore=false;
+                            var res="";
+                            var type="";
+                            //convertJsonToLi(ulMenu, xhr.responseText);
+                            const files = JSON.parse(xhr.responseText);
+                            for (let i = 0; i < files.length; i++)
+                            {
+                                // console.log( files[i].name );
+                                for(let j=0; j<ignoredFiles.length; j++)
+                                {
+                                    // console.log(files[i].name+" <> "+ignoredFiles[j]);
+                                    if(files[i].name == ignoredFiles[j])
+                                    { f_ignore=true; console.warn("ignoring: "+ignoredFiles[j]); break; }
+                                }
+                                if(!f_ignore)
+                                {
+                                    res = res + '<li> <a class="'+files[i].type+'" href="'+files[i].name+'">'+files[i].name+'</a> </li>';
+                                    f_ignore=false;
+                                }
+                                f_ignore=false;
+                            }
+                            document.getElementById("index").innerHTML = res;
+                        }
+                        else
+                        {
+                            console.error('Ajax error: ' + xhr.status);
+                        }
+                    }
+                };
+            }
+        </script>
+    </body>
+</html>
+
+<!--
+    https://api.github.com/repos/Abstractn/rand/contents/
+
+    --------------
+
+    /* var files = [
+        "3d",
+        "animeJs",
+        "animeJSdemo",
+        "animeJSdemo2",
+        "animeJSdemo3",
+        "animeJSdemo4",
+        "varlet",
+        "draw",
+        "fakeLog",
+        "fractal",
+        "fTyper",
+        "glasses",
+        "grid_telegram",
+        "gridgame",
+        "libtest",
+        "parallax",
+        "phone",
+        "phone2",
+        "phone3-2",
+        "phone3",
+        "phoneBoot",
+        "police-shadow",
+        "police-shadow2",
+        "police-shadow3",
+        "police-stroke",
+        "rotor"
+    ];
+    for(i=0; i<files.length; i++)
+    { document.write('<li> <a href="'+files[i]+'.html">'+files[i]+'</a> </li>'); } */
+-->

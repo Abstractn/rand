@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-16">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Omium - M2X </title>
+    <script src="https://kit.fontawesome.com/e97eac13ba.js" crossorigin="anonymous"></script>
+    <style>
+        :root
+        {
+            --main-grid-size:50px 50px 50px 50px;
+        }
+
+        body
+        {
+            color:white;
+            background-color:gray;
+        }
+
+        .test{border:solid red 1px;}
+        .test2{border:solid blue 1px;}
+
+        .flex { display:flex; }
+        .column { flex-direction:column; }
+        .row { flex-direction:row; }
+        .center { justify-content:center; align-items:center; }
+        .spaced { justify-content:center; }
+
+        #phoneContainer
+        {
+            position:absolute;
+            z-index:0;
+        }
+
+        #phoneScreen
+        {
+            position:absolute;
+            top:50%;
+            left:50%;
+            transform:translate(-50%, -50%);
+            background-color:black;
+            z-index:2;
+
+            width:180px;
+            height:320px;
+        }
+
+        #phoneWallpaper
+        {
+            height:100%;
+            width:100%;
+            background-image:url("http://getwallpapers.com/wallpaper/full/6/4/1/888034-top-oneplus-wallpapers-1080x1920-for-phone.jpg");
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            z-index:0;
+        }
+
+    </style>
+</head>
+<body>
+    <script>document.write( '<div id="title">'+document.title+'</div>' );</script>
+    <div id="phoneContainer">
+        <!-- 350x200 is 320x180 but averaged for keeping the screen -->
+        <svg id="phoneFrame" height="350" width="200">
+            <!-- <line x1="0" y1="0" x2="0" y2="350" style="stroke:black;stroke-width:1" />
+            <line x1="200" y1="0" x2="200" y2="350" style="stroke:black;stroke-width:1" /> -->
+
+            <!-- <polygon points="0,0 0,350   50,350 50,345 150,345 150,350  200,350 200,0" style="fill:#333;" /> -->
+            <path d="M 0 0 q 100 20 200 0" stroke="blue" stroke-width="2" fill="none" />
+        </svg>
+        <!-- <div id="phoneScreen">
+            screen
+        </div> -->
+    </div>
+</body>
+</html>
+
+<script>
+/*
+https://i.ytimg.com/vi/mhjrYJOT7Tc/maxresdefault.jpg
+https://www.technocrazed.com/wp-content/uploads/2015/11/HD-Phone-Wallpapers-1080p-127.jpg
+https://wallpaper.wiki/wp-content/uploads/2017/05/iPhone-Wallpaper-Landscape-Night.jpg
+https://wallpaperaccess.com/full/695978.jpg
+http://getwallpapers.com/wallpaper/full/6/4/1/888034-top-oneplus-wallpapers-1080x1920-for-phone.jpg
+http://www.pixelstalk.net/wp-content/uploads/2016/06/Download-Wallpapers-For-Phone.jpg
+http://cdn.wonderfulengineering.com/wp-content/uploads/2016/01/phone-wallpapers-29-610x915.jpg
+*/
+</script>
+
+<script>
+    
+</script>
