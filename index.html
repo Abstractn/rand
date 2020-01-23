@@ -2,7 +2,10 @@
     <head>
         <meta charset="utf-8">
         <title>Abstractn/rand/</title>
+        
         <link rel="stylesheet" type="text/css" href="https://abstractn.github.io/repo/abs.css">
+        <script src="https://kit.fontawesome.com/e97eac13ba.js" crossorigin="anonymous"></script>
+
         <style>
             #content
             {
@@ -14,41 +17,50 @@
                 list-style-type:none;
             }
 
-            #index li
+            .index-elem
             {
+                display:block;
                 margin:5px 0;
             }
 
-            #index li, #index a
+            #index span, #index span a
             {
                 width:max-content;
             }
 
-            #index a
+            .index-elem a
             {
-                /* padding: 0 15px; */
+                position:relative;
+                padding: 0 5px;
                 width:max-content;
                 color:var(--main-color-b3);
-                /* background-color:var(--main-color-w); */
+                background-color:var(--main-color-w);
                 text-decoration:none;
+                border-radius:2px;
+                transition-duration:.2s;
+                animation-direction: alternate;
+                left:0px;
             }
             
-            #index a:hover
+            .index-elem a:hover
             {
-                background-color:var(--main-color-w);
+                color:var(--main-color-w);
+                background-color:var(--noixe-color-ar);
+                left:5px;
             }
 
-            .file { background-color:orange; }
-            .dir { background-color:orangered; }
-
+            .index-elem i
+            {
+                width:20px;
+            }
         </style>
     </head>
     
     <body>
         <div id="title" class="flex spaced center">index of: abstractn/rand/</div>
         <div id="content">
-            <ul id="index">
-            </ul>
+            <div id="index">
+            </div>
         </div>
         
         <script>
@@ -138,6 +150,7 @@
                             var f_ignore=false;
                             var res="";
                             var type="";
+                            var icon="";
                             //convertJsonToLi(ulMenu, xhr.responseText);
                             const files = JSON.parse(xhr.responseText);
                             for (let i = 0; i < files.length; i++)
@@ -151,7 +164,14 @@
                                 }
                                 if(!f_ignore)
                                 {
-                                    res = res + '<li> <a class="'+files[i].type+'" href="'+files[i].name+'">'+files[i].name+'</a> </li>';
+                                    switch(files[i].type)
+                                    {
+                                        case "file": icon='<i class="fas fa-file"></i>'; break;
+                                        case "dir": icon='<i class="fas fa-folder"></i>'; break;
+                                        default: null;
+
+                                    }
+                                    res = res + '<span class="index-elem"> <a class="'+files[i].type+'" href="'+files[i].name+'">'+icon+' '+files[i].name+'</a> </span>';
                                     f_ignore=false;
                                 }
                                 f_ignore=false;
