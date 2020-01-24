@@ -4,12 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title></title>
+    <title>FillMeBilly</title>
+
+    <link rel="stylesheet" href="https://abstractn.github.io/repo/abs.css">
     <style>
         body
         {
             background-color:black;
-            margin:0;
+            height:100vh;
         }
         .cell
         {
@@ -26,69 +28,189 @@
             border:solid white 1px;
             border-radius:15px;
         }
+
+        .hidden
+        {
+            display:none;
+        }
+
+        /* ------------------------------------- */
+
+        #winBox
+        {
+            width:200px;
+            height:200px;
+            margin:100px;
+            text-align:center;
+        }
+
+        .winButton
+        {
+            color:var(--main-color-w);
+            background-color:black;
+        }
+        .winButton:active
+        {
+            color:black;
+            background-color:white;
+        }
+
+        .gameWon
+        {
+            animation: win linear infinite alternate 1.5s;
+        }
+
+        /* ----------------------------------------------- */
+
+        @keyframes win
+        {
+            0%   { background-color:white; }
+            25%  { background-color:white; }
+            to   { background-color:black; }
+        }
     </style>
 </head>
 <body>
-    <script>
-        const size=prompt("grid size");
-        const randomize=prompt("randomize? (y/n)");
-
-        var matrix=[];
-        matrix.push([]);
-
-        // create table + populate array
-        for(var x=0; x<size; x++)
-        {
-            matrix[x]=[];
-
-            for(var y=0; y<size; y++)
-            {
-                document.write('<div id="'+x+'-'+y+'" class="cell" onclick="game('+x+','+y+')"></div>');
-                matrix[x].push(0);
-            }
-            document.write("<br>");
-        }
-
-        function toggle(x,y)
-        {
-            if( (x>=0 && y>=0) && (x<size && y<size) )
-            {
-                if( matrix[x][y] == 0 )
+    <div class="flex center" style="height:100%">
+        <div id="griddy">
+            <script>
+                const size=parseInt( prompt("grid size") );
+                if(typeof size != "number")
                 {
-                    document.getElementById(x+"-"+y).style.background = "white";
-                    matrix[x][y] = 1;
+                    console.warn("size is not numeric");
+                    location.reload();
                 }
-                else
-                {
-                    document.getElementById(x+"-"+y).style.background = "black";
-                    matrix[x][y] = 0;
-                }
-            }
-        }
+                const randomize=prompt("randomize? (y/n)").toLowerCase();
 
-        // randomize grid
-        if(randomize=="y")
-        {
-            for(var x=0; x<size; x++)
-            {
-                for(var y=0; y<size; y++)
-                {
-                    var rand = Math.random()
-                    rand > 0.5 ? matrix[x][y]=1 : matrix[x][y]=0 ;
-                    toggle(x,y); //update grid
-                }
-            }
-        }
+                var countMoves=0;
 
-        function game(x,y)
-        {
-            //console.log("game("+x+"-"+y+")");
-            toggle(x,y);
-            toggle(x-1,y);
-            toggle(x,y-1);
-            toggle(x+1,y);
-            toggle(x,y+1);
-        }
-    </script>
+                var matrix=[];
+                matrix.push([]);
+
+                // create table + populate array
+                for(var x=0; x<size; x++)
+                {
+                    matrix[x]=[];
+
+                    for(var y=0; y<size; y++)
+                    {
+                        document.write('<div id="'+x+'-'+y+'" class="cell" onclick="game('+x+','+y+')"></div>');
+                        matrix[x].push(0);
+                    }
+                    document.write("<br>");
+                }
+
+                function toggle(x,y)
+                {
+                    if( (x>=0 && y>=0) && (x<size && y<size) )
+                    {
+                        if( matrix[x][y] == 0 )
+                        {
+                            document.getElementById(x+"-"+y).style.background = "white";
+                            matrix[x][y] = 1;
+                        }
+                        else
+                        {
+                            document.getElementById(x+"-"+y).style.background = "black";
+                            matrix[x][y] = 0;
+                        }
+                    }
+                }
+
+                // randomize grid
+                if(randomize=="y")
+                { randomizeGrid(); }
+
+                function randomizeGrid()
+                {
+                    for(var x=0; x<size; x++)
+                    {
+                        for(var y=0; y<size; y++)
+                        {
+                            var rand = Math.random()
+                            rand > 0.5 ? matrix[x][y]=1 : matrix[x][y]=0 ;
+                            toggle(x,y); //update grid
+                        }
+                    }   
+                }
+
+                function game(x,y)
+                {
+                    //console.log("game("+x+"-"+y+")");
+                    toggle(x,y);
+                    toggle(x-1,y);
+                    toggle(x,y-1);
+                    toggle(x+1,y);
+                    toggle(x,y+1);
+                    countMoves++;
+                    if( checkWin() )
+                    {
+                        var grid = document.getElementsByClassName("cell");
+                        for( var i=0; i<grid.length-2; i++ )
+                        {
+                            grid[i].classList.add("gameWon");
+                        }
+                        document.getElementById("countedMoves").innerHTML = countMoves;
+                        document.getElementById("winBox").classList.remove("hidden");
+                        countMoves=0;
+                    }
+                }
+
+                function checkWin()
+                {
+                    // console.log("checkWin()");
+                    var res=true;
+                    for(var x=0; x<matrix.length; x++)
+                    {
+                        for(var y=0; y<matrix.length; y++)
+                        {
+                            if( matrix[x][y] == 0 )
+                            {
+                                // console.log("found false @"+x+"-"+y);    
+                                return false;
+                            }
+                        }
+                    }
+                    return res;
+                }
+
+                function restartGame()
+                {
+                    if(randomize=="y")
+                    { randomizeGrid(); }
+                    else
+                    {
+                        for(var x=0; x<matrix.length; x++)
+                        {
+                            for(var y=0; y<matrix.length; y++)
+                            {
+                                document.getElementById(x+"-"+y).style.background = "black";
+                                matrix[x][y] = 0;
+                            }
+                        }
+                    }
+                    document.getElementById("winBox").classList.add("hidden");
+
+                    var grid = document.getElementsByClassName("cell");
+                    for( var i=0; i<grid.length-2; i++ )
+                    {
+                        grid[i].classList.remove("gameWon");
+                    }
+                }
+
+                function newGame()
+                {
+                    location.reload();
+                }
+            </script>
+        </div>
+        <div id="winBox" class="hidden">
+            You won! Moves: <span id="countedMoves"></span>
+            <div style="display:block; margin:30px;">
+                <button class="cell winButton" onclick="restartGame()">restart</button>
+                <button class="cell winButton" onclick="newGame()">new</button>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
