@@ -11,19 +11,19 @@
     <style>
         :root
         {
-            --bar-width:500px;
-            --bar-height:25px;
-            --bar-color-in:lightblue;
-            --bar-color-out:lightcyan;
-            --bar-roundness:var(--bar-height);/* var(--bar-height) */
+            --bar-width:400px;
+            --bar-height:20px;
+            --bar-color-in:gray;
+            --bar-color-out:lightgray;
+            --bar-roundness:0px;/* var(--bar-height) */
 
             --dot-size:calc( var(--bar-height) - 2px );
             --dot-color:var(--bar-color-out);
             --dot-roundness:var(--bar-roundness); /* 50% */
 
-            --anim-speed:1s;
-            --anim-timing:ease-in-out;
-            --dot-squish:1; /* 0 - 1 - 2 - 3 - N */
+            --anim-speed:.5s;
+            --anim-timing:linear;
+            --dot-squish:0; /* 0 - 1 - 2 - 3 - N */
         }
 
         #bar
@@ -77,12 +77,40 @@
 </head>
 <body>
     <div class="flex col center" style="height:100vh;">
-        <p id="title">loading</p>
+        <p id="title"></p>
         <div id="bar-container">
             <div id="bar">
                 <div id="dot"></div>
             </div>
         </div>
     </div>
+    <script>
+        var messages = ["loading",
+                        "calibrating tools",
+                        "checking OS structure",
+                        "reading cached data",
+                        "writing read-only paramers",
+                        "randomly accessing the memory",
+                        "logging in with default credentials",
+                        "hacking in progress",
+                        "preparing query statement",
+                        "settings server callback"
+        ];
+
+        var i=0;
+        var timer=0;
+        function timeout()
+        {
+            setTimeout( function ()
+            {
+                i = Math.floor(Math.random()*10);
+                document.getElementById("title").innerHTML = messages[i];
+                timer = ( Math.floor(Math.random()*10) + 1 )* 1000;
+                console.log(timer+" : "+i);
+                timeout();
+            }, timer );
+        }
+        timeout();
+    </script>
 </body>
 </html>

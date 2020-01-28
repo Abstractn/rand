@@ -6,6 +6,8 @@
         <link rel="stylesheet" type="text/css" href="https://abstractn.github.io/repo/abs.css">
         <script src="https://kit.fontawesome.com/e97eac13ba.js" crossorigin="anonymous"></script>
 
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+
         <style>
             #content
             {
@@ -64,6 +66,12 @@
         </div>
         
         <script>
+
+            // check jQuery version to see if it's working
+            if(typeof jQuery == 'undefined')
+            { console.error("JQuery CDN not working: library not loaded."); }
+
+
             const DONE = 4;
             const OK = 200; // status 200 is a successful return.
 
@@ -71,7 +79,7 @@
             
             function init()
             {
-                loadIndex();
+                loadIndex("https://api.github.com/repos/Abstractn/rand/contents/");
             }
             /*
             function loadIndex()
@@ -100,7 +108,9 @@
                     }
                 }
             }
+            */
             
+            /*
             function ajax(method,url)
             {
                 console.log("ajax()");
@@ -129,11 +139,12 @@
                 };
             }
             */
-            function loadIndex()
+
+            function loadIndex(url) // semi-modular function
             {
                 // console.log('ajax call started');
                 let xhr = new XMLHttpRequest();
-                xhr.open('GET', 'https://api.github.com/repos/Abstractn/rand/contents/');
+                xhr.open('GET', url);
                 xhr.send(null);
 
                 xhr.onreadystatechange = function ()
@@ -155,21 +166,24 @@
                             const files = JSON.parse(xhr.responseText);
                             for (let i = 0; i < files.length; i++)
                             {
-                                // console.log( files[i].name );
+                                // check for files to ignore
                                 for(let j=0; j<ignoredFiles.length; j++)
                                 {
-                                    // console.log(files[i].name+" <> "+ignoredFiles[j]);
                                     if(files[i].name == ignoredFiles[j])
-                                    { f_ignore=true; console.warn("ignoring: "+ignoredFiles[j]); break; }
+                                    {
+                                        f_ignore=true;
+                                        break;
+                                    }
                                 }
+                                // if file is not to ignore, parse for folder or file
                                 if(!f_ignore)
                                 {
                                     switch(files[i].type)
                                     {
                                         case "file": icon='<i class="fas fa-file"></i>'; break;
                                         case "dir": icon='<i class="fas fa-folder"></i>'; break;
+                                        
                                         default: null;
-
                                     }
                                     res = res + '<span class="index-elem"> <a class="'+files[i].type+'" href="'+files[i].name+'">'+icon+' '+files[i].name+'</a> </span>';
                                     f_ignore=false;
@@ -179,9 +193,7 @@
                             document.getElementById("index").innerHTML = res;
                         }
                         else
-                        {
-                            console.error('Ajax error: ' + xhr.status);
-                        }
+                        { console.error('Ajax error: ' + xhr.status); }
                     }
                 };
             }
