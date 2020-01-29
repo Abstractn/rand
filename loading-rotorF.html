@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Loading Rotor-F</title>
+
+    <link rel="stylesheet" href="https://abstractn.github.io/repo/abs.css">
+
+    <style>
+        #flex-container
+        {
+            height:100vh;
+        }
+
+        /*--------------------------------*/
+        .rotor
+        {
+            position:absolute;
+            border-radius:50%;
+
+            /* border:solid transparent 5px; */
+            border-top:solid white 5px;
+            border-bottom:solid white 5px;
+            
+            animation-name:rotate;
+            animation-timing-function:linear;
+            animation-iteration-count:infinite;
+        }
+
+        #r01
+        {
+            z-index:1;
+            width:50px;
+            height:50px;
+            animation-duration:1s;
+        }
+        #r02
+        {
+            z-index:2;
+            width:60px;
+            height:60px;
+            animation-duration:1.5s;
+        }
+        #r03
+        {
+            z-index:3;
+            width:70px;
+            height:70px;
+            animation-duration:2s;
+        }
+        #r04
+        {
+            z-index:4;
+            width:80px;
+            height:80px;
+            animation-duration:2.5s;
+        }
+
+        @keyframes rotate
+        {
+            from { transform:rotate(0deg); }
+            to   { transform:rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div id="flex-container" class="flex column center">
+        <script>
+            const rotorCount=60;
+            for(var i=1; i<=rotorCount; i++)
+            {
+                document.write('<div class="rotor" style="z-index:'+i+'; width:'+i*10+'px; height:'+i*10+'px; animation-duration:'+i/2+'s"></div>');
+            }
+        </script>
+        <!-- <div id="r01" class="rotor"></div>
+        <div id="r02" class="rotor"></div>
+        <div id="r03" class="rotor"></div>
+        <div id="r04" class="rotor"></div> -->
+    </div>
+</body>
+</html>
