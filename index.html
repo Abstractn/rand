@@ -67,6 +67,14 @@
         
         <script>
 
+            const _F_DEBUG = true;
+            function _LOG(obj)
+            { if(_F_DEBUG) { console.log(obj); } }
+
+            function getUnixTimestamp() { return Math.round((new Date()).getTime() / 1000); }
+
+            // #############################################################################
+
             // check jQuery version to see if it's working
             if(typeof jQuery == 'undefined')
             { console.error("JQuery CDN not working: library not loaded."); }
@@ -79,7 +87,7 @@
             
             function init()
             {
-                loadIndex("https://api.github.com/repos/Abstractn/rand/contents/");
+                // loadIndex("https://api.github.com/repos/Abstractn/rand/contents/");
             }
             /*
             function loadIndex()
@@ -142,17 +150,19 @@
 
             function loadIndex(url) // semi-modular function
             {
-                // console.log('ajax call started');
-                let xhr = new XMLHttpRequest();
-                xhr.open('GET', url);
+                _LOG("ajax call");
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', url, false); // 'false' makes request sync
                 xhr.send(null);
 
                 xhr.onreadystatechange = function ()
                 {
+                    _LOG("inside xhr.onreadystatechange()");
                     if (xhr.readyState === DONE)
                     {
                         if (xhr.status === OK)
                         {
+
                             var ignoredFiles=[
                                 "README.md",
                                 "_config.yml",
@@ -163,7 +173,9 @@
                             var type="";
                             var icon="";
                             //convertJsonToLi(ulMenu, xhr.responseText);
+                            _LOG("parsing JSON");
                             const files = JSON.parse(xhr.responseText);
+                            /*
                             for (let i = 0; i < files.length; i++)
                             {
                                 // check for files to ignore
@@ -191,12 +203,120 @@
                                 f_ignore=false;
                             }
                             document.getElementById("index").innerHTML = res;
+                            */
+                            _LOG("returning JSON");
+                            console.warn(files);
+                            return files;
                         }
                         else
-                        { console.error('Ajax error: ' + xhr.status); }
+                        { console.error('Ajax error: ' + xhr.status); return "ajax_error"; }
                     }
                 };
+                _LOG("calling xhr.onreadystatechange()");
+                return xhr.onreadystatechange();
             }
+
+            // #####################################################################
+            /*
+            // structure idea
+            var storedIndex =
+            {
+                expireDate:getUnixTimestap()+60,
+                json:ajaxCall(url)
+            };
+            */
+
+            
+            var json;
+            var storedIndex = JSON.parse( localStorage.getItem("storedIndex") );
+            _LOG("checking LocalStorage:");
+            console.log(storedIndex);
+            if( storedIndex == undefined || (getUnixTimestamp() >= storedIndex["expireDate"] ) )
+            {
+                _LOG("LocalStorage unset - requesting JSON");
+                json = loadIndex("https://api.github.com/repos/Abstractn/rand/contents/");
+                _LOG("recieved JSON");
+                _LOG("about to build index");
+                var indexToStore =
+                {
+                    expireDate:getUnixTimestamp()+60,
+                    json:json
+                }
+                localStorage.setItem("storedIndex",JSON.stringify(indexToStore));
+                _LOG("setting LocalStorage");
+                console.log(localStorage.getItem("storedIndex"));
+                if(json != undefined)
+                { buildIndex(json); }
+            }
+            else
+            {
+                _LOG("LocalStorage set - reading LocalStorage");
+                json = storedIndex["json"];
+                buildIndex(json);
+            }
+
+            function buildIndex(parsedJSON)
+            {
+                _LOG("creating index");
+                var ignoredFiles=[
+                                "README.md",
+                                "_config.yml",
+                                "index.html"
+                ];
+                var f_ignore=false;
+                var res="";
+                var type="";
+                var icon="";
+                // const files = JSON.parse(xhr.responseText);
+                const files = parsedJSON;
+                _LOG("cycling for build and ignored");
+                for (let i = 0; i < files.length; i++)
+                {
+                    // check for files to ignore
+                    for(let j=0; j<ignoredFiles.length; j++)
+                    {
+                        if(files[i].name == ignoredFiles[j])
+                        {
+                            f_ignore=true;
+                            break;
+                        }
+                    }
+                    // if file is not to ignore, parse for folder or file
+                    if(!f_ignore)
+                    {
+                        switch(files[i].type)
+                        {
+                            case "file": icon='<i class="fas fa-file"></i>'; break;
+                            case "dir": icon='<i class="fas fa-folder"></i>'; break;
+                            
+                            default: null;
+                        }
+                        res = res + '<span class="index-elem"> <a class="'+files[i].type+'" href="'+files[i].name+'">'+icon+' '+files[i].name+'</a> </span>';
+                        f_ignore=false;
+                    }
+                    f_ignore=false;
+                }
+                document.getElementById("index").innerHTML = res;
+                _LOG("index printed");
+            }
+            
+
+
+
+
+            /*
+            if ( timestampInStorage == undefined || (nowTimestamp - timestampInStorage) > tempo  )
+            {
+                json = richiesta();
+                timestampInStorage =  nowTimestamp;
+                jsonInStorage = json;
+            }
+            else
+            {
+                json = jsonInStorage;
+            }
+            aggiornaPagina();
+            */
         </script>
     </body>
 </html>
