@@ -73,6 +73,8 @@
 
             function getUnixTimestamp() { return Math.round((new Date()).getTime() / 1000); }
 
+            _LOG( " --- --- --- " + getUnixTimestamp() + " --- --- --- " );
+
             // #############################################################################
 
             // check jQuery version to see if it's working
@@ -231,7 +233,7 @@
             var storedIndex = JSON.parse( localStorage.getItem("storedIndex") );
             _LOG("checking LocalStorage:");
             console.log(storedIndex);
-            if( storedIndex == undefined || (getUnixTimestamp() >= storedIndex["expireDate"] ) )
+            if( storedIndex === null || ( getUnixTimestamp() > storedIndex["expireDate"] ) )
             {
                 _LOG("LocalStorage unset - requesting JSON");
                 json = loadIndex("https://api.github.com/repos/Abstractn/rand/contents/");
