@@ -9,9 +9,21 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 
         <style>
+            body
+            {
+                font-family:"Rounded Elegance";
+                /* font-weight:bold; */
+            }
+
+            #title
+            {
+                font-weight:bold;
+            }
+
             #content
             {
-                width:300px;
+                width:fit-content;
+                margin-left:5px;
             }
             
             #index
@@ -55,23 +67,56 @@
             {
                 width:20px;
             }
+
+            /* -------------------------------------------------- */
+
+            #filter
+            {
+                width:300px;
+                color:white;
+                background-color:black;
+                border:solid gray 1px;
+            }
+
+            /* #loading
+            {
+                width:50px;
+                height:50px;
+                color:transparent;
+                background-color:transparent;
+                border:solid transparent 5px;
+                    border-right:solid white 5px;
+                    border-right:solid white 5px;
+                border-radius:50%;
+                animation:rotate 1s linear infinite;
+            }
+            @keyframes rotate
+            {
+                from { transform:rotate(0deg); }
+                to   { transform:rotate(360deg); }
+            } */
         </style>
     </head>
     
     <body>
         <div id="title" class="flex spaced center">index of: abstractn/rand/</div>
         <div id="content">
+            <input id="filter" type="text" placeholder="filter" oninput="filter()">
             <div id="index">
+                <!-- <span id="loading"></span> -->
             </div>
         </div>
         
         <script>
 
             const _F_DEBUG = true;
+            var _F_FILTER=false;
             function _LOG(obj)
             { if(_F_DEBUG) { console.log(obj); } }
 
             function getUnixTimestamp() { return Math.round((new Date()).getTime() / 1000); }
+
+            var input = document.getElementById("filter");
 
             _LOG( " --- --- --- " + getUnixTimestamp() + " --- --- --- " );
 
@@ -192,20 +237,47 @@
                     // if file is not to ignore, parse for folder or file
                     if(!f_ignore)
                     {
-                        switch(files[i].type)
+                        if( _F_FILTER ) // "enable filter" flag
                         {
-                            case "file": icon='<i class="fas fa-file"></i>'; break;
-                            case "dir": icon='<i class="fas fa-folder"></i>'; break;
-                            
-                            default: null;
+                            if( files[i].name.toLowerCase().includes(input.value.toLowerCase()) ) // check keyword
+                            {
+                                switch(files[i].type)
+                                {
+                                    case "file": icon='<i class="fas fa-file"></i>'; break;
+                                    case "dir": icon='<i class="fas fa-folder"></i>'; break;
+                                    
+                                    default: null;
+                                }
+                                res = res + '<span class="index-elem"> <a class="'+files[i].type+'" href="'+files[i].name+'">'+icon+' '+files[i].name+'</a> </span>';
+                            }
                         }
-                        res = res + '<span class="index-elem"> <a class="'+files[i].type+'" href="'+files[i].name+'">'+icon+' '+files[i].name+'</a> </span>';
-                        f_ignore=false;
+                        else
+                        {
+                            switch(files[i].type)
+                            {
+                                case "file": icon='<i class="fas fa-file"></i>'; break;
+                                case "dir": icon='<i class="fas fa-folder"></i>'; break;
+                                
+                                default: null;
+                            }
+                            res = res + '<span class="index-elem"> <a class="'+files[i].type+'" href="'+files[i].name+'">'+icon+' '+files[i].name+'</a> </span>';
+                        }
                     }
                     f_ignore=false;
                 }
                 document.getElementById("index").innerHTML = res;
                 _LOG("index printed");
+            }
+
+            function filter()
+            {
+                if(input.value=="")
+                { _F_FILTER = false; }
+                else
+                { _F_FILTER=true; }
+
+                document.getElementById("index").innerHTML = ""; // reset index
+                buildIndex(json); // rewrite filtered index
             }
         </script>
     </body>
