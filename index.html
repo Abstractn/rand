@@ -110,7 +110,7 @@
         
         <script>
 
-            const _F_DEBUG = true;
+            var _F_DEBUG = false;
             var _F_FILTER=false;
             function _LOG(obj)
             { if(_F_DEBUG) { console.log(obj); } }
@@ -119,9 +119,15 @@
 
             var input = document.getElementById("filter");
 
-            _LOG( " --- --- --- " + getUnixTimestamp() + " --- --- --- " );
+            window.onkeydown = function(e) // "[CTRL] + [ALT] + [F]" bind for search focus
+            {
+                if(e.keyCode == 70 && e.ctrlKey && e.altKey)
+                { _LOG("_EVENT_LISTENER=\"search\""); input.focus(); }
+            }
 
             // #############################################################################
+
+            input.focus();
 
             // check jQuery version to see if it's working
             if(typeof jQuery == 'undefined')
@@ -133,14 +139,13 @@
 
             function loadIndex(url) // semi-modular function
             {
-                _LOG("ajax call");
+                _LOG("calling API");
                 var xhr = new XMLHttpRequest();
                 xhr.open('GET', url, false); // 'false' makes request sync
                 xhr.send(null);
 
                 xhr.onreadystatechange = function ()
                 {
-                    _LOG("inside xhr.onreadystatechange()");
                     if (xhr.readyState === DONE)
                     {
                         if (xhr.status === OK)
@@ -156,17 +161,14 @@
                             var type="";
                             var icon="";
                             //convertJsonToLi(ulMenu, xhr.responseText);
-                            _LOG("parsing JSON");
                             const files = JSON.parse(xhr.responseText);
-                            _LOG("returning JSON");
-                            console.warn(files);
+                            _LOG("call is returning parsed JSON");
                             return files;
                         }
                         else
                         { console.error('Ajax error: ' + xhr.status); return "ajax_error"; }
                     }
                 };
-                _LOG("calling xhr.onreadystatechange()");
                 return xhr.onreadystatechange();
             }
 
@@ -182,28 +184,25 @@
             
             var json;
             var storedIndex = JSON.parse( localStorage.getItem("storedIndex") );
-            _LOG("checking LocalStorage:");
-            console.log(storedIndex);
+            _LOG("checking LocalStorage");
             if( storedIndex === null || ( getUnixTimestamp() > storedIndex["expireDate"] ) )
             {
-                _LOG("LocalStorage unset - requesting JSON");
+                _LOG("LocalStorage unset");
                 json = loadIndex("https://api.github.com/repos/Abstractn/rand/contents/");
                 _LOG("recieved JSON");
-                _LOG("about to build index");
                 var indexToStore =
                 {
                     expireDate:getUnixTimestamp()+60,
                     json:json
                 }
+                _LOG("saving index to LocalStorage");
                 localStorage.setItem("storedIndex",JSON.stringify(indexToStore));
-                _LOG("setting LocalStorage");
-                console.log(localStorage.getItem("storedIndex"));
                 if(json != undefined)
                 { buildIndex(json); }
             }
             else
             {
-                _LOG("LocalStorage set - reading LocalStorage");
+                _LOG("LocalStorage set");
                 json = storedIndex["json"];
                 buildIndex(json);
             }
@@ -280,6 +279,9 @@
                 document.getElementById("index").innerHTML = ""; // reset index
                 buildIndex(json); // rewrite filtered index
             }
+
+            console.log( "%c>>> cur=" + getUnixTimestamp() , "color:blue;background:white;" );
+            console.log( "%c>>> exp=" + JSON.parse( localStorage.getItem("storedIndex") )["expireDate"] , "color:blue;background:white;" );
         </script>
     </body>
 </html>
