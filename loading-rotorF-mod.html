@@ -9,13 +9,6 @@
     <link rel="stylesheet" href="https://abstractn.github.io/repo/abs.css">
 
     <style>
-        :root
-        {
-            --rotor-color:white;
-            --rotor-shadow-color:rgba(0,0,0,.5);
-            --rotor-shadow-size:15px;
-        }
-
         #flex-container
         {
             height:100vh;
@@ -28,46 +21,41 @@
             border-radius:50%;
 
             border:solid transparent 5px;
-            /* border-top:solid var(--rotor-color) 5px; */
-            border-bottom:solid var(--rotor-color) 5px;
-            box-shadow:var(--rotor-shadow-color) 0px 0px var(--rotor-shadow-size);
+            border-top:solid white 5px;
+            border-bottom:solid white 5px;
             
             animation-name:rotate;
             animation-timing-function:linear;
             animation-iteration-count:infinite;
-
-            /* transition:.5s; */
         }
 
         #r01
         {
-            z-index:4;
-            width:75px;
-            height:75px;
-            animation-duration:2s;
+            z-index:1;
+            width:50px;
+            height:50px;
+            animation-duration:1s;
         }
         #r02
         {
-            z-index:3;
-            width:100px;
-            height:100px;
+            z-index:2;
+            width:60px;
+            height:60px;
             animation-duration:1.5s;
-            animation-direction:reverse;
         }
         #r03
         {
-            z-index:2;
-            width:125px;
-            height:125px;
-            animation-duration:1s;
+            z-index:3;
+            width:70px;
+            height:70px;
+            animation-duration:2s;
         }
         #r04
         {
-            z-index:1;
-            width:150px;
-            height:150px;
-            animation-duration:5s;
-            animation-direction:reverse;
+            z-index:4;
+            width:80px;
+            height:80px;
+            animation-duration:2.5s;
         }
 
         @keyframes rotate
@@ -75,27 +63,17 @@
             from { transform:rotate(0deg); }
             to   { transform:rotate(360deg); }
         }
-
-        /* ----------------------------------------------- */
-
-        #title
-        {
-            font-family:"Rounded Elegance";
-            font-weight:bold;
-            transform:scale(.9,1);
-        }
     </style>
 </head>
 <body>
     <div id="flex-container" class="flex column center">
-        <div id="title">LOADING</div>
-        <div id="r01" class="rotor"></div>
+        <!-- <div id="r01" class="rotor"></div>
         <div id="r02" class="rotor"></div>
         <div id="r03" class="rotor"></div>
-        <div id="r04" class="rotor"></div>
+        <div id="r04" class="rotor"></div> -->
     </div>
     <script>
-        /* var rotorCount=5;
+        var rotorCount=5;
         var rotorContainer=document.getElementById("flex-container");
 
         function generateRotors()
@@ -108,7 +86,20 @@
             rotorContainer.innerHTML=res;
         }
 
-        generateRotors(); */
+        function updateRotors()
+        {
+            rotorContainer.innerHTML="";
+            generateRotors();
+        }
+
+        function setRotors(n)
+        {
+            rotorCount = n;
+            updateRotors();
+        }
+
+        generateRotors();
+        console.log("use setRotors(n) to change the number of rotors to n value");
     </script>
 </body>
 </html>
