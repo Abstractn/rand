@@ -85,71 +85,6 @@
             const DONE = 4;
             const OK = 200; // status 200 is a successful return.
 
-            window.onload = init;
-            
-            function init()
-            {
-                // loadIndex("https://api.github.com/repos/Abstractn/rand/contents/");
-            }
-            /*
-            function loadIndex()
-            {
-                console.log("loadIndex()");
-                var files = ajax('GET','https://api.github.com/repos/Abstractn/rand/contents/');
-                console.log("requested call");
-                while(files == undefined)
-                {
-                    console.log("waiting");
-                    if(files == false)
-                    {
-                        console.warn("ajax call failed");
-                    }
-                    else
-                    // if(files != false && files != undefined)
-                    {
-                        console.log("recieved");
-                        let list = document.getElementById("index");
-                        let res = "";
-                        for(let i=0; i<files.length; i++)
-                        {
-                            res = res + '<li> <a href="'+files[i].name+'">'+files[i].name+'</a> </li>';
-                        }
-                        list.innerHTML = res;
-                    }
-                }
-            }
-            */
-            
-            /*
-            function ajax(method,url)
-            {
-                console.log("ajax()");
-                console.log("url="+url);
-                let xhr = new XMLHttpRequest();
-                xhr.open(method, url);
-                xhr.send(null);
-
-                xhr.onreadystatechange = function ()
-                {
-                    if (xhr.readyState === xhr.DONE)
-                    {
-                        console.log("call DONE");
-                        if (xhr.status === OK)
-                        {
-                            console.log("call OK");
-                            // console.warn( JSON.parse(xhr.responseText) );
-                            return JSON.parse(xhr.responseText);
-                        }
-                        else
-                        {
-                            console.error('Ajax error: ' + xhr.status);
-                            return false;
-                        }
-                    }
-                };
-            }
-            */
-
             function loadIndex(url) // semi-modular function
             {
                 _LOG("ajax call");
@@ -177,35 +112,6 @@
                             //convertJsonToLi(ulMenu, xhr.responseText);
                             _LOG("parsing JSON");
                             const files = JSON.parse(xhr.responseText);
-                            /*
-                            for (let i = 0; i < files.length; i++)
-                            {
-                                // check for files to ignore
-                                for(let j=0; j<ignoredFiles.length; j++)
-                                {
-                                    if(files[i].name == ignoredFiles[j])
-                                    {
-                                        f_ignore=true;
-                                        break;
-                                    }
-                                }
-                                // if file is not to ignore, parse for folder or file
-                                if(!f_ignore)
-                                {
-                                    switch(files[i].type)
-                                    {
-                                        case "file": icon='<i class="fas fa-file"></i>'; break;
-                                        case "dir": icon='<i class="fas fa-folder"></i>'; break;
-                                        
-                                        default: null;
-                                    }
-                                    res = res + '<span class="index-elem"> <a class="'+files[i].type+'" href="'+files[i].name+'">'+icon+' '+files[i].name+'</a> </span>';
-                                    f_ignore=false;
-                                }
-                                f_ignore=false;
-                            }
-                            document.getElementById("index").innerHTML = res;
-                            */
                             _LOG("returning JSON");
                             console.warn(files);
                             return files;
@@ -227,7 +133,6 @@
                 json:ajaxCall(url)
             };
             */
-
             
             var json;
             var storedIndex = JSON.parse( localStorage.getItem("storedIndex") );
@@ -302,61 +207,10 @@
                 document.getElementById("index").innerHTML = res;
                 _LOG("index printed");
             }
-            
-
-
-
-
-            /*
-            if ( timestampInStorage == undefined || (nowTimestamp - timestampInStorage) > tempo  )
-            {
-                json = richiesta();
-                timestampInStorage =  nowTimestamp;
-                jsonInStorage = json;
-            }
-            else
-            {
-                json = jsonInStorage;
-            }
-            aggiornaPagina();
-            */
         </script>
     </body>
 </html>
 
 <!--
     https://api.github.com/repos/Abstractn/rand/contents/
-
-    --------------
-
-    /* var files = [
-        "3d",
-        "animeJs",
-        "animeJSdemo",
-        "animeJSdemo2",
-        "animeJSdemo3",
-        "animeJSdemo4",
-        "varlet",
-        "draw",
-        "fakeLog",
-        "fractal",
-        "fTyper",
-        "glasses",
-        "grid_telegram",
-        "gridgame",
-        "libtest",
-        "parallax",
-        "phone",
-        "phone2",
-        "phone3-2",
-        "phone3",
-        "phoneBoot",
-        "police-shadow",
-        "police-shadow2",
-        "police-shadow3",
-        "police-stroke",
-        "rotor"
-    ];
-    for(i=0; i<files.length; i++)
-    { document.write('<li> <a href="'+files[i]+'.html">'+files[i]+'</a> </li>'); } */
 -->
