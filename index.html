@@ -114,6 +114,7 @@
 
             var _F_DEBUG = false;
             var _F_FILTER=false;
+            var storeTime= 900; // 15m
             function _LOG(obj)
             { if(_F_DEBUG) { console.log(obj); } }
 
@@ -179,7 +180,7 @@
             // structure idea
             var storedIndex =
             {
-                expireDate:getUnixTimestap()+60,
+                expireDate:getUnixTimestap()+storeTime,
                 json:ajaxCall(url)
             };
             */
@@ -194,7 +195,7 @@
                 _LOG("recieved JSON");
                 var indexToStore =
                 {
-                    expireDate:getUnixTimestamp()+60,
+                    expireDate:getUnixTimestamp()+storeTime,
                     json:json
                 }
                 _LOG("saving index to LocalStorage");
