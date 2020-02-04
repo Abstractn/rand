@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Loading Rotor-F</title>
+
+    <link rel="stylesheet" href="https://abstractn.github.io/repo/abs.css">
+
+    <style>
+        :root
+        {
+            --rotor-color:white;
+            --rotor-color2:cyan;
+            --rotor-size:80px;
+            --rotor-blur:15px;
+        }
+
+        #flex-container
+        {
+            height:100vh;
+        }
+
+        /*--------------------------------*/
+        .rotor
+        {
+            position:absolute;
+            border-radius:50%;
+
+            border:solid transparent 5px;
+            
+            animation:rotate linear infinite 1s;
+            /* animation-name:rotate;
+            animation-timing-function:linear;
+            animation-iteration-count:infinite; */
+            
+        }
+
+        #r01
+        {
+            z-index:4;
+            width:var(--rotor-size);
+            height:var(--rotor-size);
+
+            border-bottom:solid var(--rotor-color) 5px;
+            border-top:solid var(--rotor-color) 5px;
+        }
+        #r02
+        {
+            z-index:3;
+            width:calc( var(--rotor-size) + 10px );
+            height:calc( var(--rotor-size) + 10px );
+
+            border-left:solid var(--rotor-color) 5px;
+            border-right:solid var(--rotor-color) 5px;
+        }
+        #r02-2
+        {
+            z-index:1;
+            width:var(--rotor-size);
+            height:var(--rotor-size);
+
+            border-top:solid var(--rotor-color2) 15px;
+            border-bottom:solid var(--rotor-color2) 15px;
+
+            filter:blur( var(--rotor-blur) ) grayscale(0.3);
+        }
+        #r03
+        {
+            z-index:2;
+            width:calc( var(--rotor-size) + 20px );
+            height:calc( var(--rotor-size) + 20px );
+
+            border-bottom:solid var(--rotor-color) 5px;
+            border-top:solid var(--rotor-color) 5px;
+        }
+
+        @keyframes rotate
+        {
+            from { transform:rotate(0deg); }
+            to   { transform:rotate(360deg); }
+        }
+
+        /* ----------------------------------------------- */
+
+        #title
+        {
+            font-family:"Rounded Elegance";
+            font-weight:bold;
+            transform:scale(.9,1);
+            z-index:999;
+        }
+    </style>
+</head>
+<body>
+    <div id="flex-container" class="flex column center">
+        <div id="title">LOADING</div>
+        <div id="r01" class="rotor"></div>
+        <div id="r02" class="rotor"></div>
+        <div id="r02-2" class="rotor"></div>
+        <div id="r03" class="rotor"></div>
+    </div>
+    <script>
+        /* var rotorCount=5;
+        var rotorContainer=document.getElementById("flex-container");
+
+        function generateRotors()
+        {
+            var res="";
+            for(var i=1; i<=rotorCount; i++)
+            {
+                res = res + '<div class="rotor" style="z-index:'+i+'; width:'+i*10+'px; height:'+i*10+'px; animation-duration:'+i/2+'s"></div>';
+            }
+            rotorContainer.innerHTML=res;
+        }
+
+        generateRotors(); */
+    </script>
+</body>
+</html>
