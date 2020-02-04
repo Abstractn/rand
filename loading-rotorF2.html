@@ -64,7 +64,9 @@
             border-top:solid var(--rotor-color2) 15px;
             border-bottom:solid var(--rotor-color2) 15px;
 
+            /* filter:blur( var(--rotor-blur) ) grayscale(0.3); */
             filter:blur( var(--rotor-blur) ) grayscale(0.3);
+            animation:rotate linear infinite 1s/* , pulse .5s ease-in-out alternate infinite */;
         }
         #r03
         {
@@ -80,6 +82,12 @@
         {
             from { transform:rotate(0deg); }
             to   { transform:rotate(360deg); }
+        }
+
+        @keyframes pulse
+        {
+            from { filter:blur(10px); }
+            to   { filter:blur(25px); }
         }
 
         /* ----------------------------------------------- */
