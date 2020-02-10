@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Loading</title>
+
+        <link rel="stylesheet" href="https://abstractn.github.io/repo/abs.css">
+        <!-- <script src="https://abstractn.github.io/repo/jquery3.js"></script> -->
+
+        <style>
+            :root
+            {
+                --dot-size:12px; /* 15px */
+                --dot-color:white; /* white */
+                --dot-color2:#0cc; /* #0cc */
+                --dot-roundness:50%; /* 50% */
+                --dot-space:0; /* 1px */
+
+                --anim-height:75px; /* 75px */
+                --anim-speed:.5s; /* .5s */
+                --anim-offset:100ms; /* 100ms */
+            }
+
+            /* ####################################################### */
+
+            #container
+            {
+                min-height:100vh;
+            }
+
+            .dot
+            {
+                width:var(--dot-size);
+                height:var(--dot-size);
+                background-color:var(--dot-color);
+                border-radius:var(--dot-roundness);
+                margin:var(--dot-space);
+
+                animation:jump var(--anim-speed) ease-in-out alternate infinite;
+            }
+
+            /* #dot02
+            { animation-delay:calc(1*var(--anim-offset)); }
+
+            #dot03
+            { animation-delay:calc(2*var(--anim-offset)); }
+
+            #dot04
+            { animation-delay:calc(3*var(--anim-offset)); }
+
+            #dot05
+            { animation-delay:calc(4*var(--anim-offset)); }
+
+            #dot06
+            { animation-delay:calc(5*var(--anim-offset)); }
+
+            #dot07
+            { animation-delay:calc(6*var(--anim-offset)); } */
+
+            @keyframes jump
+            {
+                from { margin-top:0;                  background-color:var(--dot-color); }
+                to   { margin-top:var(--anim-height); background-color:var(--dot-color2); }
+            }
+        </style>
+    </head>
+    <body>
+        <div id="container" class="flex center">
+            <div id="dots-row" class="flex row">
+                <!-- <span id="dot01" class="dot"></span>
+                <span id="dot02" class="dot"></span>
+                <span id="dot03" class="dot"></span>
+                <span id="dot04" class="dot"></span>
+                <span id="dot05" class="dot"></span>
+                <span id="dot06" class="dot"></span>
+                <span id="dot07" class="dot"></span> -->
+                <script>
+                    var dotCount=10;
+                    for( var i=1; i<=dotCount; i++ )
+                    {
+                        document.write('<span id="dot'+i+'" class="dot" style="animation-delay:calc('+i+'*var(--anim-offset));"></span>');
+                    }
+                </script>
+            </div>
+        </div>
+    </body>
+</html>
