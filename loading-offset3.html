@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Loading</title>
+
+        <link rel="stylesheet" href="https://abstractn.github.io/repo/abs.css">
+        <!-- <script src="https://abstractn.github.io/repo/jquery3.js"></script> -->
+
+        <style>
+            :root
+            {
+                --dot-size:5px; /* 5px */
+                --dot-color:#cac; /* #cec */
+                --dot-color2:white; /* white */
+                --dot-roundness:1px; /* 2px */
+                --dot-space:10px; /* 5px */
+                --dot-scale:3;
+
+                --dot-blur:transparent 0 0 var(--dot-blur-size);
+                --dot-blur2:var(--dot-color2) 0 0 var(--dot-blur-size);
+                --dot-blur-size:3px;
+
+                --anim-speed:.7s; /* .6s */
+                --anim-offset:20ms; /* 100ms */
+            }
+
+            /* ####################################################### */
+
+            #container
+            {
+                min-height:100vh;
+            }
+
+            .dot
+            {
+                display:inline-block;
+                width:var(--dot-size);
+                height:var(--dot-size);
+                background-color:var(--dot-color);
+                border-radius:var(--dot-roundness);
+                margin:var(--dot-space);
+
+                animation:jump var(--anim-speed) ease-in-out alternate infinite;
+            }
+
+            @keyframes jump
+            {
+                from { transform:scale(1);                background-color:var(--dot-color);  box-shadow:var(--dot-blur); }
+                to   { transform:scale(var(--dot-scale)); background-color:var(--dot-color2); box-shadow:var(--dot-blur2); }
+            }
+        </style>
+    </head>
+    <body>
+        <div id="container" class="flex center">
+            <div id="dots-row">
+                <script>
+                    var x=12;
+                    var y=x;
+                    for( var i=1; i<=x; i++ )
+                    {
+                        for( var j=1; j<=y; j++ )
+                        {
+                            document.write('<span id="dot'+i+'-'+j+'" class="dot" style="animation-delay:calc('+(i+(j*2))+'*var(--anim-offset));"></span>');
+                        }
+                        document.write("<br>");
+                    }
+                </script>
+            </div>
+        </div>
+    </body>
+</html>
