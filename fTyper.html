@@ -5,25 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>FTyper</title>
+
+    <link rel="stylesheet" href="https://abstractn.github.io/repo/abs.css">
+
+    <script src="https://kit.fontawesome.com/e97eac13ba.js" crossorigin="anonymous"></script>
+
     <style>
         body
         {
-            margin:0;
-            background-color: #333;
-            color:#eee;
             font-family:fantasy;
-
             overflow-y:hidden;
         }
 
-        .test{border:solid red 1px;}
-
-        .flex { display:flex; }
-        .column { flex-direction:column; }
-        .row { flex-direction:row; }
-        .center { justify-content:center; align-items:center; }
-        .end { align-items:flex-end; }
-        .spaced { justify-content:space-between; }
+        @media only screen and (max-width: 599px)
+        {
+            /* from FLEX.ROW to FLEX.COL */
+        }
 
         /* ------------------------------------------------ */
 
@@ -62,14 +59,15 @@
             opacity:0.8;
         }
 
+        pre
+        {
+            display:inline;
+        }
+
         /* -------------- */
 
         #menu-button
         {
-            position:fixed;
-                bottom:30px;
-                right:30px;
-            
             width:50px;
             height:50px;
             border:none;
@@ -85,20 +83,59 @@
         {
             background-color:dodgerblue;
         }
+
+        #menu-box
+        {
+            width:max-content;
+            max-height:50px;
+            color:var(--main-color-b3);
+            background-color:var(--main-color-w);
+            position:relative;
+                bottom:50px;
+                right:1px;
+
+            padding:15px;
+                padding-right:60px;
+            border-radius:50px;
+            float:right;
+            
+            z-index:-1;
+        }
+
+        #menu-container
+        {
+            position:fixed;
+                bottom:30px;
+                right:30px;
+            width:50px;
+            height:50px;
+        }
+
+        #menu-box i
+        {
+            margin:0 5px;
+            padding:0;
+        }
     </style>
 </head>
 <body>
     <div class="flex row spaced">
         <textarea id="textfield" oninput="setTxt()" placeholder="type here...">
-            #bold#
-            _underline_
-            ~deleted~
-            *italic*
-            `code`
         </textarea>
         <span id="output"></span>
     </div>
-    <button id="menu-button">M</button>
+    <div id="menu-container">
+        <button id="menu-button" ondblclick="toggleMenu()">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div id="menu-box" class="flex row" style="visibility: hidden;">
+            <!-- <i class="fas fa-moon"></i>
+            <i class="fas fa-sun"></i> -->
+            <i class="fas fa-text-width"></i>
+            <i class="fas fa-adjust"></i>
+            <i class="fas fa-info"></i>
+        </div>
+    </div>
 
     <script>
         var str = "";
@@ -259,79 +296,110 @@
             str = format.sub(str);
             return str;
         }
-    </script>
 
-<script>
-    
-    /*
-        DRAGGABLE module source:
-        https://www.kirupa.com/html5/drag.htm
-    */
-
-    var dragItem = document.querySelector("#menu-button");
-    // var container = document.querySelector("#container");
-    var container = document.body;
-
-    var active = false;
-    var currentX;
-    var currentY;
-    var initialX;
-    var initialY;
-    var xOffset = 0;
-    var yOffset = 0;
-
-    container.addEventListener("touchstart", dragStart, false);
-    container.addEventListener("touchend", dragEnd, false);
-    container.addEventListener("touchmove", drag, false);
-
-    container.addEventListener("mousedown", dragStart, false);
-    container.addEventListener("mouseup", dragEnd, false);
-    container.addEventListener("mousemove", drag, false);
-
-    function dragStart(e) {
-      if (e.type === "touchstart") {
-        initialX = e.touches[0].clientX - xOffset;
-        initialY = e.touches[0].clientY - yOffset;
-      } else {
-        initialX = e.clientX - xOffset;
-        initialY = e.clientY - yOffset;
-      }
-
-      if (e.target === dragItem) {
-        active = true;
-      }
-    }
-
-    function dragEnd(e) {
-      initialX = currentX;
-      initialY = currentY;
-
-      active = false;
-    }
-
-    function drag(e) {
-      if (active) {
-      
-        e.preventDefault();
-      
-        if (e.type === "touchmove") {
-          currentX = e.touches[0].clientX - initialX;
-          currentY = e.touches[0].clientY - initialY;
-        } else {
-          currentX = e.clientX - initialX;
-          currentY = e.clientY - initialY;
+        /* ########################################################################## */
+        var menuBox = document.getElementById("menu-box");
+        function toggleMenu()
+        {
+            if( menuBox.style.visibility == "hidden" )
+            { menuBox.style.visibility = "visible"; }
+            else
+            { menuBox.style.visibility = "hidden"; }
+            console.log("toggleMenu()");
         }
 
-        xOffset = currentX;
-        yOffset = currentY;
+    </script>
 
-        setTranslate(currentX, currentY, dragItem);
-      }
-    }
+    <script>
+        
+        /*
+            DRAGGABLE module source:
+            https://www.kirupa.com/html5/drag.htm
+        */
 
-    function setTranslate(xPos, yPos, el) {
-      el.style.transform = "translate3d(" + xPos + "px, " + yPos + "px, 0)";
-    }
+        var dragItem = document.querySelector("#menu-button");
+        var dragItemBox = document.querySelector("#menu-container");
+        // var container = document.querySelector("#container");
+        var container = document.body;
+
+        var active = false;
+        var currentX;
+        var currentY;
+        var initialX;
+        var initialY;
+        var xOffset = 0;
+        var yOffset = 0;
+
+        container.addEventListener("touchstart", dragStart, false);
+        container.addEventListener("touchend", dragEnd, false);
+        container.addEventListener("touchmove", drag, false);
+
+        container.addEventListener("mousedown", dragStart, false);
+        container.addEventListener("mouseup", dragEnd, false);
+        container.addEventListener("mousemove", drag, false);
+
+        function dragStart(e)
+        {
+            if (e.type === "touchstart")
+            {
+                initialX = e.touches[0].clientX - xOffset;
+                initialY = e.touches[0].clientY - yOffset;
+            }
+            else
+            {
+                initialX = e.clientX - xOffset;
+                initialY = e.clientY - yOffset;
+            }
+
+            if (e.target === dragItem || e.target === dragItemBox)
+            {
+                active = true;
+            }
+        }
+
+        function dragEnd(e)
+        {
+            initialX = currentX;
+            initialY = currentY;
+
+            active = false;
+        }
+
+        function drag(e)
+        {
+            if (active)
+            {
+            
+                e.preventDefault();
+            
+                if (e.type === "touchmove")
+                {
+                    currentX = e.touches[0].clientX - initialX;
+                    currentY = e.touches[0].clientY - initialY;
+                }
+                else
+                {
+                    currentX = e.clientX - initialX;
+                    currentY = e.clientY - initialY;
+                }
+                xOffset = currentX;
+                yOffset = currentY;
+                setTranslate(currentX, currentY, dragItemBox);
+            }
+        }
+
+        function setTranslate(xPos, yPos, el)
+        {
+            el.style.transform = "translate3d(" + xPos + "px, " + yPos + "px, 0)";
+        }
   </script>
 </body>
 </html>
+
+<!--
+    #bold#
+    _underline_
+    ~deleted~
+    *italic*
+    `code`
+-->
