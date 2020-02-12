@@ -83,6 +83,8 @@
         {
             background-color:dodgerblue;
         }
+        #menu-button i
+        { pointer-events:none; }
 
         #menu-box
         {
@@ -120,8 +122,7 @@
 </head>
 <body>
     <div class="flex row spaced">
-        <textarea id="textfield" oninput="setTxt()" placeholder="type here...">
-        </textarea>
+        <textarea id="textfield" oninput="setTxt()" placeholder="type here..."></textarea>
         <span id="output"></span>
     </div>
     <div id="menu-container">
