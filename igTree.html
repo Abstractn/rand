@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Instagram Tree</title>
+
+        <link rel="stylesheet" type="text/css" href="https://abstractn.github.io/repo/abs.css">
+
+<!--
+    BGs
+        abstract
+    http://getwallpapers.com/wallpaper/full/a/8/b/863607-abstract-gaming-wallpapers-1080p-1920x1080-large-resolution.jpg
+    https://wallpapertag.com/wallpaper/full/5/f/4/354921-4k-wallpaper-abstract-1920x1080-for-meizu.jpg
+
+        pink forest
+    https://i.imgur.com/oZ7Q03v.jpg
+    https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse4.mm.bing.net%2Fth%3Fid%3DOIP.NvIFVxbtJ6WwsJioTZOvPQHaEK%26pid%3DApi&f=1
+    https://wallpaperset.com/w/full/0/5/3/203522.jpg
+    https://wallpaperaccess.com/full/128799.jpg
+    https://wallpaperstock.net/mac-os-x-pink-forest-wallpapers_31684_1920x1080.jpg
+
+        pastel
+    https://www.designyourway.net/blog/wp-content/uploads/2018/11/pastel-background-goo.jpg
+
+        geometry
+    https://images.freecreatives.com/wp-content/uploads/2016/04/Extraordinary-Geometry-Bending-Wallpaper-.jpg
+    https://www.wallpaperbetter.com/wallpaper/353/854/521/red-geometry-2K-wallpaper.jpg
+-->
+
+        <style>
+            :root
+            {
+                --bg-source:url("https://wallpaperaccess.com/full/128799.jpg");
+                --bg-blur:25px;
+                --bg-saturation:75%;
+
+                --link-color:white;
+                --link-color-hover:white;
+                --link-bg-color:rgba(0,0,0,0);
+                --link-bg-color-hover:rgba(255,255,255,0.1);
+                --link-spacer:5px;
+                --link-shadow-color:rgba(0,0,0,0.5);
+                --link-shadow-x:0px;
+                --link-shadow-y:3px;
+                --link-shadow-blur:5px;
+                --link-roundness:100px;
+                
+                --link-fade-time:0ms;
+                /* --link-rotate:0deg;
+                --link-scale:100%;
+                --link-translate:0px; */
+
+                --box-width:400px;
+            }
+
+            /* body{background-color:black;} */
+
+            main
+            {
+                min-height:100vh;
+            }
+
+            #bg
+            {
+                position:fixed;
+                width:100%;
+                height:100%;
+                
+                background-image:var(--bg-source);
+                background-repeat:no-repeat;
+                background-size:cover;
+
+                filter:blur( var(--bg-blur) ) saturate( var(--bg-saturation) );
+                z-index:-1;
+            }
+
+            /* ############################################################ */
+
+            .box
+            {
+                width:var(--box-width);
+                height:fit-content;
+            }
+
+            .box a
+            {
+                z-index:1;
+                display:block;
+                text-decoration:none;
+                
+                color:var(--link-color);
+                background-color:var(--link-bg-color);
+                text-align:center;
+                font-size:1.2em;
+                padding:15px;
+                margin:var(--link-spacer) 0px;
+                border-radius:var(--link-roundness);
+
+                box-shadow: var(--link-shadow-color)
+                            var(--link-shadow-x)
+                            var(--link-shadow-y)
+                            var(--link-shadow-blur);
+
+                transition:var(--link-fade-time);
+            }
+            .box a:hover, .box a:focus
+            {
+                z-index:2;
+                color:var(--link-color-hover);
+                background-color:var(--link-bg-color-hover);
+                
+                /* transform:  rotate( var(--link-rotate) )
+                            scale( var(--link-scale) )
+                            translate( var(--link-translate) ); */
+            }
+        </style>
+    </head>
+    <body>
+        <div id="bg"></div>
+        <main class="flex center">
+            <div class="box">
+                <a href="" title="link">link</a>
+                <a href="" title="link">link</a>
+                <a href="" title="link">link</a>
+                <a href="" title="link">link</a>
+                <a href="" title="link">link</a>
+            </div>
+        </main>
+    </body>
+</html>
