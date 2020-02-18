@@ -14,7 +14,12 @@
                 top:50px;
                 left:150px;
                 
-                transform:rotateZ(0deg);
+                animation:spin 3s linear infinite;
+            }
+            @keyframes spin
+            {
+                from { transform:rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
+                to   { transform:rotateX(360deg) rotateY(360deg) rotateZ(360deg); }
             }
         </style>
     </head>
@@ -24,16 +29,16 @@
 
     </body>
     <script>
-        console.log("script!");
+        /* console.log("script!");
         var box = document.getElementById("box");
         var rotator = 0;
 
         function animate()
         {
-            box.style.transform = "rotateZ("+rotator+"deg)";
+            box.style.transform = "rotateX("+rotator+"deg)";
             rotator++;
         }
 
-        var interval = setInterval(animate,1);
+        var interval = setInterval(animate,1); */
     </script>
 </html>
