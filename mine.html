@@ -9,6 +9,8 @@
         <link rel="stylesheet" href="https://abstractn.github.io/repo/abs.css">
         <script src="https://abstractn.github.io/repo/jquery3.js"></script>
 
+        <script src="https://unpkg.com/feather-icons"></script>
+
         <style>
             :root
             {
@@ -17,6 +19,13 @@
                 --cell-col1:#ccc; /* eee */
                 --cell-col2:#eee; /* ccc */
                 /* 75c - 70c */
+            }
+
+            /* ############################################################# */
+
+            .feather
+            {
+                width:12px;
             }
 
             .cell
@@ -35,15 +44,19 @@
             }
             .cell-open
             {
+                background-color:var(--cell-col1);
                 border-color:transparent;
                 border-width:calc( var(--cell-size) - var(--cell-size) / 1.5 );
-                border-style:none;
+                border-style:outset;
             }
 
             #field
             {
                 border-spacing:var(--cell-margin);
-                background-color:lightgray;
+                background-color:darkgray;
+                font-size:12px;
+                cursor:crosshair;
+                /**/color:red;
             }
         </style>
     </head>
@@ -59,13 +72,61 @@
                     <th class="cell cell-close"></th>
                 </tr> -->
             </table>
+            <!-- <i data-feather="flag"></i>
+            <i data-feather="zap"></i> -->
         </main>
-        <script>
-            var field = document.getElementById("field");
-            var sizeX=2;
-            var sizeY=sizeX;
 
-            function generateMinefield(sizeX,sizeY)
+        <script>feather.replace();</script>
+
+        <script>
+            const _F_DEBUG = true;
+            function log(o){if(_F_DEBUG){console.log(o);}}
+            function randomInt(min,max){return Math.floor((Math.random()*(max-min))+min);}
+
+            // #################################################################
+            var field = document.getElementById("field");
+            var sizeX=5;
+            var sizeY=sizeX;
+            var matrix = new Array(sizeX);
+            for(let i=0; i<matrix.length; i++)
+            { matrix[i] = new Array(sizeY); }
+
+
+            var colors={
+                "1":"blue",
+                "2":"green",
+                "3":"red",
+                "4":"darkblue",
+                "5":"darkred",
+                "6":"darkcyan",
+                "7":"purple",
+                "8":"black"
+            };
+
+            function generateMines(quantity)
+            {
+                let q = quantity || Math.floor( ((sizeX+sizeY)/2)*1.5 );
+                let targetedCell="";
+                do
+                {
+                    targetedCell = document.getElementById( randomInt(0,sizeX) + "-" + randomInt(0,sizeY) );
+                    log("generated:"+targetedCell.id);
+                    if( targetedCell.innerHTML == "X" )
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        log(" >X@"+targetedCell.id);
+                        targetedCell.innerHTML = "X";
+                        q--;
+                    }
+                }
+                while(q > 0);
+                log("generateMines()>end");
+            }
+
+            function drawMinefield(sizeX,sizeY)
             {
                 let res="";
                 for(var x=0; x<sizeX; x++)
@@ -80,7 +141,8 @@
                 return res;
             }
 
-            field.innerHTML = generateMinefield(sizeX,sizeY);
+            field.innerHTML = drawMinefield(sizeX,sizeY);
+            generateMines();
             var cells = document.getElementsByClassName("cell");
             for(let i=0; i<cells.length; i++)
             {
