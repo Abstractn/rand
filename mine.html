@@ -106,12 +106,27 @@
             function generateMines(quantity)
             {
                 let q = quantity || Math.floor( ((sizeX+sizeY)/2)*1.5 );
-                let targetedCell="";
+                // let targetedCell="";
+                let randX="";
+                let randY="";
+
                 do
                 {
-                    targetedCell = document.getElementById( randomInt(0,sizeX) + "-" + randomInt(0,sizeY) );
-                    log("generated:"+targetedCell.id);
-                    if( targetedCell.innerHTML == "X" )
+                    // targetedCell = document.getElementById( randomInt(0,sizeX) + "-" + randomInt(0,sizeY) );
+                    randX = randomInt(0,sizeX);
+                    randY = randomInt(0,sizeY);
+
+                    if(matrix[randX][randY] == "X")
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        matrix[randX][randY] = "X";
+                        q--;
+                    }
+
+                    /* if( targetedCell.innerHTML == "X" )
                     {
                         continue;
                     }
@@ -120,10 +135,19 @@
                         log(" >X@"+targetedCell.id);
                         targetedCell.innerHTML = "X";
                         q--;
-                    }
+                    } */
                 }
                 while(q > 0);
                 log("generateMines()>end");
+            }
+
+            function generateCounters()
+            {
+                // cycle through each cell
+                    // check its 3x3 surroundings
+                    // count 'X's for mines
+                    // print counted mines
+                    // reset counter
             }
 
             function drawMinefield(sizeX,sizeY)
@@ -143,6 +167,7 @@
 
             field.innerHTML = drawMinefield(sizeX,sizeY);
             generateMines();
+            generateCounters();
             var cells = document.getElementsByClassName("cell");
             for(let i=0; i<cells.length; i++)
             {
@@ -151,14 +176,22 @@
 
             function game(event)
             {
-                console.log(event.target.id);
                 openCell(event.target.id);
             }
 
             function openCell(cellID)
             {
+                let cellX = cellID.charAt(0);
+                let cellY = cellID.charAt(2);
+log("openCell("+cellX+","+cellY+")");
+
                 $("#"+cellID).removeClass("cell-close");
                 $("#"+cellID).addClass("cell-open");
+                /* if( matrix[cellX][cellY] == "X" )
+                { gameOver(cellX,cellY); } // cell to highlight in red bg when game is over
+                else
+                { $("#"+cellID).text( matrix[cellX][cellY] ); } */
+                $("#"+cellID).text( matrix[cellX][cellY] );
             }
 
         </script>
