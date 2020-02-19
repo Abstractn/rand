@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>MineSleeper</title>
+
+        <link rel="stylesheet" href="https://abstractn.github.io/repo/abs.css">
+        <script src="https://abstractn.github.io/repo/jquery3.js"></script>
+
+        <style>
+            :root
+            {
+                --cell-size:15px;
+                --cell-margin:1px;
+                --cell-col1:#ccc; /* eee */
+                --cell-col2:#eee; /* ccc */
+                /* 75c - 70c */
+            }
+
+            .cell
+            {
+                width:var(--cell-size);
+                height:var(--cell-size);
+            }
+
+            .cell-close
+            {
+                background-color:var(--cell-col1);
+                border-color:var(--cell-col2);
+                border-width:calc( var(--cell-size) - var(--cell-size) / 1.5 );
+                /* border-width:calc( var(--cell-size) - calc( var(--cell-size) / 1.5 ) ); */
+                border-style:outset;
+            }
+            .cell-open
+            {
+                border-color:transparent;
+                border-width:calc( var(--cell-size) - var(--cell-size) / 1.5 );
+                border-style:none;
+            }
+
+            #field
+            {
+                border-spacing:var(--cell-margin);
+                background-color:lightgray;
+            }
+        </style>
+    </head>
+    <body class="flex center">
+        <main class="flex center extend">
+            <table id="field">
+                <!-- <tr>
+                    <th class="cell cell-close"></th>
+                    <th class="cell cell-close"></th>
+                </tr>
+                <tr>
+                    <th class="cell cell-close"></th>
+                    <th class="cell cell-close"></th>
+                </tr> -->
+            </table>
+        </main>
+        <script>
+            var field = document.getElementById("field");
+            var sizeX=2;
+            var sizeY=sizeX;
+
+            function generateMinefield(sizeX,sizeY)
+            {
+                let res="";
+                for(var x=0; x<sizeX; x++)
+                {
+                    res += '<tr>';
+                    for(var y=0; y<sizeY; y++)
+                    {
+                        res += '<th id="'+x+'-'+y+'" class="cell cell-close"></th>';
+                    }
+                    res += '</tr>';
+                }
+                return res;
+            }
+
+            field.innerHTML = generateMinefield(sizeX,sizeY);
+            var cells = document.getElementsByClassName("cell");
+            for(let i=0; i<cells.length; i++)
+            {
+                cells[i].addEventListener("click", game);
+            }
+
+            function game(event)
+            {
+                console.log(event.target.id);
+                openCell(event.target.id);
+            }
+
+            function openCell(cellID)
+            {
+                $("#"+cellID).removeClass("cell-close");
+                $("#"+cellID).addClass("cell-open");
+            }
+
+        </script>
+    </body>
+</html>
