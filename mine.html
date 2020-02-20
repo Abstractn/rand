@@ -9,7 +9,7 @@
         <link rel="stylesheet" href="https://abstractn.github.io/repo/abs.css">
         <script src="https://abstractn.github.io/repo/jquery3.js"></script>
 
-        <script src="https://unpkg.com/feather-icons"></script>
+        <script src="https://kit.fontawesome.com/e97eac13ba.js" crossorigin="anonymous"></script>
 
         <style>
             :root
@@ -72,11 +72,7 @@
                     <th class="cell cell-close"></th>
                 </tr> -->
             </table>
-            <!-- <i data-feather="flag"></i>
-            <i data-feather="zap"></i> -->
         </main>
-
-        <script>feather.replace();</script>
 
         <script>
             const _F_DEBUG = true;
@@ -90,7 +86,10 @@
             var matrix = new Array(sizeX);
             for(let i=0; i<matrix.length; i++)
             { matrix[i] = new Array(sizeY); }
+            
             const mine = "X";
+            const mineIcon = '<i class="fas fa-bomb"></i>';
+            const flagIcon = '<i class="fas fa-flag"></i>';
 
 
             var colors={
@@ -196,19 +195,25 @@
             var cells = document.getElementsByClassName("cell");
             for(let i=0; i<cells.length; i++)
             {
-                cells[i].addEventListener("click", game);
+                cells[i].addEventListener("click", gameSX);
+                cells[i].addEventListener("contextmenu", gameDX);
             }
 
-            function game(event)
+            function gameSX(event)
             {
                 openCell(event.target.id);
+            }
+
+            function gameDX(event)
+            {
+                disableMine(event.target.id);
+                return false; // disable standard context menu
             }
 
             function openCell(cellID)
             {
                 let cellX = cellID.charAt(0);
                 let cellY = cellID.charAt(2);
-/* log("openCell("+cellX+","+cellY+")"); */
 
                 $("#"+cellID).removeClass("cell-close");
                 $("#"+cellID).addClass("cell-open");
@@ -217,6 +222,15 @@
                 else
                 { $("#"+cellID).text( matrix[cellX][cellY] ); } */
                 $("#"+cellID).text( matrix[cellX][cellY] );
+            }
+
+            function disableMine(cellID)
+            {
+                log("flagging@"+cellID);
+                if( $("#"+cellID).innerHTML == "" )
+                {
+                    $("#"+cellID).innerHTML = flagIcon;
+                }
             }
 
             function checkCell(x,y)
