@@ -90,6 +90,7 @@
             var matrix = new Array(sizeX);
             for(let i=0; i<matrix.length; i++)
             { matrix[i] = new Array(sizeY); }
+            const mine = "X";
 
 
             var colors={
@@ -116,24 +117,24 @@
                     randX = randomInt(0,sizeX);
                     randY = randomInt(0,sizeY);
 
-                    if(matrix[randX][randY] == "X")
+                    if(matrix[randX][randY] == mine)
                     {
                         continue;
                     }
                     else
                     {
-                        matrix[randX][randY] = "X";
+                        matrix[randX][randY] = mine;
                         q--;
                     }
 
-                    /* if( targetedCell.innerHTML == "X" )
+                    /* if( targetedCell.innerHTML == mine )
                     {
                         continue;
                     }
                     else
                     {
                         log(" >X@"+targetedCell.id);
-                        targetedCell.innerHTML = "X";
+                        targetedCell.innerHTML = mine;
                         q--;
                     } */
                 }
@@ -141,13 +142,37 @@
                 log("generateMines()>end");
             }
 
-            function generateCounters()
+            function generateAllCounters()
             {
+                let c=0;
                 // cycle through each cell
                     // check its 3x3 surroundings
                     // count 'X's for mines
                     // print counted mines
                     // reset counter
+                for(let x=0; x<sizeX; x++)
+                for(let y=0; y<sizeY; y++)
+                {
+                    c=generateCounter(x,y);
+                    if(c!=0)
+                    { matrix[x][y] = c; }
+                }
+            }
+
+            function generateCounter(x,y)
+            {
+                if( matrix[x][y] == mine )
+                { return 0; }
+                let c=0;
+                checkCell( x-1 , y-1 ) ? c++ : null;
+                checkCell( x,    y-1 ) ? c++ : null;
+                checkCell( x+1 , y-1 ) ? c++ : null;
+                checkCell( x-1 , y   ) ? c++ : null;
+                checkCell( x+1 , y   ) ? c++ : null;
+                checkCell( x-1 , y+1 ) ? c++ : null;
+                checkCell( x,    y+1 ) ? c++ : null;
+                checkCell( x+1 , y+1 ) ? c++ : null;
+                return c;
             }
 
             function drawMinefield(sizeX,sizeY)
@@ -167,7 +192,7 @@
 
             field.innerHTML = drawMinefield(sizeX,sizeY);
             generateMines();
-            generateCounters();
+            generateAllCounters();
             var cells = document.getElementsByClassName("cell");
             for(let i=0; i<cells.length; i++)
             {
@@ -183,17 +208,36 @@
             {
                 let cellX = cellID.charAt(0);
                 let cellY = cellID.charAt(2);
-log("openCell("+cellX+","+cellY+")");
+/* log("openCell("+cellX+","+cellY+")"); */
 
                 $("#"+cellID).removeClass("cell-close");
                 $("#"+cellID).addClass("cell-open");
-                /* if( matrix[cellX][cellY] == "X" )
+                /* if( matrix[cellX][cellY] == mine )
                 { gameOver(cellX,cellY); } // cell to highlight in red bg when game is over
                 else
                 { $("#"+cellID).text( matrix[cellX][cellY] ); } */
                 $("#"+cellID).text( matrix[cellX][cellY] );
             }
 
+            function checkCell(x,y)
+            {
+                if( (x>=0 && y>=0) && (x<sizeX && y<sizeY) )
+                {
+                    if( matrix[x][y] == mine ) { return true;  }
+                    else                       { return false; }
+                }
+            }
+
+
+            function showMines()
+            {
+                let c=0;
+                for(let x=0; x<sizeX; x++)
+                for(let y=0; y<sizeY; y++)
+                if(matrix[x][y]==mine)
+                { console.log("X@"+x+"-"+y); c++; }
+                return c;
+            }
         </script>
     </body>
 </html>
