@@ -58,11 +58,60 @@
                 cursor:crosshair;
                 /**/color:red;
             }
+
+            .prox1 { color:blue; }
+            .prox2 { color:green; }
+            .prox3 { color:red; }
+            .prox4 { color:darkblue; }
+            .prox5 { color:darkred; }
+            .prox6 { color:darkcyan; }
+            .prox7 { color:purple; }
+            .prox8 { color:black; }
+
+            .fas { color:black; pointer-events:none; }
+
+            /* ############################################################# */
+
+            .modal
+            {
+                width:fit-content;
+                height:fit-content;
+                padding:20px 60px;
+
+                font-size:1.2em;
+
+                color:var(--main-color-b3);
+                background-color:lightgray;
+                border:ridge black 5px;
+            }
+            
+            #settings-window *
+            {
+                margin:0;
+                margin:5px 0px;
+            }
+
+            .input-size
+            {
+                width:40px;
+                border:solid gray 1px;
+            }
+            
+            .winxp-button
+            {
+                font-size:0.8em;
+                border-style:outset;
+            }
+            .winxp-button:active
+            {
+                
+                border-style:inset;
+            }
         </style>
     </head>
     <body class="flex center">
         <main class="flex center extend">
-            <table id="field">
+            <table id="field" oncontextmenu="return false;">
                 <!-- <tr>
                     <th class="cell cell-close"></th>
                     <th class="cell cell-close"></th>
@@ -72,6 +121,20 @@
                     <th class="cell cell-close"></th>
                 </tr> -->
             </table>
+            <div id="settings-window" class="modal flex col center">
+                <h3>SweepyJS</h3>
+                <label>grid size:</label>
+                <div style="margin:5px 0px;">
+                    <input id="input-sizeX" class="input-size" type="number" min="2" max="25" value="5" required>
+                    x
+                    <input id="input-sizeY" class="input-size" type="number" min="2" max="25" value="5" required>
+                </div>
+                <!-- <label>mines:</label>
+                <div>
+                    <input id="input-mines" class="input-size" type="number" min="2" max="50" value="5" required>
+                </div> -->
+                <button class="winxp-button" onclick="startGame()">START</button>
+            </div>
         </main>
 
         <script>
@@ -80,17 +143,17 @@
             function randomInt(min,max){return Math.floor((Math.random()*(max-min))+min);}
 
             // #################################################################
+
             var field = document.getElementById("field");
-            var sizeX=5;
-            var sizeY=sizeX;
-            var matrix = new Array(sizeX);
-            for(let i=0; i<matrix.length; i++)
-            { matrix[i] = new Array(sizeY); }
+            var sizeX;
+            var sizeY;
+            var matrix;
+            var cells;
+            var numberOfMines;
             
             const mine = "X";
             const mineIcon = '<i class="fas fa-bomb"></i>';
             const flagIcon = '<i class="fas fa-flag"></i>';
-
 
             var colors={
                 "1":"blue",
@@ -103,12 +166,15 @@
                 "8":"black"
             };
 
+            // #################################################################
+
             function generateMines(quantity)
             {
-                let q = quantity || Math.floor( ((sizeX+sizeY)/2)*1.5 );
+                quantity = quantity || Math.floor( ((sizeX+sizeY)/2)*1.5 ); // default
+                let q = quantity;
                 // let targetedCell="";
-                let randX="";
-                let randY="";
+                let randX=0;
+                let randY=0;
 
                 do
                 {
@@ -125,20 +191,9 @@
                         matrix[randX][randY] = mine;
                         q--;
                     }
-
-                    /* if( targetedCell.innerHTML == mine )
-                    {
-                        continue;
-                    }
-                    else
-                    {
-                        log(" >X@"+targetedCell.id);
-                        targetedCell.innerHTML = mine;
-                        q--;
-                    } */
                 }
                 while(q > 0);
-                log("generateMines()>end");
+                return quantity;
             }
 
             function generateAllCounters()
@@ -189,48 +244,90 @@
                 return res;
             }
 
-            field.innerHTML = drawMinefield(sizeX,sizeY);
-            generateMines();
-            generateAllCounters();
-            var cells = document.getElementsByClassName("cell");
-            for(let i=0; i<cells.length; i++)
-            {
-                cells[i].addEventListener("click", gameSX);
-                cells[i].addEventListener("contextmenu", gameDX);
-            }
-
             function gameSX(event)
             {
-                openCell(event.target.id);
+                preventAriaBullshit();
+                let cellID = event.target.id;
+                if( $("#"+cellID).html()=="" )
+                {
+                    openArea(cellID);
+                }
+                else
+                {
+                    if( $("#"+cellID).html() != flagIcon )
+                    { openCell(cellID); }
+                    else if( $("#"+cellID).html()=="X" )
+                    { gameOver(cellID); } // cell to highlight in red bg when game is over
+                }
             }
 
             function gameDX(event)
             {
+                preventAriaBullshit();
+                log("RMB event trigger > "+event.target.id);
                 disableMine(event.target.id);
-                return false; // disable standard context menu
             }
 
-            function openCell(cellID)
-            {
-                let cellX = cellID.charAt(0);
-                let cellY = cellID.charAt(2);
+            function splitID(stringID)
+            { return { x:stringID.charAt(0), y:stringID.charAt(2) }; }
 
-                $("#"+cellID).removeClass("cell-close");
-                $("#"+cellID).addClass("cell-open");
-                /* if( matrix[cellX][cellY] == mine )
-                { gameOver(cellX,cellY); } // cell to highlight in red bg when game is over
-                else
-                { $("#"+cellID).text( matrix[cellX][cellY] ); } */
-                $("#"+cellID).text( matrix[cellX][cellY] );
-            }
-
-            function disableMine(cellID)
+            function openCell(fullCellID)
             {
-                log("flagging@"+cellID);
-                if( $("#"+cellID).innerHTML == "" )
+                let cellID = splitID(fullCellID);
+                let cell = $("#"+fullCellID);
+
+                if( cell.html() != flagIcon )
                 {
-                    $("#"+cellID).innerHTML = flagIcon;
+                    cell.removeClass("cell-close");
+                    cell.addClass("cell-open");
+                    cell.html( matrix[cellID.x][cellID.y] );
+                    cell.addClass("prox" + $("#"+fullCellID).text() ); // sets number color
                 }
+            }
+
+            function openArea(cellID)
+            {
+                openCell(cellID);
+                // TODO check surroundings
+                    // if surroundings are empty > check surroundings of surroundings
+                    // recursive <
+                    // if cell contains number > reveal number and backtrack to other empty surroundings
+            }
+
+            function gameOver(blownMineID)
+            {
+                console.log("gameOver");
+                // TODO colour blownMineID bg to red
+                // TODO reveal mines
+                // TODO disable field click
+                // TODO print game over message
+                // TODO print "restart" button
+                // TODO print "new game" button
+            }
+
+            function disableMine(fullCellID)
+            {
+                log("disableMine()");
+                let cell = $("#"+fullCellID);
+
+                if( cell.html() == flagIcon )
+                {
+                    log("unflagging@"+fullCellID);
+                    cell.html("");
+                }
+                else if( cell.html() == "" && cell.hasClass("cell-close") )
+                {
+                    log("flagging@"+fullCellID);
+                    cell.html(flagIcon);
+                    preventAriaBullshit();
+                }
+            }
+
+            function preventAriaBullshit()
+            {
+                let icons = $(".fas");
+                for(let i=0; i<icons.length; i++)
+                { icons[i].removeAttribute("aria-hidden"); }
             }
 
             function checkCell(x,y)
@@ -251,6 +348,28 @@
                 if(matrix[x][y]==mine)
                 { console.log("X@"+x+"-"+y); c++; }
                 return c;
+            }
+
+            function startGame()
+            {
+                $("#settings-window").hide();
+                sizeX = $("#input-sizeX").val() *1;
+                sizeY = $("#input-sizeY").val() *1;
+                matrix = new Array(sizeX);
+                for(let i=0; i<matrix.length; i++)
+                { matrix[i] = new Array(sizeY); }
+                log(matrix);
+
+                field.innerHTML = drawMinefield(sizeX,sizeY);
+                numberofMines = generateMines();
+                generateAllCounters();
+
+                cells = document.getElementsByClassName("cell");
+                for(let i=0; i<cells.length; i++)
+                {
+                    cells[i].addEventListener("click", gameSX);
+                    cells[i].addEventListener("contextmenu", gameDX);
+                }
             }
         </script>
     </body>
