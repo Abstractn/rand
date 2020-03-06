@@ -155,17 +155,6 @@
             const mineIcon = '<i class="fas fa-bomb"></i>';
             const flagIcon = '<i class="fas fa-flag"></i>';
 
-            var colors={
-                "1":"blue",
-                "2":"green",
-                "3":"red",
-                "4":"darkblue",
-                "5":"darkred",
-                "6":"darkcyan",
-                "7":"purple",
-                "8":"black"
-            };
-
             // #################################################################
 
             function generateMines(quantity)
@@ -346,7 +335,7 @@
                 for(let x=0; x<sizeX; x++)
                 for(let y=0; y<sizeY; y++)
                 if(matrix[x][y]==mine)
-                { console.log("X@"+x+"-"+y); c++; }
+                { log("X@"+x+"-"+y); c++; }
                 return c;
             }
 

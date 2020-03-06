@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Mine Swooper</title>
+
+        <link rel="stylesheet" href="https://abstractn.github.io/repo/abs.css">
+        <script src="https://abstractn.github.io/repo/jquery3.js"></script>
+        <script src="https://kit.fontawesome.com/e97eac13ba.js" crossorigin="anonymous"></script>
+
+        <style>
+            :root
+            {
+                --cell-size:20px;
+            }
+
+            /* ########################################################################## */
+
+            main
+            {
+                height:100vh;
+                font-family:impact;
+                font-weight:lighter;
+            }
+
+            #field
+            {
+                width:min-content;
+                background-color:darkgray;
+            }
+
+            .cell
+            {
+                width:var(--cell-size);
+                height:var(--cell-size);
+                display:flex;
+                    justify-content:center;
+                    align-items:center;
+
+                border:solid #999 1px;
+                    box-sizing: border-box;
+                    -moz-box-sizing: border-box;
+                    -webkit-box-sizing: border-box;
+
+                /* pointer-events:none; */
+            }
+
+            .cell.open
+            {
+                background-color:darkgray;
+            }
+
+            .cell.close
+            {
+                background-color:#ccc;
+                border:outset #eee 4px;
+                    box-sizing: border-box;
+                    -moz-box-sizing: border-box;
+                    -webkit-box-sizing: border-box;
+            }
+            .cell.close, .cell.close *
+            {
+                color:transparent;
+            }
+
+            /* --------------------------------------------------------------- */
+
+            .prox1 { color:blue; }
+            .prox2 { color:green; }
+            .prox3 { color:red; }
+            .prox4 { color:darkblue; }
+            .prox5 { color:darkred; }
+            .prox6 { color:darkcyan; }
+            .prox7 { color:purple; }
+            .prox8 { color:black; }
+
+            .fas { color:black; pointer-events:none; }
+
+        </style>
+    </head>
+    <body>
+        
+        <main class="flex center">
+            <div id="field" class="flex col center">
+                <!-- <div class="flex row center test3">
+                    <div class="cell">0</div>
+                    <div class="cell">1</div>
+                    <div class="cell">2</div>
+                    <div class="cell">3</div>
+                    <div class="cell">4</div>
+                </div>
+                <div class="flex row center test3">
+                    <div class="cell">0</div>
+                    <div class="cell">1</div>
+                    <div class="cell">2</div>
+                    <div class="cell">3</div>
+                    <div class="cell">4</div>
+                </div>
+                <div class="flex row center test3">
+                    <div class="cell mine">
+                        <i class="fas fa-bomb"></i>
+                    </div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                </div>
+                <div class="flex row center test3">
+                    <div class="cell">0</div>
+                    <div class="cell">1</div>
+                    <div class="cell">2</div>
+                    <div class="cell">3</div>
+                    <div class="cell">4</div>
+                </div>
+                <div class="flex row center test3">
+                    <div class="cell">0</div>
+                    <div class="cell">1</div>
+                    <div class="cell">2</div>
+                    <div class="cell">3</div>
+                    <div class="cell">4</div>
+                </div> -->
+            </div>
+        </main>
+
+        <script>
+            const _F_DEBUG = true;
+            function log(o){if(_F_DEBUG){console.log(o);}}
+            function randomInt(min,max){return Math.floor((Math.random()*((max)-min))+min);}
+
+            // ##########################################################################
+
+            var inputX=10;
+            var inputY=inputX;
+            /* var inputMines=5; */
+            /* var inputMines= ( ( inputX + inputY ) / 2 ) - 2 ; */
+            var inputMines = ( ( inputX + inputY ) / 2 ) + ( ( inputX + inputY ) / 3 );
+
+            var sizeX, sizeY;
+            var matrix;
+            var minefield = "#field";
+
+            var mine = '<i class="fas fa-bomb"></i>';
+            var totalMines=0;
+
+            // ##########################################################################
+
+            function generateMatrix(sizeX,sizeY)
+            {
+                console.group("generateMatrix()");
+
+                matrix = new Array(sizeX);
+                for(let i=0; i<matrix.length; i++)
+                { matrix[i] = new Array(sizeY); }
+
+                for(let x=0; x<matrix.length; x++)
+                    for(let y=0; y<matrix[0].length; y++)
+                        if( matrix[x][y] === undefined )
+                            matrix[x][y] = '';
+
+                window.sizeX = matrix.length;
+                window.sizeY = matrix[0].length;
+
+                console.log(matrix);
+                console.groupEnd();
+            }
+
+            function generateMines(field,number)
+            {
+                let n = number;
+                let targetX=0, targetY=0;
+                do
+                {
+                    targetX=randomInt(0,matrix.length);
+                    targetY=randomInt(0,matrix[0].length);
+                    if( matrix[targetX][targetY] != mine )
+                    {
+                        log("> placing mine @ "+targetX+"-"+targetY);
+                        matrix[targetX][targetY] = mine;
+                        n--;
+                        window.totalMines++;
+                    }
+                }while(n>0);
+            }
+
+            function getCell(x,y)
+            {
+                if( (x>=0 && y>=0) && (x<sizeX && y<sizeY) )
+                    return matrix[x][y];
+            }
+
+            function checkSurroundings(x,y)
+            {
+                if( matrix[x][y] == mine )
+                {
+                    return mine;
+                }
+                else
+                {
+                    let c=0;
+                    getCell( x-1 , y-1 ) == mine ? c++ : null;
+                    getCell( x,    y-1 ) == mine ? c++ : null;
+                    getCell( x+1 , y-1 ) == mine ? c++ : null;
+                    getCell( x-1 , y   ) == mine ? c++ : null;
+                    getCell( x+1 , y   ) == mine ? c++ : null;
+                    getCell( x-1 , y+1 ) == mine ? c++ : null;
+                    getCell( x,    y+1 ) == mine ? c++ : null;
+                    getCell( x+1 , y+1 ) == mine ? c++ : null;
+                    return c || "";
+                }
+            }
+
+            function generateProximities(field)
+            {
+                for(let x=0; x<matrix.length; x++)
+                    for(let y=0; y<matrix[0].length; y++)
+                        matrix[x][y] = checkSurroundings( x,y );
+            }
+
+            function appendEvent(matrix)
+            {
+                console.groupCollapsed("appendEvent()");
+                let cells = document.querySelectorAll('.cell');
+                console.log(cells);
+                cells.forEach( cell =>
+                {
+                    cell.addEventListener('click', function ()
+                    {
+                        console.log("replacing");
+                        console.log(event.target);
+                        cell.classList.replace('close','open');
+                    });
+                });
+                console.groupEnd();
+            }
+
+            function renderField(field)
+            {
+                let res='';
+
+                for(let x=0; x<matrix.length; x++)
+                {
+                    res += '<div class="flex row center">';
+                    for(let y=0; y<matrix[0].length; y++)
+                    {
+                        let prox='';
+                        if( matrix[x][y] && matrix[x][y] != mine )
+                        {
+                            prox='prox'+matrix[x][y];
+                        }
+                        res += `<div class="cell ${prox} close">${matrix[x][y]}</div>`;
+                    }
+                    res += '</div>';
+                }
+                document.querySelector(minefield).innerHTML = res;
+                log("game printed w/ "+totalMines+" mines");
+            }
+
+            // ##########################################################################
+
+            generateMatrix(inputX,inputY);
+            generateMines(matrix,inputMines);
+            generateProximities(matrix);
+
+            renderField(matrix);
+            appendEvent(matrix);
+
+        </script>
+    </body>
+</html>
