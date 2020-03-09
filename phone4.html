@@ -21,6 +21,18 @@
                 --phone-screen-width:278px;
                 --phone-screen-height:490px;
                 --phone-frame-color:#fed; /* #111 */
+
+                --phone-app-size:40px;
+            }
+
+            body
+            {
+                font-size:10px;
+            }
+
+            .feather
+            {
+                height:14px;
             }
 
             /* --------------------------------------------------------- */
@@ -28,7 +40,7 @@
             #brand
             {
                 margin-left:25%;
-                font-size:2em;
+                font-size:calc(16px*2);
                 color: #FFC0CB;
                 animation: omium alternate infinite 1s;
                 font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
@@ -67,6 +79,38 @@
                 border-radius:5px;
             }
 
+            #phone-screen *
+            {
+                padding:3px;
+            }
+
+            #phone-topbar-right
+            {
+                justify-content:flex-end;
+                align-items:flex-start;
+            }
+
+            #phone-apps-container
+            {
+                height:100%;
+                width:auto;
+                margin:15px 0;
+                
+                justify-content:flex-start;
+                /* flex-basis:content; */
+                align-items:flex-start;
+                flex-wrap:wrap;
+            }
+
+            .phone-app
+            {
+                width:var(--phone-app-size);
+                height:var(--phone-app-size);
+                margin:5px;
+
+                background-color: rgba(255,0,255,.1);
+            }
+
             #phone-shapes
             {
                 display:flex;
@@ -77,6 +121,20 @@
                 color:transparent;
             }
             .feather-triangle { transform:rotate(270deg); }
+            .phone-shape-container
+            {
+                display:flex;
+                    justify-content:center;
+                    align-items:center;
+                height:18px;
+                width:40px;
+                border-radius:99px;
+                cursor:pointer;
+            }
+            .phone-shape-container:active
+            {
+                background-color:rgba(150,150,150,.3);
+            }
         </style>
     </head>
     <body>
@@ -84,14 +142,52 @@
         <main class="flex center">
             <div id="phone-container">
                 <div id="phone-frame" class="flex h-center">
-                    <div id="phone-screen" class="flex row">
+                    <div id="phone-screen" class="flex col spaced">
+                        <div id="phone-topbar" class="flex row spaced">
+                            <div id="phone-topbar-left" class="flex row">
+                                <i data-feather="bar-chart" fill="rgba(255,255,255,.8)"></i>
+                            </div>
+                            <div id="phone-topbar-right" class="flex row">
+                                <i data-feather="wifi" fill="rgba(255,255,255,.8)"></i>
+                                <i data-feather="bluetooth" fill="rgba(255,255,255,.8)"></i>
+                                <i data-feather="battery" fill="rgba(255,255,255,.8)"></i>
+                            </div>
+                        </div>
+                        <div id="phone-apps-container" class="flex">
+                            <div class="phone-app">app</div>
+                            <div class="phone-app">app</div>
+                            <div class="phone-app">app</div>
+                            <div class="phone-app">app</div>
+                            <div class="phone-app">app</div>
+                            <div class="phone-app">app</div>
+                            <div class="phone-app">app</div>
+                            <div class="phone-app">app</div>
+                            <div class="phone-app">app</div>
+                            <div class="phone-app">app</div>
+                            <div class="phone-app">app</div>
+                            <div class="phone-app">app</div>
+                            <div class="phone-app">app</div>
+                            <div class="phone-app">app</div>
+                            <div class="phone-app">app</div>
+                            <div class="phone-app">app</div>
+                            <div class="phone-app">app</div>
+                            <div class="phone-app">app</div>
+                            <div class="phone-app">app</div>
+                            <div class="phone-app">app</div>
+                        </div>
                         <div id="phone-shapes">
                             <!-- <i class="fas fa-caret-square-left"></i>
                             <i class="fas fa-circle"></i>
                             <i class="fas fa-square"></i> -->
-                            <i id="tri" data-feather="triangle" fill="rgba(255,255,255,.8)"></i>
-                            <i data-feather="circle" fill="rgba(255,255,255,.8)"></i>
-                            <i data-feather="square" fill="rgba(255,255,255,.8)"></i>
+                            <span class="phone-shape-container">
+                                <i id="tri" data-feather="triangle" fill="rgba(255,255,255,.8)"></i>
+                            </span>
+                            <span class="phone-shape-container">
+                                <i data-feather="circle" fill="rgba(255,255,255,.8)"></i>
+                            </span>
+                            <span class="phone-shape-container">
+                                <i data-feather="square" fill="rgba(255,255,255,.8)"></i>
+                            </span>
                         </div>
                     </div>
                 </div>
