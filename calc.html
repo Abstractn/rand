@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Calc</title>
+
+        <link rel="stylesheet" href="https://abstractn.github.io/repo/abs.css">
+
+        <style>
+            :root
+            {
+                --btn-size:30px;
+            }
+
+            main
+            {
+                font-family:"rounded elegance";
+                font-weight:bold;
+                font-size:16px;
+            }
+
+            /* ######################################################### */
+
+            #calc-body
+            {
+                /* width:300px;
+                height:460px; */
+                /* background-color:rgba(0,125,200,0.3); */
+                background-color: gray;
+                border:outset #444 5px;
+                border-radius: 10px;
+                padding:5px;
+            }
+
+            #calc-display
+            {
+                height:2em;
+                background-color:rgb(140, 160, 102);
+                margin-bottom:10px;
+                border:inset #aaa 4px;
+                border-radius:4px;
+                /*
+                    BG: A8C64E
+                    CH: 3C412C
+                */
+            }
+
+            .btn
+            {
+                width:var(--btn-size);
+                height:var(--btn-size);
+                
+                margin:2px;
+                border:outset #aaa 4px;
+                border-radius:4px;
+                padding:3px;
+                
+                text-align:right;
+
+                color:var(--abs-col-b3);
+                background-color:#ccc;
+            }
+
+            .btn:active
+            {
+                border-style:inset;
+            }
+        </style>
+    </head>
+    <body>
+        <main class="flex center extend">
+            <div id="calc-body" class="flex col">
+                <div id="calc-display">
+                    
+                </div>
+                <div class="flex row">
+                    <button class="btn">7</button>
+                    <button class="btn">8</button>
+                    <button class="btn">9</button>
+                    <button class="btn">/</button>
+                </div>
+                <div class="flex row">
+                    <button class="btn">4</button>
+                    <button class="btn">5</button>
+                    <button class="btn">6</button>
+                    <button class="btn">*</button>
+                </div>
+                <div class="flex row">
+                    <button class="btn">1</button>
+                    <button class="btn">2</button>
+                    <button class="btn">3</button>
+                    <button class="btn">-</button>
+                </div>
+                <div class="flex row">
+                    <button class="btn">,</button>
+                    <button class="btn">0</button>
+                    <button class="btn">=</button>
+                    <button class="btn">+</button>
+                </div>
+            </div>
+        </main>
+    </body>
+</html>
