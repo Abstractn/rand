@@ -1,0 +1,166 @@
+<link href="https://fonts.googleapis.com/css2?family=Handlee&display=swap" rel="stylesheet"> 
+<style>
+	body
+	{
+		margin:10px;
+		font-family:Palatino;
+	}
+	input
+	{
+		font-family:'Handlee', cursive;
+		font-size:1.1rem;
+		line-height:1px;
+	}
+</style>
+<style>
+	/* --- required for labels --- */
+	
+	.abs-textfield
+		{ margin-top:1rem; }
+	.abs-textfield-placeholder
+		{ pointer-events:none; position:absolute;   top:0px; left:0px; }
+
+
+
+	/* --- customizable --- */
+	
+	.abs-textfield
+	{
+		box-sizing:border-box;
+		border:none;
+		border-bottom:solid black 1px;
+		padding-bottom:2px;
+	}
+	
+	.abs-textfield:focus
+	{
+		color:blue;
+		box-sizing:border-box;
+		border-bottom:solid blue 1px;
+	}
+	
+	.abs-textfield-placeholder
+	{
+		transition:.2s;
+		opacity:.5;
+	}
+	
+	.abs-textfield:focus ~ .abs-textfield-placeholder,
+	.abs-textfield:not(:placeholder-shown) ~ .abs-textfield-placeholder
+	{
+		top:-.9rem;
+		
+		font-size:0.8rem;
+	}
+	
+	.abs-textfield:not(:placeholder-shown) ~ .abs-textfield-placeholder
+	{
+		opacity:.3;
+	}
+	
+	/*------------------------------------------*/
+	
+	.paper
+	{
+		background-color:white;
+		padding:4rem;
+		box-shadow:rgba(0,0,0,.5) 3px 3px 3px 3px;
+	}
+</style>
+
+<div class="paper">
+	Io sottoscritto
+	<!--<select class="abs-textfield">
+		<option>o</option>
+		<option>a</option>
+	</select>-->
+	<input type="text" placeholder="cognome" class="abs-textfield">
+	<input type="text" placeholder="nome" class="abs-textfield">,
+	nato a
+	<input type="text" placeholder="luogo di nascita" class="abs-textfield">
+	il
+	<input type="text" placeholder="data di nascita" class="abs-textfield">,
+	residente a
+	<input type="text" placeholder="comune di residenza" class="abs-textfield">
+	(provincia di
+	<input type="text" placeholder="provincia di residenza" class="abs-textfield">
+	)
+	in via
+	<input type="text" placeholder="indirizzo di residenza" class="abs-textfield">
+	numero
+	<input type="text" placeholder="numero civico" class="abs-textfield">
+	<br>
+	<br>
+	in qualità di
+	<input type="text" placeholder="titolo" class="abs-textfield">,
+	dichiaro di:
+	<br>
+	-
+</div>
+
+<script>
+	var abs =
+	{
+		textfield:
+		{
+			fieldClass:'abs-textfield',
+			labelClass:'abs-textfield-placeholder',
+			wrapperClass:'abs-textfield-wrapper',
+			
+			init: function()
+			{
+				const fields = document.querySelectorAll('.'+abs.textfield.fieldClass);
+				
+				fields.forEach(field => {
+					if( field.attributes.placeholder === undefined )
+					{
+						console.warn('skipping following element for undefined placeholder attribute:');
+						console.warn(field);
+						return;
+					}
+				
+					const label = '<label class="'+abs.textfield.labelClass+'">'+field.attributes.placeholder.value+'</label>';
+					const wrapper = document.createElement('span');
+					
+					field.attributes.placeholder.value=' ';
+					wrapper.classList.add(abs.textfield.wrapperClass);
+					wrapper.style.position='relative';
+					
+					field.parentNode.replaceChild(wrapper,field);
+					wrapper.appendChild(field);
+					
+					field.insertAdjacentHTML('afterend',label);
+				});
+				return fields;
+			}
+		}
+	}
+	
+	abs.textfield.init();
+
+	/*
+	var inputSelector = 'input[type="text"]';
+	let labelClass = 'input-placeholder';
+	let wrapperClass = 'input-wrapper';
+	let fields = document.querySelectorAll(inputSelector);
+	
+	for(var i=0; i<fields.length; i++)
+	{
+		// creates label node
+		let label = '<label class="'+labelClass+'">'+fields[i].attributes.placeholder.value+'</label>';
+		let wrapper = document.createElement('span');
+		wrapper.classList.add(wrapperClass);
+		fields[i].attributes.placeholder.value = "";
+		wrapper.style.position='relative';
+		// creates wrapper and replaces input with wrapper
+		fields[i].parentNode.replaceChild(wrapper,fields[i]);
+		// input is then appended to wrapper
+		wrapper.appendChild(fields[i]);
+		// appends label node
+		fields[i].insertAdjacentHTML('afterend',label);
+	}*/
+</script>
+
+
+
+

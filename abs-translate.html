@@ -1,0 +1,122 @@
+<html>
+<head>
+    <title>translate2</title>
+</head>
+
+<style>
+    body { color:white; background:black; font-family:fantasy; }
+    text { display:inline-block; border:solid red 1px; padding:2px 6px; width:100px; }
+
+</style>
+
+<body>
+    text001: <text data-translate="text001"></text>
+    <br>
+    text002: <text data-translate="text002"></text>
+    <br><br>
+	language: <select>
+		<option onclick="translate('ita')">ITA</option>
+		<option onclick="translate('eng')">ENG</option>
+		<option onclick="translate('spa')">SPA</option>
+		<option onclick="translate('fre')">FRE</option>
+		<option onclick="translate('deu')">DEU</option>
+	</select>
+
+</body>
+
+<script>
+	const dictionary = [
+		{
+			lang:'ita',
+			content:[
+				{
+					label:'text001',
+					value:'ciao'
+				},
+				{
+					label:'text002',
+					value:'mondo'
+				}
+			]
+		},
+		{
+			lang:'eng',
+			content:[
+				{
+					label:'text001',
+					value:'hello'
+				},
+				{
+					label:'text002',
+					value:'world'
+				}
+			]
+		},
+		{
+			lang:'spa',
+			content:[
+				{
+					label:'text001',
+					value:'hola'
+				},
+				{
+					label:'text002',
+					value:'mundo'
+				}
+			]
+		},
+		{
+			lang:'fre',
+			content:[
+				{
+					label:'text001',
+					value:'bonjour'
+				},
+				{
+					label:'text002',
+					value:'monde'
+				}
+			]
+		},
+		{
+			lang:'deu',
+			content:[
+				{
+					label:'text001',
+					value:'hallo'
+				},
+				{
+					label:'text002',
+					value:'welt'
+				}
+			]
+		},
+	];
+
+	function translate(lang)
+	{
+		localStorage.setItem('lastLanguage',lang);
+		
+		let fields = document.querySelectorAll('[data-translate]');
+		let langIndex = -1;
+		
+		for(let i=0; i<dictionary.length; i++)
+		{
+			if( dictionary[i].lang == lang )
+			{ langIndex = i; }
+		}
+		
+		fields.forEach(field => {
+			var _f_found = false;
+			for(let i=0; i<dictionary[langIndex].content.length; i++)
+			{
+				if( field.attributes['data-translate'].value == dictionary[langIndex].content[i].label )
+				{ field.innerHTML = dictionary[langIndex].content[i].value;   _f_found = true; }
+			}
+		});
+	}
+	
+	const defaultLang = localStorage.getItem('lastLanguage') || 'ita';
+	translate(defaultLang);
+</script>
+</html>
