@@ -46,6 +46,17 @@
                 */
             }
 
+            #particle-overlay
+            {
+                position:absolute;
+                top:50%;
+                left:50%;
+                transform:translate(-50%,-50%);
+                background-color:rgba(255,0,0,0.5);
+
+                pointer-events:none;
+            }
+
             .btn
             {
                 width:var(--btn-size);
@@ -71,9 +82,10 @@
     <body>
         <main class="flex center extend">
             <div id="calc-body" class="flex col">
-                <div id="calc-display">
-                    
-                </div>
+                <div id="particle-overlay"></div>
+
+                <div id="calc-display"></div>
+
                 <div class="flex row">
                     <button class="btn">7</button>
                     <button class="btn">8</button>
@@ -100,5 +112,20 @@
                 </div>
             </div>
         </main>
+        <script>
+            let calcFrame = document.querySelector("#calc-body");
+            let overlay = calcFrame.querySelector("#particle-overlay");
+
+            let calc="";
+
+            // --- events ---
+            let buttons = calcFrame.querySelectorAll(".btn");
+            buttons.forEach( button => {
+                button.addEventListener("click", function () {
+                    calc += event.target.innerHTML;
+                    console.log( calc );
+                });
+            });
+        </script>
     </body>
 </html>
