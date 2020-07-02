@@ -17,7 +17,7 @@
 
                 --menu-spacing:15px;
 
-                --blur:30px;
+                --blur:15px;
             }
 
             body
@@ -47,13 +47,19 @@
             .blurmask
             {
                 backdrop-filter:blur(0);
-                transition:.3s;
+                transition:.25s;
             }
 
             .blurmask:hover, .blurmask:focus
             {
                 backdrop-filter:blur(var(--blur));
                 transform:scale(1.05);
+            }
+
+            .blurmask:active
+            {
+                transition:0s;
+                background-color:rgba(255,255,255,.5);
             }
 
             .flex.col.menu
