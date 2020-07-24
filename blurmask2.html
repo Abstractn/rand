@@ -1,0 +1,116 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>BlurMask</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://abstractn.github.io/repo/abs.css">
+
+        <style>
+            :root
+            {
+                --bgimage-1:url("https://wallpapercave.com/wp/wp3697621.jpg");
+                --bgimage-2:url("https://www.hdwallpaper.nu/wp-content/uploads/2017/02/sunrise-20.jpg");
+                --bgimage-3:url("https://www.hdwallpaper.nu/wp-content/uploads/2017/03/nature-7.jpg");
+                --bgimage-4:url("https://wallup.net/wp-content/uploads/2016/01/190664-landscape-nature-sunset-river-forest-mountain-water-clouds-grass-blue-green-pink-trees-reflection.jpg");
+                --bgimage-5:url("https://images.wallpaperscraft.com/image/cube_space_flight_122698_1920x1080.jpg");
+                --bgimage-6:url("https://free4kwallpapers.com/uploads/originals/2019/12/16/futuristic-skyscrapers-wallpaper.jpg");
+
+                --menu-spacing:15px;
+
+                --blur:15px;
+            }
+
+            body
+            {
+                background-color:black;
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: cover;
+                font-size:10px;
+            }
+
+            a
+            {
+                color:inherit;
+                text-decoration:none;
+            }
+
+            .box
+            {
+                padding:30px 40px;
+                width:100%;
+                text-align:center;
+                background-color:rgba(0,0,0,.1);
+                font-size:1.6rem;
+            }
+
+            .blurmask
+            {
+                backdrop-filter:blur(0);
+                transition:.25s;
+            }
+
+            .blurmask:hover, .blurmask:focus
+            {
+                backdrop-filter:blur(var(--blur));
+                transform:scale(1.05);
+            }
+
+            .blurmask:active
+            {
+                transition:0s;
+                background-color:rgba(255,255,255,.5);
+            }
+
+            .flex.col.menu
+            {
+                width:450px;
+            }
+
+            .flex.col.menu .elem
+            {
+                margin-top:var(--menu-spacing);
+            }
+
+            .flex.col.menu .elem:first-child
+            {
+                margin-top:0;
+            }
+			
+			
+			
+			.background
+			{
+				position:fixed;
+				top:0;
+				left:0;
+				min-width:100%;
+				min-height:100%;
+			}
+        </style>
+    </head>
+    <body>
+		<div class="background">
+			<video autoplay muted loop>
+				<source src="https://r1---sn-4g5e6nzs.googlevideo.com/videoplayback?expire=1595610604&ei=jMEaX8SFM7GK8gPD1qDwCA&ip=86.34.133.118&id=o-ANJKRj7risqcsvnvipQXdb4GKIDfkTzB3jVHlKYrRXTh&itag=22&source=youtube&requiressl=yes&mh=Bd&mm=31%2C29&mn=sn-4g5e6nzs%2Csn-4g5edns7&ms=au%2Crdu&mv=m&mvi=1&pl=18&initcwndbps=942500&vprv=1&mime=video%2Fmp4&ratebypass=yes&dur=3600.068&lmt=1560691261787876&mt=1595588907&fvip=1&fexp=23883098&beids=9466586&c=WEB&txp=5432432&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cvprv%2Cmime%2Cratebypass%2Cdur%2Clmt&sig=AOq0QJ8wRAIgbXbOBjYAybACiJe3Re5sQm2JSS6KAxZx8sbA7-o83VICIAH_cfBSTC1sRn4LNAEBMxRlcgqKjjQJ8uixL-ekoNA6&lsparams=mh%2Cmm%2Cmn%2Cms%2Cmv%2Cmvi%2Cpl%2Cinitcwndbps&lsig=AG3C_xAwRAIgB5fdwaMG16FFFsiaIShxO662m-YycGaVYLOY6T7klxsCIBJe7XsUNmVgdzcppTF-fuRElcY-9n8sDBrfD7Ie0859&contentlength=314219685&video_id=lRTtMcx6rSM&title=Rounded+Neon+Multicolored+lines+Background+Looped+Animation+HD+-+Free+Footage">
+				<!-- https://www.youtube.com/watch?v=lRTtMcx6rSM -->
+			</video>
+		</div>
+        <main class="flex center extend">
+            <div class="flex col menu">
+            </div>
+        </main>
+    </body>
+    <script>
+        function generateMenu(count)
+        {
+            let menuWrapper=document.querySelector('.menu');
+            for(let i=0;i<count;i++)
+            {
+                menuWrapper.innerHTML+=`<a class="elem box blurmask" href="#">Blur mask ${i+1}</a>`;
+            }
+        }
+
+        generateMenu(5);
+    </script>
+</html>
