@@ -14,7 +14,12 @@
             {
                 font-family:"Rounded Elegance";
                 /* font-weight:bold; */
-				margin:0 5px;
+				/* margin:0 5px; */
+				
+				background-image:linear-gradient( var(--abs-col-b3), var(--abs-col-b1) );
+				max-height:100vh;
+				overflow:hidden;
+				margin-left: 5px;
             }
 
             #title
@@ -30,6 +35,9 @@
             #index
             {
                 list-style-type:none;
+				overflow-x:hidden;
+				overflow-y:auto;
+				max-height: calc(100vh - 21px - 18px);
             }
 
             .index-elem
@@ -288,7 +296,3 @@
         </script>
     </body>
 </html>
-
-<!--
-    https://api.github.com/repos/Abstractn/rand/contents/
--->
