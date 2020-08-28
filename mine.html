@@ -30,6 +30,7 @@
 
             .cell
             {
+				position: relative;
                 width:var(--cell-size);
                 height:var(--cell-size);
             }
@@ -107,6 +108,18 @@
                 
                 border-style:inset;
             }
+			
+			.explosion {
+				position:absolute;
+				top:0;
+				bottom:0;
+				width:10px;
+				height:10px;
+				background-image:url("https://1.bp.blogspot.com/-EXrHTPc2OXk/Uv_cGFw56gI/AAAAAAAAAKs/Z-OHd1qeaU0/s1600/kevinexplosionlarge.gif");
+				background-size:contain;
+				background-repeat:no-repeat;
+				background-position:center;
+			}
         </style>
     </head>
     <body class="flex center">
@@ -215,6 +228,7 @@
                 checkCell( x-1 , y+1 ) ? c++ : null;
                 checkCell( x,    y+1 ) ? c++ : null;
                 checkCell( x+1 , y+1 ) ? c++ : null;
+				log(x+"-"+y+" = "+c);
                 return c;
             }
 
@@ -235,6 +249,7 @@
 
             function gameSX(event)
             {
+				console.log(">rmb");
                 preventAriaBullshit();
                 let cellID = event.target.id;
                 if( $("#"+cellID).html()=="" )
@@ -282,9 +297,18 @@
                     // recursive <
                     // if cell contains number > reveal number and backtrack to other empty surroundings
             }
+			
+			function generateFX(cellID)
+			{
+				console.log("generateFX()");
+				let explosion = document.createElement("div");
+				explosion.classList.add("explosion");
+				document.querySelector("#"+cellID).appendChild(explosion); //TODO TEST
+			}
 
             function gameOver(blownMineID)
             {
+				generateFX(blownMineID);
                 console.log("gameOver");
                 // TODO colour blownMineID bg to red
                 // TODO reveal mines

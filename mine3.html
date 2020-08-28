@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>MineSweeper</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <link rel="stylesheet" href="https://abstractn.github.io/repo/abs.css">
+        <script src="https://abstractn.github.io/repo/jquery3.js"></script>
+        <script src="https://kit.fontawesome.com/e97eac13ba.js" crossorigin="anonymous"></script>
+
+        <style>
+            :root
+            {
+                --cell-size:15px;
+                --cell-margin:1px;
+                --cell-col1:#ccc; /* eee */
+                --cell-col2:#eee; /* ccc */
+                /* 75c - 70c */
+            }
+
+            button{border:0;background-color:inherit;padding:0;}
+
+            body { font-size: 10px; }
+
+            main { min-height: 100vh; }
+
+            game
+            {
+                display: block;
+                background-color:gray;
+            }
+
+            row
+            {
+                display: block;
+            }
+
+            cell
+            {
+                display: block;
+                width: var(--cell-size);
+                height: var(--cell-size);
+                background-color: white;
+                margin: var(--cell-margin);
+            }
+            nav i
+            {
+                font-size: 1.5rem;
+                padding: 8px;
+                color: black;
+                background-color: lightgray;
+            }
+        </style>
+    </head>
+    <body>
+        <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+        
+        <main class="flex center col">
+            <game class="flex center"></game>
+            <nav>
+                <button><i class="fas fa-undo"></i></button>
+            </nav>
+        </main>
+
+        <script async defer>
+            const _F_DEBUG = true;
+            function log(o){if(_F_DEBUG){console.log(o);}}
+            function randomInt(min,max){return Math.floor((Math.random()*(max-min))+min);}
+
+            // ###############################################################
+
+            let game = {
+                table: document.querySelector('game'),
+                sizeX: null,
+                sizeY: null,
+                matrix: null,
+            };
+
+            function generateField(sizeX,sizeY,density)
+            {
+                log("<generateField");
+                game.matrix = new Array(sizeX);
+                for(let x=0; x<game.matrix.length; x++)
+                {
+                    game.matrix[x] = new Array(sizeY);
+                    for(let y=0; y<game.matrix[x].length; y++)
+                    {
+                        game.matrix[x][y] = {state:'closed', content:null};
+                    }
+                }
+                log("generateField/>");
+            }
+
+            function drawField(sizeX,sizeY)
+            {
+                log("<drawField");
+                let res='';
+                for(let x=0; x<sizeX; x++)
+                {
+                    res += `<row>`;
+                    for(let y=0; y<sizeY; y++)
+                    {
+                        res += `<cell x="${x}" y="${y}" state="" content=""></cell>`;
+                    }
+                    res += `</row>`;
+                }
+                game.table.innerHTML=res;
+                log("drawField/>");
+            }
+
+            function lmb(e,cell)
+            {
+                log("<lmb");
+                e.preventDefault();
+                console.log(cell.getAttribute('x') + '-' + cell.getAttribute('y') );
+                log("lmb/>");
+            }
+
+            function rmb(e,cell)
+            {
+                log("<rmb");
+                e.preventDefault();
+                console.log(cell.getAttribute('x') + '-' + cell.getAttribute('y') );
+                log("rmb/>");
+            }
+
+            function assignEvents()
+            {
+                //function test(){console.log(arguments.callee)};test()
+                log("<assignEvents");
+                game.table.querySelectorAll('cell').forEach(cell => {
+                    cell.addEventListener('click', function(event) { lmb(event,cell); });
+                    cell.addEventListener('contextmenu', function(event) { rmb(event,cell); });
+                });
+                log("assignEvents/>");
+                //console.log("--- " + assignEvents.name);
+            }
+
+            var inputX=6;
+            var inputY=5;
+
+            generateField(inputX,inputY,1);
+            drawField(inputX,inputY);
+            assignEvents();
+
+        </script>
+    </body>
+</html>
