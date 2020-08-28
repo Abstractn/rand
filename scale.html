@@ -1,0 +1,38 @@
+<html>
+	<head>
+		<link rel="stylesheet" href="https://abstractn.github.io/repo/abs.css">
+		<style>
+			box
+			{
+				width: 100px;
+				height: 100px;
+				background-color: gray;
+				transform: scale(1);
+				transition: 300ms;
+			}
+			
+			.animate
+			{
+				transform: scale(0);
+			}
+		</style>
+	</head>
+	
+	<body>
+		<box class="flex center">
+			content
+			<br>
+			cont andent
+		</box>
+		
+		<button onClick="anim()">X</button>
+	</body>
+	
+	<script>
+		let box = document.querySelector("box");
+		function anim()
+		{
+			box.classList.toggle("animate");
+		}
+	</script>
+</html>
