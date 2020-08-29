@@ -3,6 +3,7 @@
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -15,142 +16,427 @@
         <script src="https://kit.fontawesome.com/e97eac13ba.js" crossorigin="anonymous"></script>
 
         <style>
+
             :root
             {
-                --cell-size:15px;
+                --cell-size:20px;
                 --cell-margin:1px;
-                --cell-col1:#ccc; /* eee */
-                --cell-col2:#eee; /* ccc */
-                /* 75c - 70c */
             }
 
             button{border:0;background-color:inherit;padding:0;}
+            body{font-size:10px;}
+            main{min-height:100vh;}
+            .hide{display:none!important;}
+            block{display:block;}
 
-            body { font-size: 10px; }
-
-            main { min-height: 100vh; }
-
-            game
-            {
-                display: block;
-                background-color:gray;
-            }
-
-            row
-            {
-                display: block;
-            }
+            game, row { display: block; }
 
             cell
             {
-                display: block;
+                display: flex;
+                    justify-content: center;
+                    align-items: center;
                 width: var(--cell-size);
                 height: var(--cell-size);
-                background-color: white;
+                border-style: solid;
+                border-color: transparent;
                 margin: var(--cell-margin);
+                font-size: 1rem;
+                font-weight: bold;
             }
-            nav i
+
+            cell[state=closed]
             {
-                font-size: 1.5rem;
-                padding: 8px;
-                color: black;
-                background-color: lightgray;
+                background-color: var(--cell-color);
+                border-color:var(--cell-border-color);
+                border-style: outset;
             }
+
+            cell[state=open]
+            {
+                background-color:var(--cell-border-color);
+            }
+
+            /* ################################################################## */
+
+            txt { display:inline-block; }
+
+            /* main menu */
+
+            #main-menu form
+            {
+                border:solid 2px #ccc;
+                padding: 25px;
+                font-family:"Rounded Elegance";
+                    font-weight:bold;
+                    letter-spacing:1px;
+            }
+
+            #main-menu txt.title { font-size: 3rem; margin-bottom: 25px; }
+            #main-menu txt.label { font-size: 2.2rem; }
+            #main-menu form .button
+            {
+                margin: 10px;
+                padding: 10px 20px;
+                border: solid #ccc 2px;
+                color: #ccc;
+            }
+
+            #main-menu form input,
+            #main-menu form select
+            {
+                color: #ccc;
+                font-size: 1.5rem;
+                background-color: transparent;
+                border: solid #ccc 2px;
+                border-radius: 0;
+            }
+
+            /* game menu */
+
+            nav
+            {
+                margin-top: 25px;
+            }
+
+            nav .button
+            {
+                width: 1rem;
+                height: 1rem;
+                font-size: 1rem;
+                text-align: center;
+                color: #ccc;
+                border:solid #ccc 2px;
+                padding: 10px;
+                margin: 0 5px;
+            }
+
+            /* ################################################################## */
+
+            /* colour themes */
+            /* --classic */
+            game.theme-classic { background-color:darkgray; }
+            .theme-classic cell { border-width: 5px; 
+                                  width: 20px;
+                                  height: 20px; }
+            .theme-classic cell[state=open] { background-color:#ccc; }
+            .theme-classic cell[state=closed] { background-color: #eee;
+                                                border-color: #ccc;
+                                                border-style: outset; }
+            .theme-classic .prox1 { color:blue; }
+            .theme-classic .prox2 { color:green; }
+            .theme-classic .prox3 { color:red; }
+            .theme-classic .prox4 { color:darkblue; }
+            .theme-classic .prox5 { color:darkred; }
+            .theme-classic .prox6 { color:darkcyan; }
+            .theme-classic .prox7 { color:purple; }
+            .theme-classic .prox8 { color:black; }
+            .theme-classic .fa-flag { color: red; }
+            .theme-classic .fa-bomb { color: black; }
+            .theme-classic .fa-question { color: black; }
+
+            /* --modern */
+            game.theme-modern { background-color: #222; }
+            .theme-modern cell { border-width: 3px; 
+                                 width: 25px;
+                                 height: 25px; }
+            .theme-modern cell[state=open] { background-color:#333; }
+            .theme-modern cell[state=closed] { background-color: #555;
+                                                border-color: #666;
+                                                border-style: ridge; }
+            .theme-modern .prox1 { color:rgb(125, 235, 160); }
+            .theme-modern .prox2 { color:rgb(164, 193, 80); }
+            .theme-modern .prox3 { color:rgb(190, 144, 26); }
+            .theme-modern .prox4 { color:rgb(202, 86, 34); }
+            .theme-modern .prox5 { color:rgb(200, 50, 50); }
+            .theme-modern .prox6 { color:rgb(173, 49, 100); }
+            .theme-modern .prox7 { color:rgb(146, 48, 149); }
+            .theme-modern .prox8 { color:rgb(106, 46, 224); }
+            .theme-modern .fa-flag { color: azure; }
+            .theme-modern .fa-bomb { color: #85f; }
+            .theme-modern .fa-question { color: lightsteelblue; }
+
         </style>
     </head>
-    <body>
+
+    <body attr-test="true" attr-active>
         <!--[if lt IE 7]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
         
         <main class="flex center col">
-            <game class="flex center"></game>
-            <nav>
-                <button><i class="fas fa-undo"></i></button>
+            <box id="main-menu">
+                <txt class="title">SweepyJS</txt>
+
+                <form class="flex col center">
+                    <txt class="label">grid size:</txt>
+                    <block>
+                        <input class="x" type="number" min="2" max="25" value="5" required>
+                        x
+                        <input class="y" type="number" min="2" max="25" value="5" required>
+                    </block>
+
+                    <!-- <label>mines:</label>
+                    <div>
+                        <input id="input-mines" class="input-size" type="number" min="2" max="50" value="5" required>
+                    </div> -->
+
+                    <txt class="label">theme:</txt>
+                    <select class="theme">
+                        <option value="classic">classic</option>
+                        <option value="modern">modern</option>
+                    </select>
+
+                    <i class="button fas fa-play" onclick="startGame()"></i>
+                </form>
+            </box>
+
+            <game class="flex center hide"></game>
+            <nav class="flex spaced row hide">
+                <!-- <button onclick="openAll()">!</button> -->
+                <i class="button fas fa-undo" onclick="restartGame()"></i>
+                <i class="button fas fa-bars" onclick="quitGame()"></i>
             </nav>
         </main>
 
-        <script async defer>
-            const _F_DEBUG = true;
-            function log(o){if(_F_DEBUG){console.log(o);}}
-            function randomInt(min,max){return Math.floor((Math.random()*(max-min))+min);}
-
-            // ###############################################################
-
-            let game = {
-                table: document.querySelector('game'),
-                sizeX: null,
-                sizeY: null,
-                matrix: null,
-            };
-
-            function generateField(sizeX,sizeY,density)
-            {
-                log("<generateField");
-                game.matrix = new Array(sizeX);
-                for(let x=0; x<game.matrix.length; x++)
-                {
-                    game.matrix[x] = new Array(sizeY);
-                    for(let y=0; y<game.matrix[x].length; y++)
-                    {
-                        game.matrix[x][y] = {state:'closed', content:null};
-                    }
-                }
-                log("generateField/>");
-            }
-
-            function drawField(sizeX,sizeY)
-            {
-                log("<drawField");
-                let res='';
-                for(let x=0; x<sizeX; x++)
-                {
-                    res += `<row>`;
-                    for(let y=0; y<sizeY; y++)
-                    {
-                        res += `<cell x="${x}" y="${y}" state="" content=""></cell>`;
-                    }
-                    res += `</row>`;
-                }
-                game.table.innerHTML=res;
-                log("drawField/>");
-            }
-
-            function lmb(e,cell)
-            {
-                log("<lmb");
-                e.preventDefault();
-                console.log(cell.getAttribute('x') + '-' + cell.getAttribute('y') );
-                log("lmb/>");
-            }
-
-            function rmb(e,cell)
-            {
-                log("<rmb");
-                e.preventDefault();
-                console.log(cell.getAttribute('x') + '-' + cell.getAttribute('y') );
-                log("rmb/>");
-            }
-
-            function assignEvents()
-            {
-                //function test(){console.log(arguments.callee)};test()
-                log("<assignEvents");
-                game.table.querySelectorAll('cell').forEach(cell => {
-                    cell.addEventListener('click', function(event) { lmb(event,cell); });
-                    cell.addEventListener('contextmenu', function(event) { rmb(event,cell); });
-                });
-                log("assignEvents/>");
-                //console.log("--- " + assignEvents.name);
-            }
-
-            var inputX=6;
-            var inputY=5;
-
-            generateField(inputX,inputY,1);
-            drawField(inputX,inputY);
-            assignEvents();
-
-        </script>
     </body>
+
+    <script async defer>
+        const _F_DEBUG = true;
+        function log(o){if(_F_DEBUG){console.log(o);}}
+        function randomInt(min,max){return Math.floor((Math.random()*(max-min))+min);}
+
+        //TODO delete
+        function openAll()
+        {
+            log("<opened all>")
+            for(let x=0; x<game.sizeX; x++)
+            for(let y=0; y<game.sizeY; y++)
+            {
+                let cell = game.table.querySelector(`[x="${x}"][y="${y}"]`);
+                game.matrix[x][y].state="open";
+                cell.setAttribute('state',game.matrix[x][y].state);
+                cell.innerHTML = game.matrix[x][y].content;
+            }
+        }
+
+        // ###############################################################
+
+        let game = {
+            table: document.querySelector('game'),
+            sizeX: null,
+            sizeY: null,
+            matrix: null,
+            getCellContent: null,
+            hasMine: null,
+            theme: 'classic' // classic - modern
+        };
+        const mine = '<i class="fas fa-bomb" aria-hidden="true"></i>';
+        const flag = '<i class="fas fa-flag" aria-hidden="true"></i>';
+        const questionMark = '<i class="fas fa-question" aria-hidden="true"></i>';
+        game.getCellContent = function(x,y) { return game.matrix[x][y].content };
+        game.hasMine = function (x,y)
+        {
+            if( (x>=0 && y>=0) && (x<game.sizeX && y<game.sizeY) )
+            {
+                if( game.matrix[x][y].content == mine )
+                    return true;
+                else
+                    return false;
+            }
+            else
+                return false;
+        };
+
+        // ###############################################################
+
+        function generateField(sizeX,sizeY)
+        {
+            log("<generateField");
+            game.matrix = new Array(game.sizeX);
+            for(let x=0; x<game.sizeX; x++)
+            {
+                game.matrix[x] = new Array(game.sizeY);
+                for(let y=0; y<game.sizeY; y++)
+                {
+                    game.matrix[x][y] = {state:'closed', content:''};
+                    log("\t@"+x+"-"+y);
+                }
+            }
+            log("generateField/>");
+        }
+
+        function generateMines(quantity)
+        {
+            log("<generateMines");
+            quantity = quantity || Math.floor( ((game.sizeX+game.sizeY)/2)*1.5 );
+            log("\t<quantity="+quantity+">");
+            let q = quantity;
+            let x=0;
+            let y=0;
+            do
+            {
+                x = randomInt(0,game.sizeX);
+                y = randomInt(0,game.sizeY);
+                if(game.matrix[x][y].content == mine)
+                    continue;
+                else
+                {
+                    log("\t@"+x+"-"+y);
+                    game.matrix[x][y].content = mine;
+                    q--;
+                }
+            }
+            while(q > 0);
+            log("generateMines/>");
+            return quantity;
+        }
+
+        function generateProximities()
+        {
+            log("<generateProximities");
+            let c = 0;
+            for(let x=0; x<game.sizeX; x++)
+            for(let y=0; y<game.sizeY; y++)
+            if( game.matrix[x][y].content != mine )
+            {
+                c = 0;
+                game.hasMine(x-1,y-1) ? c++ : null;
+                game.hasMine(  x,y-1) ? c++ : null;
+                game.hasMine(x+1,y-1) ? c++ : null;
+                game.hasMine(x-1,  y) ? c++ : null;
+                game.hasMine(x+1,  y) ? c++ : null;
+                game.hasMine(x-1,y+1) ? c++ : null;
+                game.hasMine(  x,y+1) ? c++ : null;
+                game.hasMine(x+1,y+1) ? c++ : null;
+                log("\t@"+x+"-"+y+" = "+c);
+                c != 0 ? game.matrix[x][y].content = `<txt class="prox${c}">${c}</txt>` : null;
+            }
+            log("generateProximities/>");
+        }
+
+        function drawField()
+        {
+            log("<drawField");
+            let res='';
+            for(let x=0; x<game.sizeX; x++)
+            {
+                res += `<row>`;
+                for(let y=0; y<game.sizeY; y++)
+                    res += `<cell x="${x}" y="${y}" state="${game.matrix[x][y].state}"></cell>`;
+                res += `</row>`;
+            }
+            game.table.innerHTML=res;
+            log("drawField/>");
+        }
+
+        function lmb(e,cell)
+        {
+            log("<lmb");
+            e.preventDefault();
+            let x = cell.getAttribute('x');
+            let y = cell.getAttribute('y');
+            let targetState = cell.getAttribute('state');
+            let targetContent = cell.innerHTML;
+            if(!targetContent && game.matrix[x][y].state == 'closed')
+            {
+                game.matrix[x][y].state='open';
+                cell.setAttribute('state',game.matrix[x][y].state);
+                cell.innerHTML = game.matrix[x][y].content;
+            }
+            log("lmb/>");
+        }
+
+        function rmb(e,cell)
+        {
+            log("<rmb");
+            e.preventDefault();
+            let targetState = cell.getAttribute('state');
+            let targetContent = cell.innerHTML;
+            if(targetState == 'closed')
+            {
+                switch(targetContent)
+                {
+                    case "": cell.innerHTML = flag; break;
+                    case flag: cell.innerHTML = questionMark; break;
+                    case questionMark: cell.innerHTML = ""; break;
+                }
+            }
+            log("rmb/>");
+        }
+
+        function assignEvents()
+        {
+            log("<assignEvents");
+            game.table.querySelectorAll('cell').forEach(cell => {
+                cell.addEventListener('click', function(event) { lmb(event,cell); });
+                cell.addEventListener('contextmenu', function(event) { rmb(event,cell); });
+            });
+            log("assignEvents/>");
+        }
+
+        function startGame()
+        {
+            log("<start");
+            let menu = document.querySelector('#main-menu');
+            let form = menu.querySelector('form');
+            game.sizeX = form.querySelector(".x").value*1;
+            game.sizeY = form.querySelector(".y").value*1;
+            game.theme = form.querySelector(".theme").value;
+                log("<setting localStorage>");
+                window.localStorage.setItem('game-x',game.sizeX);
+                window.localStorage.setItem('game-y',game.sizeY);
+                window.localStorage.setItem('game-theme',game.theme);
+            menu.classList.add('hide');
+            game.table.classList.add('theme-'+game.theme);
+            generateField(game.sizeX,game.sizeY);
+            generateMines(); //TODO variable input
+            generateProximities();
+            drawField();
+            assignEvents();
+            game.table.classList.remove('hide');
+            document.querySelector('nav').classList.remove('hide');
+            log("start/>");
+        }
+
+        function restartGame()
+        {
+            log("<restart");
+            //TODO ask "press again to confirm"
+            for(let x=0; x<game.sizeX; x++)
+            for(let y=0; y<game.sizeY; y++)
+            {
+                //log("<><><> "+x+"-"+y);
+                game.matrix[x][y].state = 'closed';
+                game.matrix[x][y].content = '';
+            }
+
+            generateField(game.sizeX,game.sizeY);
+            generateMines(); //TODO variable input
+            generateProximities();
+            drawField();
+            assignEvents();
+            log("restart/>");
+        }
+
+        function quitGame()
+        {
+            log("<quit");
+            //TODO ask "press again to confirm"
+            //TODO restore main menu instead of document reload
+            location.reload();
+            log("quit/>");
+        }
+
+
+        $(document).ready(function() {
+            let form = document.querySelector('#main-menu form');
+            if( window.localStorage.getItem('game-x') ) { log("<fetching localStorage>"); }
+            form.querySelector(".x").value = window.localStorage.getItem('game-x') || 6;
+            form.querySelector(".y").value = window.localStorage.getItem('game-y') || 12;
+            form.querySelector(".theme").value = window.localStorage.getItem('game-theme') || 'classic';
+        });
+
+    </script>
+
 </html>
