@@ -179,7 +179,7 @@
         </style>
     </head>
 
-    <body attr-test="true" attr-active>
+    <body>
         <!--[if lt IE 7]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
@@ -225,25 +225,11 @@
     </body>
 
     <script async defer>
-        const _F_DEBUG = true;
+        const _F_DEBUG = false;
         function log(o){if(_F_DEBUG){console.log(o);}}
         function randomInt(min,max){return Math.floor((Math.random()*(max-min))+min);}
-        let _F_MODAL_CONFIRM = false;
+        let _F_MODAL_CONFIRM = false; //TODO fix "different action button accepted after confirm_request" bug
         function hideModal() { document.querySelector('modal#confirm').classList.add('hide'); _F_MODAL_CONFIRM = false; }
-
-        //TODO delete
-        function openAll()
-        {
-            log("<opened all>")
-            for(let x=0; x<game.sizeX; x++)
-            for(let y=0; y<game.sizeY; y++)
-            {
-                let cell = game.table.querySelector(`[x="${x}"][y="${y}"]`);
-                game.matrix[x][y].state="open";
-                cell.setAttribute('state',game.matrix[x][y].state);
-                cell.innerHTML = game.matrix[x][y].content;
-            }
-        }
 
         // ###############################################################
 
