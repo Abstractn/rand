@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+		<link rel="stylesheet" href="https://abstractn.github.io/repo/abs.css">
+        <script src="https://abstractn.github.io/repo/jquery3.js"></script>
+		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30=" crossorigin="anonymous"></script>
+        <script src="https://kit.fontawesome.com/e97eac13ba.js" crossorigin="anonymous"></script>
+		
+		<style>
+			body{font-size:10px;}
+		
+			.page-nav
+			{
+				position: fixed;
+				top: 1px;
+				left: 50%;
+				padding: 5px 10px;
+				color: black;
+				background-color: darkgray;
+				cursor: pointer;
+				z-index: 1000;
+			}
+				.page-nav>a
+				{
+					transition: 300ms;
+				}
+			
+			.page-viewer
+			{
+				position: relative;
+				width: calc(100vw *2);
+				height: calc(100vh *2);
+				z-index: 1;
+				transition: 300ms;
+			}
+			
+			.zoom
+			{
+				transform: scale(0.5);
+			}
+
+			.page
+			{
+				position: absolute;
+				width: 100vw;
+				height: 100vh;
+				font-size: 2rem;
+			}
+				#page-first
+				{
+					top: 0;
+					left: 0;
+					background-color: beige;
+					color: black;
+				}
+				#page-second
+				{
+					top: 0;
+					left: calc( 100vw + 100px );
+					background-color: pink;
+					color: red;
+				}
+				#page-third
+				{
+					top: calc( 100vh + 100px );
+					left: 0;
+					background-color: lightblue;
+					color: blue;
+				}
+				#page-fourth
+				{
+					top: calc( 100vh + 100px );
+					left: calc( 100vw + 100px );
+					background-color: black;
+					color: white;
+				}
+			
+		</style>
+    </head>
+    <body>
+        <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+		
+		<main>
+			<nav class="page-nav">
+				<a href="#page-first">[1]</a>
+				<a href="#page-second">[2]</a>
+				<a href="#page-third">[3]</a>
+				<a href="#page-fourth">[4]</a>
+			</nav>
+			
+			<div class="page-viewer">
+				<div id="page-first" class="page">first page</div>
+				<div id="page-second" class="page">second page</div>
+				<div id="page-third" class="page">third page</div>
+				<div id="page-fourth" class="page">fourth page</div>
+			</div>
+		</main>
+		
+		
+		
+		<script>
+			function zoom()
+			{
+				document.querySelector('.page-viewer').classList.toggle('zoom');
+			}
+			
+			const animationDuration = 500;
+			
+			$(document).ready(function(){
+				$( ".page-nav>a" ).click(function( event ) {
+					event.preventDefault();
+					$(".page-viewer").addClass("zoom", animationDuration);
+					$("html, body").delay(animationDuration/2).animate({
+						scrollTop: $($(this).attr("href")).offset().top,
+						scrollLeft: $($(this).attr("href")).offset().left,
+					}, animationDuration, 'easeInOutCubic');
+					$(".page-viewer").delay(animationDuration + (animationDuration/2)).removeClass("zoom", animationDuration/2);
+				});
+			});
+
+		</script>
+		
+		<script src="https://cdn.jsdelivr.net/npm/bowser@2.9.0/es5.js"></script>
+		<script>
+			const unsupportedBrowserPage = '<div style="width:100vw;height:100vh;color:red;background-color:black;font-family:monospace;text-align:center;padding-top:10px;">UNSUPPORTED BROWSER</div>';
+		
+			function getUserAgent() {
+			  const res = bowser.getParser(navigator.userAgent).getResult();
+			  return {
+				browserName:    res.browser.name,
+				browserVersion: res.browser.version,
+				engine:         res.engine,
+				osName:         res.os.name,
+				osVersion:      res.os.version,
+				osVersionName:  res.os.versionName,
+				platformType:   res.platform.type
+			  }
+			}
+			const navigation = getUserAgent();
+			switch( navigation.browserName )
+			{
+				case 'Internet Explorer':
+					document.body.innerHTML = unsupportedBrowserPage;
+				break;
+			}
+		</script>
+    </body>
+</html>
