@@ -1,0 +1,49 @@
+<html>
+	<head>
+		<meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>userAgent</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <link rel="stylesheet" href="https://abstractn.github.io/repo/abs.css">
+        <script src="https://abstractn.github.io/repo/jquery3.js"></script>
+        <script src="https://kit.fontawesome.com/e97eac13ba.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bowser@2.9.0/es5.js"></script>
+	</head>
+	
+	<style>
+	</style>
+	
+	<body>
+		<main>
+            <output browser-id></output>
+        </main>
+	</body>
+	
+	<script async>
+        const unsupportedBrowserPage = '<div style="position:absolute;width:100vw;height:100vh;color:red;background-color:black;font-family:monospace;text-align:center;padding-top:10px;font-size:20px;">UNSUPPORTED BROWSER</div>';
+		
+        function getUserAgent() {
+            const res = bowser.getParser(navigator.userAgent).getResult();
+            return {
+            browserName:    res.browser.name,
+            browserVersion: res.browser.version,
+            engine:         res.engine,
+            osName:         res.os.name,
+            osVersion:      res.os.version,
+            osVersionName:  res.os.versionName,
+            platformType:   res.platform.type
+            }
+        }
+
+        const navigation = getUserAgent();
+        document.querySelector('output[browser-id]').innerHTML = navigation.platformType;
+        switch( navigation.browserName )
+        {
+            case 'Internet Explorer':
+                document.body.innerHTML = unsupportedBrowserPage;
+            break;
+        }
+	</script>
+</html>
