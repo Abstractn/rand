@@ -269,6 +269,7 @@
             else
                 return false;
         };
+		const STORAGE_PREFIX = 'mine3::';
 
         // ###############################################################
 
@@ -407,10 +408,10 @@
 			game.mines = form.querySelector(".mines").value*1;
             game.theme = form.querySelector(".theme").value;
                 log("<setting localStorage>");
-                window.localStorage.setItem('game-x',game.sizeX);
-                window.localStorage.setItem('game-y',game.sizeY);
-				window.localStorage.setItem('game-mines',game.mines);
-                window.localStorage.setItem('game-theme',game.theme);
+                window.localStorage.setItem(STORAGE_PREFIX+'game-x',game.sizeX);
+                window.localStorage.setItem(STORAGE_PREFIX+'game-y',game.sizeY);
+				window.localStorage.setItem(STORAGE_PREFIX+'game-mines',game.mines);
+                window.localStorage.setItem(STORAGE_PREFIX+'game-theme',game.theme);
             menu.classList.add('hide');
             game.table.classList.add('theme-'+game.theme);
             generateField(game.sizeX,game.sizeY);
@@ -481,12 +482,12 @@
 
         $(document).ready(function() {
             let form = document.querySelector('#main-menu .form');
-            if( window.localStorage.getItem('game-x') ) { log("<fetching localStorage>"); }
-            form.querySelector(".x").value = window.localStorage.getItem('game-x') || 6;
-            form.querySelector(".y").value = window.localStorage.getItem('game-y') || 12;
+            if( window.localStorage.getItem(STORAGE_PREFIX+'game-x') ) { log("<fetching localStorage>"); }
+            form.querySelector(".x").value = window.localStorage.getItem(STORAGE_PREFIX+'game-x') || 6;
+            form.querySelector(".y").value = window.localStorage.getItem(STORAGE_PREFIX+'game-y') || 12;
 			updateMaxInputMines();
-			form.querySelector(".mines").value = window.localStorage.getItem('game-mines') || Math.floor( ((game.sizeX+game.sizeY)/2)*1.5 );
-            form.querySelector(".theme").value = window.localStorage.getItem('game-theme') || 'classic';
+			form.querySelector(".mines").value = window.localStorage.getItem(STORAGE_PREFIX+'game-mines') || Math.floor( ( ( (form.querySelector(".x").value*1) + (form.querySelector(".x").value*1) ) / 2 ) * 1.5 );
+            form.querySelector(".theme").value = window.localStorage.getItem(STORAGE_PREFIX+'game-theme') || 'classic';
         });
 
     </script>
