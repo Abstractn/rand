@@ -1,9 +1,4 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
-
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -83,18 +78,23 @@
 
             /* main menu */
 
-            #main-menu form
+			#main-menu
+			{
+				max-width: 80%;
+			}
+            #main-menu .form
             {
                 border:solid 2px #ccc;
                 padding: 25px;
                 font-family:"Rounded Elegance";
                     font-weight:bold;
                     letter-spacing:1px;
+				font-family: var(--abs-font-std);
             }
 
             #main-menu txt.title { font-size: 3rem; margin-bottom: 25px; }
             #main-menu txt.label { font-size: 2.2rem; }
-            #main-menu form .button
+            #main-menu .form .button
             {
                 margin: 10px;
                 padding: 10px 20px;
@@ -102,15 +102,25 @@
                 color: #ccc;
             }
 
-            #main-menu form input,
-            #main-menu form select
+            #main-menu .form input,
+            #main-menu .form select
             {
                 color: #ccc;
                 font-size: 1.5rem;
                 background-color: transparent;
                 border: solid #ccc 2px;
                 border-radius: 0;
+				width: 100%;
             }
+			#main-menu .form input
+			{
+				width: 4rem;
+			}
+			
+			#main-menu .form .fieldset
+			{
+				margin-bottom: 15px;
+			}
 
             /* game menu */
 
@@ -179,42 +189,42 @@
         </style>
     </head>
 
-    <body>
-        <!--[if lt IE 7]>
-            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
-        
+    <body>        
         <main class="flex center col">
-            <box id="main-menu">
+            <scene id="main-menu">
                 <txt class="title">SweepyJS</txt>
-
-                <form class="flex col center">
-                    <txt class="label">grid size:</txt>
-                    <block>
-                        <input class="x" type="number" min="2" max="25" value="5" required>
-                        x
-                        <input class="y" type="number" min="2" max="25" value="5" required>
+                <block class="form flex col center">
+					<block class="fieldset">
+						<txt class="label">grid size:</txt>
+						<block class="flex row center">
+							<input class="x" type="number" min="2" max="25" value="5" onChange="updateMaxInputMines()" required>
+							<txt> x </txt>
+							<input class="y" type="number" min="2" max="25" value="5" onChange="updateMaxInputMines()" required>
+						</block>
+					</block>
+                    <block class="fieldset">
+						<txt class="label">mines:</txt>
+						<block class="flex center">
+							<input class="mines" type="number" min="1" max="3" value="2" required>
+							<txt class="max-mines"></txt>
+						</block>
                     </block>
-
-                    <!-- <label>mines:</label>
-                    <div>
-                        <input id="input-mines" class="input-size" type="number" min="2" max="50" value="5" required>
-                    </div> -->
-
-                    <txt class="label">theme:</txt>
-                    <select class="theme">
-                        <option value="classic">classic</option>
-                        <option value="modern">modern</option>
-                    </select>
+					<block class="fieldset flex col center">
+						<txt class="label">theme:</txt>
+						<select class="theme">
+							<option value="classic">classic</option>
+							<option value="modern">modern</option>
+						</select>
+					</block>
 
                     <i class="button fas fa-play" onclick="startGame()"></i>
-                </form>
-            </box>
+                </block>
+            </scene>
 
-            <box id="game-wrapper">
+            <scene id="game-wrapper">
                 <game class="flex center hide"></game>
                 <modal id="confirm" class="flex center hide" onclick="hideModal()">press again to confirm</modal>
-            </box>
+            </scene>
             <nav class="flex spaced row hide">
                 <!-- <button onclick="openAll()">!</button> -->
                 <i class="button fas fa-undo" onclick="restartGame()"></i>
@@ -225,7 +235,7 @@
     </body>
 
     <script async defer>
-        const _F_DEBUG = false;
+        var _F_DEBUG = false;
         function log(o){if(_F_DEBUG){console.log(o);}}
         function randomInt(min,max){return Math.floor((Math.random()*(max-min))+min);}
         let _F_MODAL_CONFIRM = false; //TODO fix "different action button accepted after confirm_request" bug
@@ -237,6 +247,7 @@
             table: document.querySelector('game'),
             sizeX: null,
             sizeY: null,
+			mines: null,
             matrix: null,
             getCellContent: null,
             hasMine: null,
@@ -390,18 +401,20 @@
         {
             log("<start");
             let menu = document.querySelector('#main-menu');
-            let form = menu.querySelector('form');
+            let form = menu.querySelector('.form');
             game.sizeX = form.querySelector(".x").value*1;
             game.sizeY = form.querySelector(".y").value*1;
+			game.mines = form.querySelector(".mines").value*1;
             game.theme = form.querySelector(".theme").value;
                 log("<setting localStorage>");
                 window.localStorage.setItem('game-x',game.sizeX);
                 window.localStorage.setItem('game-y',game.sizeY);
+				window.localStorage.setItem('game-mines',game.mines);
                 window.localStorage.setItem('game-theme',game.theme);
             menu.classList.add('hide');
             game.table.classList.add('theme-'+game.theme);
             generateField(game.sizeX,game.sizeY);
-            generateMines(); //TODO variable input
+            generateMines(game.mines);
             generateProximities();
             drawField();
             assignEvents();
@@ -424,7 +437,7 @@
                 }
 
                 generateField(game.sizeX,game.sizeY);
-                generateMines(); //TODO variable input
+                generateMines(game.mines);
                 generateProximities();
                 drawField();
                 assignEvents();
@@ -454,13 +467,25 @@
             //TODO restore main menu instead of document reload
             log("quit/>");
         }
+		
+		function updateMaxInputMines()
+		{
+			log("<updateMaxInputMines");
+			const form = document.querySelector('#main-menu .form');
+			const maxMines = Number( form.querySelector(".x").value ) * Number( form.querySelector(".y").value ) - 1
+			form.querySelector(".mines").max = maxMines;
+			form.querySelector(".max-mines").innerText = '/' + maxMines;
+			log("updateMaxInputMines/>");
+		}
 
 
         $(document).ready(function() {
-            let form = document.querySelector('#main-menu form');
+            let form = document.querySelector('#main-menu .form');
             if( window.localStorage.getItem('game-x') ) { log("<fetching localStorage>"); }
             form.querySelector(".x").value = window.localStorage.getItem('game-x') || 6;
             form.querySelector(".y").value = window.localStorage.getItem('game-y') || 12;
+			updateMaxInputMines();
+			form.querySelector(".mines").value = window.localStorage.getItem('game-mines') || Math.floor( ((game.sizeX+game.sizeY)/2)*1.5 );
             form.querySelector(".theme").value = window.localStorage.getItem('game-theme') || 'classic';
         });
 
