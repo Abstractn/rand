@@ -72,6 +72,20 @@
                 background-color:var(--cell-border-color);
             }
 
+            .img-explosion
+            {
+                position: absolute;
+                    top: 0;
+                    left: 0;
+                width: 32px;
+                height: 32px;
+                background-image: url('res/imgs/another_explosion_by_squirrelsquid.gif');
+                    background-size: contain;
+                    background-position: center;
+                    background-repeat: no-repeat;
+                /* transform: translate(-50%, -50%); */
+            }
+
             /* ################################################################## */
 
             txt { display:inline-block; }
@@ -224,6 +238,7 @@
             <scene id="game-wrapper">
                 <game class="flex center hide"></game>
                 <modal id="confirm" class="flex center hide" onclick="hideModal()">press again to confirm</modal>
+                <block class="img-explosion hidden"></block>
             </scene>
             <nav class="flex spaced row hide">
                 <!-- <button onclick="openAll()">!</button> -->
@@ -353,19 +368,95 @@
             log("drawField/>");
         }
 
+        function gameOver(cell)
+        {
+            log("<gameOver");
+            const cellSizeX = 33;
+            const cellSizeY = 32;
+            const exp = document.querySelector(".img-explosion");
+            exp.style.top = (cellSizeY * cell.getAttribute('y')) +"px";
+            exp.style.left = (cellSizeX * cell.getAttribute('x')) +"px";
+            console.log(exp.style.top +"-"+exp.style.left);
+            exp.classList.remove("hidden");
+            setTimeout(function () { exp.classList.add("hidden"); }, 1000);
+            log("gameOver/>");
+        }
+
+        function openArea(cell)
+        {
+            log("<openArea");
+            let newTarget;
+
+            //TODO there's an issue where in some cases the -1;-1 || top-left cell is opened when shouldn't
+            //possible solution could be based on order of the following execution
+            //try "North;West;South;East;" directions first then "angles"
+
+            newTarget = game.table.querySelector(`cell[x="${cell.getAttribute("x")*1-1}"][y="${cell.getAttribute("y")*1-1}"]`);
+            lmb(null, newTarget);
+
+            newTarget = game.table.querySelector(`cell[x="${cell.getAttribute("x")*1-1}"][y="${cell.getAttribute("y")*-1}"]`);
+            lmb(null, newTarget);
+
+            newTarget = game.table.querySelector(`cell[x="${cell.getAttribute("x")*1-1}"][y="${cell.getAttribute("y")*1+1}"]`);
+            lmb(null, newTarget);
+
+            newTarget = game.table.querySelector(`cell[x="${cell.getAttribute("x")*1}"][y="${cell.getAttribute("y")*1-1}"]`);
+            lmb(null, newTarget);
+
+            newTarget = game.table.querySelector(`cell[x="${cell.getAttribute("x")*1}"][y="${cell.getAttribute("y")*1+1}"]`);
+            lmb(null, newTarget);
+
+            newTarget = game.table.querySelector(`cell[x="${cell.getAttribute("x")*1+1}"][y="${cell.getAttribute("y")*1-1}"]`);
+            lmb(null, newTarget);
+
+            newTarget = game.table.querySelector(`cell[x="${cell.getAttribute("x")*1+1}"][y="${cell.getAttribute("y")*1}"]`);
+            lmb(null, newTarget);
+
+            newTarget = game.table.querySelector(`cell[x="${cell.getAttribute("x")*1+1}"][y="${cell.getAttribute("y")*1+1}"]`);
+            lmb(null, newTarget);
+
+            log("openArea/>");
+        }
+
+        function checkOutOfBounds(x,y)
+        {
+            log("<checkOutOfBounds");
+            if( x>=0 && x<game.sizeX && y>=0 && y<game.sizeY )
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+            log("checkOutOfBounds/>");
+        }
+
         function lmb(e,cell)
         {
             log("<lmb");
-            e.preventDefault();
-            let x = cell.getAttribute('x');
-            let y = cell.getAttribute('y');
-            let targetState = cell.getAttribute('state');
-            let targetContent = cell.innerHTML;
-            if(!targetContent && game.matrix[x][y].state == 'closed')
+            e?.preventDefault();
+            let x = cell?.getAttribute('x');
+            let y = cell?.getAttribute('y');
+            let targetState = cell?.getAttribute('state');
+            let targetContent = cell?.innerHTML;
+            if( checkOutOfBounds(x,y) )
             {
-                game.matrix[x][y].state='open';
-                cell.setAttribute('state',game.matrix[x][y].state);
-                cell.innerHTML = game.matrix[x][y].content;
+                if(!targetContent && game.matrix[x][y].state == 'closed')
+                {
+                    game.matrix[x][y].state='open';
+                    cell.setAttribute('state',game.matrix[x][y].state);
+                    cell.innerHTML = game.matrix[x][y].content;
+                    // TODO possible feature for multiple lifes
+                    if(cell.innerHTML == mine)
+                    {
+                        gameOver(cell);
+                    }
+                    else if(cell.innerHTML == "")
+                    {
+                        openArea(cell);
+                    }
+                }
             }
             log("lmb/>");
         }
