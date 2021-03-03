@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>trafficlight</title>
+        <meta name="description" content="trafficlight">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <link rel="stylesheet" href="https://abstractn.github.io/repo/abs.css">
+        <!-- <script src="https://abstractn.github.io/repo/jquery3.js"></script> -->
+        <!-- <script src="https://kit.fontawesome.com/e97eac13ba.js" crossorigin="anonymous"></script> -->
+
+        <style>
+            :root {
+                --color-light: #4C3457;
+                --color-dark: #31102F;
+                --color-red: #F63045;
+                --color-yellow: #f6f645;
+                --color-green: #45f630;
+                --canvas-width: 500px;
+                --canvas-height: var(--canvas-width);
+                --anim-speed: 1.5s;
+                --anim-intensity: 2.5deg;
+            }
+
+            main {
+                width: var(--canvas-width);
+                height: var(--canvas-height);
+            }
+
+            /*------------------------------------------*/
+
+            board,
+            shape,
+            layer,
+            template {
+                display: block;
+            }
+
+            board,
+            layer {
+                position: relative;
+            }
+
+            board {
+                position: relative;
+                width: 100%;
+                height: 100%;
+                background-color: var(--color-light);
+                overflow: hidden;
+                filter: blur(.4px);
+            }
+
+            template {
+                position: absolute;
+                    top: 0;
+                    left: 0;
+                width: var(--canvas-width);
+                height: var(--canvas-height);
+                background-image: url(res/imgs/trafficlight.png);
+                opacity: 0.3;
+            }
+
+            shape {
+                position: absolute;
+            }
+
+            /*------------------------------------------------------------*/
+
+            layer[trafficlight] {
+                top: 219px;
+                left: 285px;
+                width: 0;
+                height: 0;
+                transform: rotate(0deg);
+                animation: wind cubic-bezier(.5,0,.5,1) alternate infinite var(--anim-speed);
+            }
+
+            shape[rect1] {
+                background: var(--color-dark);
+                top: 30px;
+                left: 7px;
+                width: 19px;
+                height: 128px;
+                transform: skewY(8deg);
+            }
+
+            shape[rect2] {
+                background: var(--color-dark);
+                top: 32px;
+                left: 7px;
+                width: 19px;
+                height: 128px;
+                transform: skewY(-8deg);
+            }
+
+            shape[rect3] {
+                background: var(--color-dark);
+                top: 47px;
+                left: -8px;
+                width: 26px;
+                height: 26px;
+                transform: rotate(27deg);
+            }
+
+            shape[rect4] {
+                background: var(--color-dark);
+                top: 87px;
+                left: -8px;
+                width: 26px;
+                height: 26px;
+                transform: rotate(27deg);
+            }
+
+            shape[rect5] {
+                background: var(--color-dark);
+                top: 126px;
+                left: -8px;
+                width: 26px;
+                height: 26px;
+                transform: rotate(27deg);
+            }
+
+            shape[rect6] {
+                background: var(--color-dark);
+                top: 23px;
+                left: 0;
+                width: 18px;
+                height: 8px;
+                transform: skewX(33deg);
+            }
+
+            shape[rect7] {
+                background: var(--color-dark);
+                top: 23px;
+                left: -19px;
+                width: 27px;
+                height: 8px;
+                transform: skewX(-33deg);
+            }
+
+            shape[rect8] {
+                background: var(--color-dark);
+                top: 9px;
+                left: -5px;
+                width: 10px;
+                height: 15px;
+            }
+
+            shape[rect9] {
+                background: var(--color-dark);
+                top: 0;
+                left: -1px;
+                width: 2px;
+                height: 15px;
+            }
+
+            shape[circle1] {
+                background: var(--color-dark);
+                top: 38px;
+                left: -44px;
+                width: 29px;
+                height: 29px;
+                border-radius: 50%;
+            }
+            shape[circle1].active {
+                background: var(--color-red);
+            }
+
+            shape[circle2] {
+                background: var(--color-dark);
+                top: 76px;
+                left: -44px;
+                width: 29px;
+                height: 29px;
+                border-radius: 50%;
+            }
+            shape[circle2].active {
+                background: var(--color-yellow);
+            }
+
+            shape[circle3] {
+                background: var(--color-dark);
+                top: 116px;
+                left: -44px;
+                width: 29px;
+                height: 29px;
+                border-radius: 50%;
+            }
+            shape[circle3].active {
+                background: var(--color-green);
+            }
+
+            shape[circle4] {
+                background: var(--color-light);
+                top: 38px;
+                left: -26px;
+                width: 29px;
+                height: 29px;
+                border-radius: 50%;
+            }
+
+            shape[circle5] {
+                background: var(--color-light);
+                top: 76px;
+                left: -26px;
+                width: 29px;
+                height: 29px;
+                border-radius: 50%;
+            }
+
+            shape[circle6] {
+                background: var(--color-light);
+                top: 116px;
+                left: -26px;
+                width: 29px;
+                height: 29px;
+                border-radius: 50%;
+            }
+
+            shape[circle7] {
+                background: var(--color-dark);
+                top: -777px;
+                left: -375px;
+                width: 1500px;
+                height: 1000px;
+                border-radius: 50%;
+            }
+
+            shape[circle8] {
+                background: var(--color-light);
+                top: -778px;
+                left: -372px;
+                width: 1500px;
+                height: 1000px;
+                border-radius: 50%;
+            }
+
+            @keyframes wind {
+                from {
+                    transform: rotate( var(--anim-intensity) );
+                }
+                to {
+                    transform: rotate( calc( var(--anim-intensity) *-1 ) );
+                }
+            }
+        </style>
+    </head>
+    <body class="flex center">
+        <main>
+            <board>
+                <layer trafficlight>
+                    <shape rect1></shape>
+                    <shape rect2></shape>
+                    <shape rect3></shape>
+                    <shape rect4></shape>
+                    <shape rect5></shape>
+                    <shape rect6></shape>
+                    <shape rect7></shape>
+                    <shape rect8></shape>
+                    <shape rect9></shape>
+                    <shape circle4></shape>
+                    <shape circle5></shape>
+                    <shape circle6></shape>
+                    <shape circle1 class="active"></shape>
+                    <shape circle2></shape>
+                    <shape circle3></shape>
+                </layer>
+                <shape circle7></shape>
+                <shape circle8></shape>
+                <!-- <template></template> -->
+            </board>
+        </main>
+        <script async defer>
+            const RED_NODE = document.querySelector('shape[circle1]');
+            const YELLOW_NODE = document.querySelector('shape[circle2]');
+            const GREEN_NODE = document.querySelector('shape[circle3]');
+            const ACTIVE_LIGHT_CLASS = 'active';
+            const RED_TIME = 12 *1000;
+            const YELLOW_TIME = 4 *1000;
+            const GREEN_TIME = 10 *1000;
+
+            function setRed() {
+                YELLOW_NODE.classList.remove(ACTIVE_LIGHT_CLASS);
+                RED_NODE.classList.add(ACTIVE_LIGHT_CLASS);
+            }
+
+            function setYellow() {
+                GREEN_NODE.classList.remove(ACTIVE_LIGHT_CLASS);
+                YELLOW_NODE.classList.add(ACTIVE_LIGHT_CLASS);
+            }
+
+            function setGreen() {
+                RED_NODE.classList.remove(ACTIVE_LIGHT_CLASS);
+                GREEN_NODE.classList.add(ACTIVE_LIGHT_CLASS);
+            }
+
+            function trafficLight(timeRed, timeYellow, timeGreen) {
+                setInterval( function () {
+                    setTimeout( setGreen, timeRed );
+                    setTimeout( setYellow, timeRed + timeGreen );
+                    setTimeout( setRed, timeRed + timeGreen + timeYellow );
+                }, timeRed + timeGreen + timeYellow);
+            }
+
+            window.addEventListener('load', function () {
+                trafficLight(RED_TIME, YELLOW_TIME, GREEN_TIME);
+            });
+
+        </script>
+    </body>
+</html>
