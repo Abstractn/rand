@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>windtower</title>
+        <meta name="description" content="windtower">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <link rel="stylesheet" href="https://abstractn.github.io/repo/abs.css">
+        <!-- <script src="https://abstractn.github.io/repo/jquery3.js"></script> -->
+        <!-- <script src="https://kit.fontawesome.com/e97eac13ba.js" crossorigin="anonymous"></script> -->
+
+        <style>
+            :root {
+                --color-light: #FFC93F;
+                --color-dark: #3d3723;
+                --canvas-width: 500px;
+                --canvas-height: var(--canvas-width);
+                --anim-speed: 75s;
+            }
+
+            main {
+                width: var(--canvas-width);
+                height: var(--canvas-height);
+            }
+
+            /*------------------------------------------*/
+
+            board,
+            shape,
+            layer,
+            template {
+                display: block;
+            }
+
+            board,
+            layer {
+                position: relative;
+            }
+
+            board {
+                position: relative;
+                width: 100%;
+                height: 100%;
+                background-color: var(--color-light);
+                overflow: hidden;
+                filter: blur(.4px);
+            }
+
+            template {
+                position: absolute;
+                    top: 0;
+                    left: 0;
+                width: var(--canvas-width);
+                height: var(--canvas-height);
+                background-image: url(res/imgs/windtower.png);
+                background-position: center;
+                background-size: cover;
+                opacity: 0.3;
+            }
+
+            shape {
+                position: absolute;
+            }
+
+            /*------------------------------------------------------------*/
+
+            layer[rotors] {
+                top: -102px;
+                left: 0.5px;
+                width: 0;
+                height: 0;
+                animation: spin linear infinite var(--anim-speed);
+            }
+
+            layer[blades] {
+                top: 0;
+                left: 0;
+                width: 0;
+                height: 0;
+            }
+
+            layer[blades2] {
+                transform: rotate(120deg);
+            }
+
+            layer[blades3] {
+                transform: rotate(240deg);
+            }
+
+            layer[tower1] {
+                top: 290px;
+                left: 330px;
+                width: 0;
+                height: 0;
+            }
+
+            layer[tower2] {
+                top: 269px;
+                left: 302px;
+                width: 0;
+                height: 0;
+                transform: scale(0.6);
+            }
+            
+            layer[tower2] layer[rotors] {
+                animation: spin linear infinite calc( var(--anim-speed) * 1.7 );
+            }
+
+            layer[tower3] {
+                top: 269px;
+                left: 200px;
+                width: 0;
+                height: 0;
+                transform: scale(0.8);
+            }
+
+            layer[tower3] layer[rotors] {
+                animation: spin linear infinite calc( var(--anim-speed) * 0.5 );
+            }
+
+            shape[ground] {
+                background: var(--color-dark);
+                bottom: -180px;
+                left: -320px;
+                width: 1049px;
+                height: 415px;
+                border-radius: 50%;
+            }
+
+            shape[tower-pillar1] {
+                background: var(--color-dark);
+                bottom: 0;
+                left: 0;
+                width: 3px;
+                height: 100px;
+                transform: rotate(-1deg);
+            }
+
+            shape[tower-pillar2] {
+                background: var(--color-dark);
+                bottom: 0;
+                left: -2px;
+                width: 3px;
+                height: 100px;
+                transform: rotate(1deg);
+            }
+
+            shape[tower-pillar3] {
+                background: var(--color-dark);
+                bottom: 0;
+                left: -1px;
+                width: 3px;
+                height: 50px;
+            }
+
+            shape[tower-head] {
+                background: var(--color-dark);
+                bottom: 99px;
+                left: -2.5px;
+                width: 6px;
+                height: 6px;
+                border-radius: 50%;
+            }
+
+            shape[blade1] {
+                background: var(--color-dark);
+                bottom: -1px;
+                left: 5px;
+                width: 54px;
+                height: 4px;
+                transform: skew(30deg) rotate(3deg);
+            }
+
+            shape[blade2] {
+                background: var(--color-dark);
+                bottom: -1px;
+                left: 6px;
+                width: 40px;
+                height: 2px;
+            }
+
+            shape[blade3] {
+                background: var(--color-dark);
+                bottom: 0;
+                left: 2px;
+                width: 5px;
+                height: 2px;
+            }
+
+            @keyframes spin {
+                from {
+                    transform: rotate( 0deg );
+                }
+                to {
+                    transform: rotate( -360deg );
+                }
+            }
+        </style>
+    </head>
+    <body class="flex center">
+        <main>
+            <board>
+                <shape ground></shape>
+                <layer tower1>
+                    <shape tower-pillar1></shape>
+                    <shape tower-pillar2></shape>
+                    <shape tower-pillar3></shape>
+                    <shape tower-head></shape>
+                    <layer rotors>
+                        <layer blades>
+                            <shape blade1></shape>
+                            <shape blade2></shape>
+                            <shape blade3></shape>
+                        </layer>
+                        <layer blades blades2>
+                            <shape blade1></shape>
+                            <shape blade2></shape>
+                            <shape blade3></shape>
+                        </layer>
+                        <layer blades blades3>
+                            <shape blade1></shape>
+                            <shape blade2></shape>
+                            <shape blade3></shape>
+                        </layer>
+                    </layer>
+                </layer>
+
+                <layer tower2>
+                    <shape tower-pillar1></shape>
+                    <shape tower-pillar2></shape>
+                    <shape tower-pillar3></shape>
+                    <shape tower-head></shape>
+                    <layer rotors>
+                        <layer blades>
+                            <shape blade1></shape>
+                            <shape blade2></shape>
+                            <shape blade3></shape>
+                        </layer>
+                        <layer blades blades2>
+                            <shape blade1></shape>
+                            <shape blade2></shape>
+                            <shape blade3></shape>
+                        </layer>
+                        <layer blades blades3>
+                            <shape blade1></shape>
+                            <shape blade2></shape>
+                            <shape blade3></shape>
+                        </layer>
+                    </layer>
+                </layer>
+
+                <layer tower3>
+                    <shape tower-pillar1></shape>
+                    <shape tower-pillar2></shape>
+                    <shape tower-pillar3></shape>
+                    <shape tower-head></shape>
+                    <layer rotors>
+                        <layer blades>
+                            <shape blade1></shape>
+                            <shape blade2></shape>
+                            <shape blade3></shape>
+                        </layer>
+                        <layer blades blades2>
+                            <shape blade1></shape>
+                            <shape blade2></shape>
+                            <shape blade3></shape>
+                        </layer>
+                        <layer blades blades3>
+                            <shape blade1></shape>
+                            <shape blade2></shape>
+                            <shape blade3></shape>
+                        </layer>
+                    </layer>
+                </layer>
+                <!-- <template></template> -->
+            </board>
+        </main>
+        <script async defer>
+        </script>
+    </body>
+</html>
