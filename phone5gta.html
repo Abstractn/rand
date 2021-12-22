@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+        <title>&Omega;mium - F5 "Miko"</title>
+
+        <!-- <script src="https://kit.fontawesome.com/e97eac13ba.js" crossorigin="anonymous"></script> -->
+        <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lucaburgio/iconoir@master/css/iconoir.css"> -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+        
+        <style id="style-common">
+            :root {
+                --color-dark-purple: #403C4D;
+                --color-light-purple: #564F61;
+                --color-dark-gold: #AC9F73;
+                --color-gold: #EBD394;
+                --color-brown: #BF8F62;
+                --color-orange: #E4674A;
+                --color-red: #EE3C4C;
+
+                --color-yellow: #FFE59C;
+                --color-pink: #FFC0CB;
+
+                --color-white: #fff;
+                --color-black: #000;
+            }
+
+            body {
+                margin: 0;
+                padding: 0;
+                background-color: #555;
+                font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+                font-size: 10px;
+            }
+
+            .hidden {
+                opacity: 0;
+                pointer-events: none;
+            }
+
+            .flex { display: flex; }
+            .flex.row { flex-direction: row; }
+            .flex.column { flex-direction: column; }
+            .flex .flex-grow { flex-grow: 1; }
+            .flex.j-start { justify-content: flex-start; }
+            .flex.j-center { justify-content: center; }
+            .flex.j-end { justify-content: flex-end; }
+            .flex.j-around { justify-content: space-around; }
+            .flex.j-between { justify-content: space-between; }
+            .flex.j-evenly { justify-content: space-evenly; }
+            .flex.a-start { align-items: flex-start; }
+            .flex.a-center { align-items: center; }
+            .flex.a-end { align-items: flex-end; }
+            .flex.a-around { align-items: space-around; }
+            .flex.a-between { align-items: space-between; }
+            .flex.a-evenly { align-items: space-evenly; }
+
+            .grid-4 {
+                display: grid;
+                grid-template-columns: 1fr 1fr 1fr 1fr;
+                grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
+            }
+            .grid-item {}
+
+            .text-white { color: var(--color-white); }
+            .text-thin { font-weight: thin; }
+            .text-bold { font-weight: bold; }
+            .text-bolder { font-weight: bolder; }
+            .text-6  { font-size: 0.6rem; }
+            .text-8  { font-size: 0.8rem; }
+            .text-10 { font-size: 1.0rem; }
+            .text-12 { font-size: 1.2rem; }
+            .text-14 { font-size: 1.4rem; }
+            .text-16 { font-size: 1.6rem; }
+            .text-18 { font-size: 1.8rem; }
+            .text-20 { font-size: 2.0rem; }
+            .text-22 { font-size: 2.2rem; }
+
+            i {
+                fill: white !important;
+            }
+        </style>
+        <style id="style-phone">
+            .phone-frame {
+                display: flex;
+                justify-content: center;
+                align-items: flex-end;
+                width: 280px;
+                height: 520px;
+                background-color: #111;
+                border: solid #333 1px;
+                border-radius: 15px;
+            }
+            .phone-screen {
+                width: 270px;
+                height: 500px;
+                border-radius: 12px;
+                margin-bottom: 4px;
+                position: relative;
+                overflow: hidden;
+            }
+            .phone-wallpaper {
+                position: absolute;
+                z-index: 0;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(
+                    50deg, 
+                    var(--color-dark-purple) 0%,
+                    var(--color-light-purple) 15%,
+                    var(--color-dark-gold) 30%,
+                    var(--color-gold) 50%,
+                    var(--color-brown) 80%,
+                    var(--color-orange) 90%,
+                    var(--color-red) 100%
+                ); 
+                background-image: url("https://www.pixelstalk.net/wp-content/uploads/2016/10/Abstract-iphone-6s-wallpaper-hd-768x1434.jpg");
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: cover;
+            }
+
+            .phone-status-bar {
+                background-color: rgba(0,0,0,0.6);
+                backdrop-filter: blur(10px);
+                height: 25px;
+                position: relative;
+                z-index: 10;
+                padding: 0 8px;
+            }
+            .phone-status-bar-item {
+                display: flex;
+                align-items: center;
+            }
+            .status-bar-notification {
+                padding: 5px;
+            }
+            .status-bar-notification i {
+                margin-left: 2px;
+            }
+            .status-bar-system i {
+                margin-left: 2px;
+            }
+
+            .phone-navigation-bar {
+                background-color: rgba(0,0,0,0.1);
+                backdrop-filter: blur(10px);
+                height: 35px;
+                position: relative;
+                z-index: 10;
+            }
+            .phone-navigation-bar .bi-triangle {
+                transform: rotate(270deg);
+            }
+
+            .phone-view-container {
+                position: relative;
+            }
+
+            .phone-view {
+                height: 100%;
+            }
+
+            .view-home {}
+            .view-menu {}
+        </style>
+        <style id="style-misc">
+            #brand {
+                margin-left: 25px;
+                font-size: 2em;
+                color: var(--color-pink);
+                animation: omium alternate infinite 1s;
+                font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+            }
+            @keyframes omium { from { color:var(--color-pink); } to { color:var(--color-yellow); } }
+        </style>
+    </head>
+    <body>
+        <div id="brand"></div>
+        <div class="phone-frame">
+            <div class="phone-screen flex column">
+                <div class="phone-wallpaper"></div>
+                <div class="phone-status-bar flex j-between text-white text-8">
+                    <span class="phone-status-bar-item status-bar-time"></span>
+                    <div class="phone-status-bar-item status-bar-notification flex-grow">
+                        <i class="bi bi-chat"></i>
+                    </div>
+                    <div class="phone-status-bar-item status-bar-system">
+                        <i class="bi bi-geo-alt"></i>
+                        <i class="bi bi-wifi-off"></i>
+                        <i class="bi bi-reception-3"></i>
+                        <i class="bi bi-battery-full text-10"></i>
+                    </div>
+                </div>
+                <div class="phone-view-container flex-grow">
+                    <div class="phone-view view-home">
+                        <div class="view-home-clock"></div>
+                        <div class="view-home-weather"></div>
+                    </div>
+                    <div class="phone-view view-menu hidden">
+                        <div class="grid-4">
+                            <div class="grid-item"></div>
+                            <div class="grid-item"></div>
+                            <div class="grid-item"></div>
+                            <div class="grid-item"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="phone-navigation-bar flex j-evenly a-center text-white text-10">
+                    <i class="bi bi-triangle"></i>
+                    <i class="bi bi-circle"></i>
+                    <i class="bi bi-square"></i>
+                </div>
+            </div>
+        </div>
+    </body>
+
+    <script id="script-common">
+        document.querySelector('#brand').innerText = document.title;
+    </script>
+    <script id="script-phone">
+        let phone = {
+            nodes: {
+                statusBar: {
+                    this: document.querySelector('.phone-status-bar'),
+                    time: document.querySelector('.phone-status-bar .status-bar-time'),
+                    battery: document.querySelector('.phone-status-bar .status-bar-battery'),
+                },
+                views: {
+                    this: document.querySelector('.phone-view-container .view-home'),
+                    home: {
+                        this: document.querySelector('.phone-view-container .view-home'),
+                        clock: document.querySelector('.phone-view-container .view-home .view-home-clock'),
+                        weather: document.querySelector('.phone-view-container .view-home .view-home-weather'),
+                    }
+                }
+            },
+            settings: {
+                clockFormat: { hour:'2-digit', minute:'2-digit' },
+            },
+            intervals: {},
+            data: {
+                clockFrequency: 500,
+                path: ['~'], //example: ['~','app-explorer','dir-downloads','dir-browser','dir-pictures','20200725_0200582.jpg']
+                /*
+                    '~' = home
+                */
+            },
+            inputEvents: {
+                home: () => {
+                    
+                },
+            },
+            automatedEvents: {
+                /*updateStatusBarClock: () => {
+                    phone.intervals.statusBarClock = setInterval(() => {
+                        const target = phone.nodes.statusBar.time;
+                        const previousValue = target.innerText;
+                        const currentValue = clock().toLocaleString('it', phone.settings.clockFormat);
+                        if(currentValue !== previousValue) {
+                            target.innerText = currentValue;
+                        }
+                    }, phone.data.clockFrequency);
+                },
+                updateHomeClock: () => {
+                    phone.intervals.homeClock = setInterval(() => {
+                        const target = phone.nodes.views.home.clock;
+                        const previousValue = target.innerText;
+                        const currentValue = clock().toLocaleString('it', phone.settings.clockFormat);
+                        if(currentValue !== previousValue) {
+                            target.innerText = currentValue;
+                        }
+                    }, phone.data.clockFrequency);
+                },*/
+
+                updateClock: (target) => {
+                    phone.intervals[target] = setInterval(() => {
+                        if(target) {
+                            const previousValue = target.innerText;
+                            const currentValue = clock().toLocaleString('it', phone.settings.clockFormat);
+                            if(currentValue !== previousValue) {
+                                target.innerText = currentValue;
+                            }
+                        }
+                    }, phone.data.clockFrequency);
+                }
+            },
+            init: () => {
+                //phone.automatedEvents.updateStatusBarClock();
+                phone.automatedEvents.updateClock(phone.nodes.statusBar.time);
+                phone.automatedEvents.updateClock(phone.nodes.views.home.clock);
+            }
+        }
+
+        function clock() {
+            return new Date();
+        }
+
+        phone.init();
+    </script>
+</html>
