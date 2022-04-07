@@ -1,0 +1,235 @@
+<script>
+//@ts-check
+</script>
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>anicalc</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
+        <!-- <script src="https://unpkg.com/dayjs@1.8.21/plugin/advancedFormat.js"></script> -->
+        <script src="https://unpkg.com/dayjs@1.8.21/locale/en.js"></script>
+        <script src="https://unpkg.com/dayjs@1.8.21/locale/it.js"></script>
+        <script src="https://unpkg.com/dayjs@1.8.21/locale/de.js"></script>
+        <script src="https://unpkg.com/dayjs@1.8.21/locale/fr.js"></script>
+        <script src="https://unpkg.com/dayjs@1.8.21/locale/es.js"></script>
+
+        <style id="reset">
+            /* http://meyerweb.com/eric/tools/css/reset/ 
+                v2.0 | 20110126
+                License: none (public domain)
+            */
+
+            html, body, div, span, applet, object, iframe,
+            h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+            a, abbr, acronym, address, big, cite, code,
+            del, dfn, em, img, ins, kbd, q, s, samp,
+            small, strike, strong, sub, sup, tt, var,
+            b, u, i, center,
+            dl, dt, dd, ol, ul, li,
+            fieldset, form, label, legend,
+            table, caption, tbody, tfoot, thead, tr, th, td,
+            article, aside, canvas, details, embed, 
+            figure, figcaption, footer, header, hgroup, 
+            menu, nav, output, ruby, section, summary,
+            time, mark, audio, video {
+                margin: 0;
+                padding: 0;
+                border: 0;
+                font-size: 100%;
+                font: inherit;
+                vertical-align: baseline;
+            }
+            /* HTML5 display-role reset for older browsers */
+            article, aside, details, figcaption, figure, 
+            footer, header, hgroup, menu, nav, section {
+                display: block;
+            }
+            body {
+                line-height: 1;
+            }
+            ol, ul {
+                list-style: none;
+            }
+            blockquote, q {
+                quotes: none;
+            }
+            blockquote:before, blockquote:after,
+            q:before, q:after {
+                content: '';
+                content: none;
+            }
+            table {
+                border-collapse: collapse;
+                border-spacing: 0;
+            }
+
+            input {
+                border: 0;
+            }
+        </style>
+        <style id="components">
+            body {
+                background-color: #333;
+                color: #ccc;
+                font-family: arial;
+                font-size: 10px;
+                min-height: 100vh;
+                display: flex;
+                    justify-content: center;
+                    align-items: center;
+            }
+            main {
+                display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                font-size: 1.6rem;
+            }
+
+            fieldset {
+                display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+            }
+
+            .bottom-spacing {
+                margin-bottom: 40px;
+            }
+
+            .input {
+                background-color: transparent;
+                color: #ccc;
+                font-size: 1.4rem;
+            }
+
+            .output {
+                background-color: #333;
+                color: white;
+                text-transform: capitalize;
+                font-size: 1.4rem;
+                text-align: center;
+                font-weight: bold;
+            }
+
+            .border-bottom {
+                border: 0;
+                border-bottom: solid #ccc 1px;
+            }
+
+            .border-top {
+                border: 0;
+                border-top: solid #ccc 1px;
+            }
+
+            .button {
+                background-color: transparent;
+                color: #ccc;
+                border: solid #ccc 1px;
+                font-size: 1.6rem;
+            }
+        </style>
+    </head>
+    <body>
+        <main>
+            <fieldset class="bottom-spacing">
+                <label>First airing date:</label>
+                <input type="date" name="input--start-date" class="input border-bottom">
+            </fieldset>
+            <fieldset class="bottom-spacing">
+                <label># of episodes:</label>
+                <input type="number" min="0" name="input--duration" class="input border-bottom">
+            </fieldset>
+            <!-- <fieldset class="bottom-spacing">
+                <label># of episodes already aired:</label>
+                <input type="number" name="input--already-aired" class="input">
+            </fieldset> -->
+
+            <button name="button-submit" class="button bottom-spacing">Calculate</button>
+
+            <label>Result:</label>
+            <fieldset class="bottom-spacing">
+                <label>Estimated end date:</label>
+                <input type="text" name="output--estimate" class="output" readonly>
+            </fieldset>
+            <fieldset class="bottom-spacing">
+                <label>Start watching:</label>
+                <input type="text" name="output--watch" class="output" readonly>
+            </fieldset>
+        </main>
+    </body>
+
+    <script defer>
+        const config = {
+            submitButtonNodeSelector: '[name="button-submit"]',
+            submitButtonNode: null,
+            startDateInputNode: null,
+            startDateInputNodeSelector: '[name="input--start-date"]',
+            durationInputNode: null,
+            durationInputNodeSelector: '[name="input--duration"]',
+            //alreadyAiredInputNode: null,
+            //alreadyAiredInputNodeSelector: '[name="input--already-aired"]',
+            watchStartDateOutputNode: null,
+            watchStartDateOutputNodeSelector: '[name="output--watch"]',
+            estimateEndDateOutputNode: null,
+            estimateEndDateOutputNodeSelector: '[name="output--estimate"]',
+        };
+        const data = {
+            startDate: null,
+            duration: null,
+            //alreadyAired: null
+            watchStart: null,
+            estimateEndDate: null,
+        };
+
+        function setNodesReferences() {
+            config.submitButtonNode = document.querySelector(config.submitButtonNodeSelector);
+            config.startDateInputNode = document.querySelector(config.startDateInputNodeSelector);
+            config.durationInputNode = document.querySelector(config.durationInputNodeSelector);
+            //config.alreadyAiredInputNode = document.querySelector(config.alreadyAiredInputNodeSelector);
+            config.watchStartDateOutputNode = document.querySelector(config.watchStartDateOutputNodeSelector);
+            config.estimateEndDateOutputNode = document.querySelector(config.estimateEndDateOutputNodeSelector);
+        }
+
+        function assignEvent() {
+            config.submitButtonNode.addEventListener('click', (event) => {
+                getData();
+                calculateStart();
+            });
+        }
+
+        function getData() {
+            data.startDate = new Date(config.startDateInputNode.value);
+            data.duration = config.durationInputNode.value * 1;
+            //data.alreadyAired = config.alreadyAiredInputNode.value * 1;
+        }
+
+        function calculateStart() {
+            const isValid = (
+                data.startDate != 'Invalid Date' &&
+                data.duration > 0
+            );
+            if(isValid) {
+                //@ts-ignore
+                const endDate = dayjs(data.startDate).add(data.duration*7, 'day');
+                const resultDate = endDate.subtract(data.duration, 'day');
+                config.watchStartDateOutputNode.value = resultDate.locale(navigator.language).format('MMMM DD');
+                config.estimateEndDateOutputNode.value = endDate.locale(navigator.language).format('MMMM DD');
+            } else {
+                config.watchStartDateOutputNode.value = 'Error';
+                config.estimateEndDateOutputNode.value = '';
+            }
+        }
+
+        function init() {
+            setNodesReferences();
+            assignEvent();
+        }
+
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</html>
