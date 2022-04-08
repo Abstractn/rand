@@ -1,0 +1,124 @@
+<html>
+    <head>
+
+    </head>
+    <style>
+        /* --- VARIABLES --- */
+        :root {
+            --color-main-bg: #222;
+            --color-main-txt: #eef;
+            --gradient-main-bg: linear-gradient(27deg, rgba(17,17,34,1) 0%, rgba(51,85,102,1) 100%);
+            --typo-main-size: 10px;
+            --typo-main-family: Arial, Helvetica, sans-serif;
+            --typo-size-xs: 1rem;
+            --typo-size-sm: 1.4rem;
+            --typo-size-md: 1.8rem;
+            --typo-size-lg: 2.2rem;
+            --typo-size-xl: 2.6rem;
+            --spacing-box-md-x: 30px;
+            --spacing-box-md-y: 20px;
+        }
+
+        /* --- RESET --- */
+        * {
+            margin: 0;
+            padding: 0;
+            background-color: inherit;
+            color: inherit;
+            border: none;
+            border-radius: 0;
+            box-sizing: border-box;
+
+            font-size: var(--typo-main-size);
+            font-family: var(--typo-main-family);
+        }
+
+        /* --- COMMON --- */
+        body {
+            background-color: var(--color-main-bg);
+            background: var(--gradient-main-bg);
+            color: var(--color-main-txt);
+            min-height: 100vh;
+        }
+
+        tab {
+            display: none;
+        }
+
+        .relative { position: relative; }
+        
+        .absolute { position: absolute; }
+        .absolute.center { top: 50%; left: 50%; transform: translate(-50%, -50%); }
+
+        .flex { display: flex; }
+        .flex.row { flex-direction: row; }
+        .flex.col { flex-direction: column; }
+        .flex.center-hor { justify-content: center; }
+        .flex.center-ver { align-items: center }
+        .flex.center { justify-content: center; align-items: center; }
+
+        .margin-auto { margin: 0 auto; }
+
+        .hidden { display: none !important; }
+
+        .test { background-color: rgba(255, 0, 0, 0.25); border: solid red 1px; }
+        .test2 { background-color: rgba(0, 255, 0, 0.25); border: solid green 1px; }
+        .test3 { background-color: rgba(0, 0, 255, 0.25); border: solid blue 1px; }
+
+        /* --- TYPO CLASSES --- */
+        .typo-xs { font-size: var(--typo-size-xs); }
+        .typo-sm { font-size: var(--typo-size-sm); }
+        .typo-md { font-size: var(--typo-size-md); }
+        .typo-lg { font-size: var(--typo-size-lg); }
+        .typo-xl { font-size: var(--typo-size-xl); }
+
+        /* --- ASSETS --- */
+
+        .box {
+            background-color: rgba(0, 0, 0, 0.3);
+        }
+        .box-md { padding: var(--spacing-box-md-y) var(--spacing-box-md-x); }
+    </style>
+    <style>
+        /* --- TEST --- */
+    </style>
+    <body>
+        <input type="file" accept=".png">
+        <button onclick="getFile()">PREVIEW</button>
+        <img class="hidden">
+        <button onclick="printToCanvas()">LOAD</button>
+        <canvas class="test" width="200px" height="200px"></canvas>
+    </body>
+    <script>
+        document.querySelector('input[type=file]').addEventListener('change', (event) => {
+            console.log(event);
+        });
+
+        function getFile() {
+            const inputNode = document.querySelector('input[type=file]');
+            const previewImgNode = document.querySelector('img');
+            const file = inputNode.files[0];
+            let fileReader = new FileReader();
+            fileReader.onload = function (event) { 
+                previewImgNode.setAttribute('src', event.target.result);
+            };
+            if( file ) {
+                fileReader.readAsDataURL(file);
+            }
+        }
+
+        function printToCanvas() {
+            const previewImgNode = document.querySelector('img');
+            const canvasNode = document.querySelector('canvas');
+            const ctx = canvasNode.getContext('2d');
+            ctx.drawImage(previewImgNode, 0, 0, previewImgNode.width, previewImgNode.height);
+        }
+    </script>
+</html>
+
+<!--
+    ### SOURCES ###
+
+        - get image from input file
+    https://medium.com/@ananhuang781/image-upload-by-javascript-64aa9f519e7f
+-->

@@ -1,0 +1,63 @@
+<html>
+    <head>
+        <!--<script src="../main/repo/abs.js"></script>-->
+        <script src="https://abstractn.github.io/repo/abs.js"></script>
+        <meta charset="utf-8">
+    </head>
+    <body>
+        <button class="btn-translate" data-language-id="en">en</button>
+        <button class="btn-translate" data-language-id="es">es</button>
+        <button class="btn-translate" data-language-id="fr">fr</button>
+        <button class="btn-translate" data-language-id="it">it</button>
+        <button class="btn-translate" data-language-id="de">de</button>
+        <br><br><br>
+        <div data-translate="foo"></div>
+        <span data-translate="mySection-myLabel_1"></span>
+        <span data-translate="mySection-myLabel_2"></span>
+    </body>
+    <script>
+        const englishDictionary = {
+            "mySection-myLabel_1" : "Hello",
+            "mySection-myLabel_2" : "world",
+            "foo" : "bar"
+        };
+        const spanishDictionary = {
+            "mySection-myLabel_1" : "Hola",
+            "mySection-myLabel_2" : "mundo"
+        };
+        const frenchDictionary = {
+            "mySection-myLabel_1" : "Bonjour",
+            "mySection-myLabel_2" : "monde"
+        };
+        const italianDictionary = {
+            "mySection-myLabel_1" : "Ciao",
+            "mySection-myLabel_2" : "mondo"
+        };
+        const germanDictionary = {
+            "mySection-myLabel_1" : "Hallo",
+            "mySection-myLabel_2" : "Welt"
+        };
+        AbsTranslate.addLanguage('en', englishDictionary);
+        AbsTranslate.addLanguage('es', spanishDictionary);
+        AbsTranslate.addLanguage('fr', frenchDictionary);
+        AbsTranslate.addLanguage('it', italianDictionary);
+        AbsTranslate.addLanguage('de', germanDictionary);
+        AbsTranslate.setLanguage('en');
+        /*AbsTranslate.removeLanguage('de');
+        AbsTranslate.removeLanguage('fr');
+        AbsTranslate.removeLanguage('es');*/
+        //AbsTranslate.missingTranslationWarning = true;
+
+        function setLanguage(language) {
+            AbsTranslate.setLanguage(language);
+        }
+
+        const translateButtons = document.querySelectorAll('.btn-translate');
+        translateButtons?.forEach(button => {
+            const languageID = button.getAttribute('data-language-id');
+            button.addEventListener('click', () => {
+                AbsTranslate.setLanguage(languageID);
+            });
+        });
+    </script>
+</html>

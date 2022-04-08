@@ -1,0 +1,211 @@
+<html>
+    <head>
+        <title>FramerJS</title>
+        <meta name="author" content="Abstractn">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="UTF-8">
+    </head>
+
+    <!-- <link rel="stylesheet" href="https://abstractn.github.io/repo/reset.css">
+    <link rel="stylesheet" href="https://abstractn.github.io/repo/core.css">
+    <link rel="stylesheet" href="https://abstractn.github.io/repo/abs.css"> -->
+
+    <style>
+        /* --- VARIABLES --- */
+        :root {
+            --color-main-bg: #222;
+            --color-main-txt: #eef;
+            --typo-main-size: 10px;
+            --typo-main-family: Arial, Helvetica, sans-serif;
+            --typo-size-xs: 1rem;
+            --typo-size-sm: 1.4rem;
+            --typo-size-md: 1.8rem;
+            --typo-size-lg: 2.2rem;
+            --typo-size-xl: 2.6rem;
+            --spacing-box-md-x: 30px;
+            --spacing-box-md-y: 20px;
+        }
+
+        /* --- RESET --- */
+        * {
+            margin: 0;
+            padding: 0;
+            background-color: inherit;
+            color: inherit;
+            border: none;
+            border-radius: 0;
+            box-sizing: border-box;
+
+            font-size: var(--typo-main-size);
+            font-family: var(--typo-main-family);
+        }
+
+        /* --- COMMON --- */
+        body {
+            background-color: var(--color-main-bg);
+            color: var(--color-main-txt);
+            min-height: 100vh;
+
+            background: rgb(34,34,68);
+            background: linear-gradient(27deg, rgba(17,17,34,1) 0%, rgba(51,68,102,1) 100%);
+            background: linear-gradient(27deg, rgba(17,17,34,1) 0%, rgba(51,85,102,1) 100%);
+        }
+
+        tab {
+            display: none;
+        }
+
+        .flex { display: flex; }
+        .flex.row { flex-direction: row; }
+        .flex.col { flex-direction: column; }
+        .flex.center-hor { justify-content: center; }
+        .flex.center-ver { align-items: center }
+        .flex.center { justify-content: center; align-items: center; }
+
+        .margin-auto { margin: 0 auto; }
+
+        .hidden { display: none !important; }
+
+        .test { background-color: rgba(255, 0, 0, 0.3); border: dashed red 1px; }
+        .test2 { background-color: rgba(0, 255, 0, 0.3); border: dashed green 1px; }
+        .test3 { background-color: rgba(0, 0, 255, 0.3); border: dashed blue 1px; }
+
+        /* --- TYPO CLASSES --- */
+        .typo-xs { font-size: var(--typo-size-xs); }
+        .typo-sm { font-size: var(--typo-size-sm); }
+        .typo-md { font-size: var(--typo-size-md); }
+        .typo-lg { font-size: var(--typo-size-lg); }
+        .typo-xl { font-size: var(--typo-size-xl); }
+
+        /* --- ASSETS --- */
+
+        .box {
+            background-color: rgba(0, 0, 0, 0.3);
+        }
+        .box-md { padding: var(--spacing-box-md-y) var(--spacing-box-md-x); }
+
+        /* --- TEST --- */
+        .preview-image,
+        .canvas {
+            width: 200px;
+            height: 200px;
+            background-color: transparent;
+        }
+
+        .preview-image {
+            object-fit: contain;
+        }
+    </style>
+    
+    <body class="flex center">
+        <!-- <div>
+            <div class="typo-xl">text example lx</div>
+            <div class="typo-lg">text example lg</div>
+            <div class="typo-md">text example md</div>
+            <div class="typo-sm">text example sm</div>
+            <div class="typo-xs">text example xs</div>
+        </div> -->
+
+        <!-- <main current="" next="" prev="" class="box box-md"></main> -->
+        
+        <!-- <tab id="step-upload">
+            <input type="file" id="fileInputNode">
+        </tab>
+        <tab id="step-crop"></tab>
+        <tab id="step-edit"></tab> -->
+
+        <test class="box box-md flex center col">
+            <img src="image.png" id="fileImgNode" class="preview-image">
+
+            <button onclick="drawImageOnCanvas()" class="upload-button">upload</button>
+
+            <canvas id="canvasNode" class="canvas"></canvas>
+
+
+            <!-- <input name="col" type="color"/> --> <!-- test -->
+
+
+            <!-- <input type="file" id="fileInputNode">
+            <img id="fileImgNode">
+            <canvas id="canvasNode"></canvas>
+            <img id="outputImgNode"> -->
+        </test>
+    </body>
+    <script>
+        const STATIC_IMAGE_IMPORT = 'image.png';
+        const HIDDEN_CLASS = 'hidden';
+        const CANVAS_SIZE = 200;
+
+        const fileInputNode = document.querySelector('#fileInputNode');
+        const fileImgNode = document.querySelector('#fileImgNode');
+        const canvasNode = document.querySelector('#canvasNode');
+        const outputImgNode = document.querySelector('#outputImgNode');
+        const mainNode = document.querySelector('main');
+        const stepUpload = document.querySelector('template#step-upload');
+        const stepCrop = document.querySelector('template#step-crop');
+        const stepEdit = document.querySelector('template#step-edit');
+
+        const reader = new FileReader();
+
+        let ctx;
+
+        function initCanvas() {
+            if( canvasNode && canvasNode.getContext ) {
+                ctx = canvasNode.getContext('2d');
+                canvasNode.setAttribute('width' , CANVAS_SIZE + 'px');
+                canvasNode.setAttribute('height' , CANVAS_SIZE + 'px');
+            }
+        }
+
+        function clearCanvas() {
+            ctx.clearRect(0, 0, ctx.width, ctx.height);
+        }
+
+        function drawImageOnCanvas() {
+            ctx.drawImage(fileImgNode, 0, 0, fileImgNode.width, fileImgNode.height);
+        }
+
+        function drawFrameOnCanvas() {
+            const frameSize = 5;
+            ctx.beginPath();
+            ctx.arc(CANVAS_SIZE/2, CANVAS_SIZE/2, CANVAS_SIZE/2, 0, 2 * Math.PI, false);
+            ctx.arc(CANVAS_SIZE/2, CANVAS_SIZE/2, (CANVAS_SIZE/2)-frameSize, 0, 2 * Math.PI, true);
+            //ctx.fillStyle = 'red';
+            ctx.fill();
+        }
+
+        function drawCircleMask() {
+            const centerX = canvasNode.width / 2;
+            const centerY = canvasNode.height / 2;
+            const radius = canvasNode.width / 2;
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
+            ctx.clip();
+        }
+
+        function updateCanvas() {
+            clearCanvas();
+            drawImageOnCanvas();
+            drawFrameOnCanvas();
+            drawCircleMask();
+        }        
+
+        function init() {
+            fileImgNode?.setAttribute('src', STATIC_IMAGE_IMPORT);
+            initCanvas();
+            updateCanvas();
+        }
+        
+        document.addEventListener("DOMContentLoaded", (event) => {
+            console.log('ready');
+            console.log(fileImgNode);
+            initCanvas();
+            drawImageOnCanvas();
+
+
+
+
+            //init();
+        });
+    </script>
+</html>
