@@ -177,6 +177,7 @@
             watchStartDateOutputNodeSelector: '[name="output--watch"]',
             estimateEndDateOutputNode: null,
             estimateEndDateOutputNodeSelector: '[name="output--estimate"]',
+            dataStorageKey: 'abs.anicalc.storedInputs',
         };
         const data = {
             startDate: null,
@@ -198,6 +199,7 @@
         function assignEvent() {
             config.submitButtonNode.addEventListener('click', (event) => {
                 getData();
+                storeData();
                 calculateStart();
             });
         }
@@ -226,9 +228,31 @@
             }
         }
 
+        function storeData() {
+            const storageData = {
+                date: data.startDate,
+                watchLength: data.duration,
+            };
+            console.log("storing:",storageData);
+            localStorage.setItem(config.dataStorageKey, JSON.stringify(storageData));
+        }
+        
+        function loadData() {
+            const storedData = JSON.parse(localStorage.getItem(config.dataStorageKey));
+            if(storedData) {
+                console.log("loading:",storedData);
+                config.startDateInputNode.value = dayjs(storedData.date).format('YYYY-MM-DD');
+                config.durationInputNode.value = storedData.watchLength;
+                data.startDate = storedData.date;
+                data.duration = storedData.watchLength;
+                calculateStart();
+            }
+        }
+
         function init() {
             setNodesReferences();
             assignEvent();
+            loadData();
         }
 
         document.addEventListener('DOMContentLoaded', init);
