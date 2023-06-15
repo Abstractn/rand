@@ -233,14 +233,12 @@
                 date: data.startDate,
                 watchLength: data.duration,
             };
-            console.log("storing:",storageData);
             localStorage.setItem(config.dataStorageKey, JSON.stringify(storageData));
         }
         
         function loadData() {
             const storedData = JSON.parse(localStorage.getItem(config.dataStorageKey));
             if(storedData) {
-                console.log("loading:",storedData);
                 config.startDateInputNode.value = dayjs(storedData.date).format('YYYY-MM-DD');
                 config.durationInputNode.value = storedData.watchLength;
                 data.startDate = storedData.date;
