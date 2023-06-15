@@ -214,9 +214,10 @@
                 data.duration > 0
             );
             if(isValid) {
-                //@ts-ignore
-                const endDate = dayjs(data.startDate).add(data.duration*7, 'day');
-                const resultDate = endDate.subtract(data.duration, 'day');
+                /* const endDate = dayjs(data.startDate).add(data.duration*7, 'day');
+                const resultDate = endDate.subtract(data.duration, 'day'); */
+                const endDate = dayjs(data.startDate).add(data.duration - 1, 'week');
+                const resultDate = endDate.subtract(data.duration - 1, 'day');
                 config.watchStartDateOutputNode.value = resultDate.locale(navigator.language).format('MMMM DD');
                 config.estimateEndDateOutputNode.value = endDate.locale(navigator.language).format('MMMM DD');
             } else {
