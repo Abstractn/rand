@@ -1,0 +1,172 @@
+<html>
+	<head>
+		<link rel="stylesheet" href="https://abstractn.github.io/repo/abs.css">
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/plugin/utc.js"></script>
+    <script>dayjs.extend(window.dayjs_plugin_utc)</script>
+    <script src="https://abstractn.github.io/lib/abs-utils.nx.js"></script>
+    <script src="https://abstractn.github.io/lib/abs-template.nx.js"></script>
+
+		<style>
+      body {
+        font-size: 22px;
+      }
+
+      main {
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .menu {
+        width: 150px;
+      }
+
+      .menu-controls {
+        display: flex;
+      }
+
+      .menu-add,
+      .menu-send {
+        width: 50%;
+      }
+      
+      .menu-list-item {
+        display: flex;
+      }
+      
+      .menu-list-item-input {
+        width: 100%;
+        flex-grow: 1;
+      }
+
+      .table table {
+        font-size: 22px;
+        border-collapse: separate;
+        border-spacing: 0;
+      }
+
+      .table table th,
+      .table table td {
+        width: 100px;
+        text-align: center;
+      }
+
+      .table table tr:nth-child(odd) {
+        background-color: rgba(255, 255, 255, .1);
+      }
+
+      .table table tr:hover td {
+        color: white !important;
+      }
+		</style>
+	</head>
+	
+	<body>
+    <main>
+      <div class="menu">
+        <div class="menu-controls">
+          <button class="menu-add" onclick="createItem()">+</button>
+          <button class="menu-send" onclick="generateTable()">-></button>
+        </div>
+        <div class="menu-list"></div>
+      </div>
+      <div class="table"></div>
+    </main>
+	</body>
+
+  <template data-abs-template="menu-list-item">
+    <div class="menu-list-item">
+      <input type="number" class="menu-list-item-input" min="-12" max="12">
+      <button class="menu-list-item-delete" onclick="deleteItem(event)">X</button>
+    </div>
+  </template>
+	
+	<script>
+    const LOCAL_STORAGE_KEY = 'abs.timezoneComparator.storedInputs';
+    const TIME_COLORS = [
+      { time: '00:00', color: '#6e9efa' },
+      { time: '01:00', color: '#999af8' },
+      { time: '02:00', color: '#bc96f1' },
+      { time: '03:00', color: '#d991e6' },
+      { time: '04:00', color: '#f08ed8' },
+      { time: '05:00', color: '#ff8ec8' },
+      { time: '06:00', color: '#ff8fb6' },
+      { time: '07:00', color: '#ff95a5' },
+      { time: '08:00', color: '#ff9c94' },
+      { time: '09:00', color: '#ffa685' },
+      { time: '10:00', color: '#ffb279' },
+      { time: '11:00', color: '#ffbe71' },
+      { time: '12:00', color: '#faca6e' },
+      { time: '13:00', color: '#ffbe71' },
+      { time: '14:00', color: '#ffb279' },
+      { time: '15:00', color: '#ffa685' },
+      { time: '16:00', color: '#ff9c94' },
+      { time: '17:00', color: '#ff95a5' },
+      { time: '18:00', color: '#ff8fb6' },
+      { time: '19:00', color: '#ff8ec8' },
+      { time: '20:00', color: '#f08ed8' },
+      { time: '21:00', color: '#d991e6' },
+      { time: '22:00', color: '#bc96f1' },
+      { time: '23:00', color: '#999af8' },
+    ];
+
+    function deleteItem(event) {
+      getNodes('.menu-list-item').find(node => node.contains(event.target)).remove();
+    }
+
+    function createItem() {
+      AbsTemplate.build({
+        templateNode: getNode('[data-abs-template="menu-list-item"]'),
+        //templateData: sceneItemData,
+        printTargetNode: getNode('.menu-list'),
+        printMethod: AbsTemplatePrintMethod.BEFORE_END,
+      });
+    }
+
+    function generateTable() {
+      const tableWrapperNode = getNode('.table');
+      tableWrapperNode.innerHTML = '';
+      const inputNodes = getNodes('.menu-list-item-input');
+      if(inputNodes) {
+        let tableContent = '';
+        const offsets = inputNodes.map(inputNode => parseInt(inputNode.value));
+        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(offsets));
+        //build table head
+        tableContent += '<tr>';
+        offsets.forEach(offset => {
+          tableContent += `<th>${offset}</th>`;
+        });
+        tableContent += '</tr>';
+        //build table body
+        for(let i = 0; i < 24; i++) {
+          tableContent += '<tr>';
+          offsets.forEach(offset => {
+            const time = dayjs().utcOffset(offset).set('minute', 0).add(i, 'hours').format('HH:mm');
+            tableContent += `<td style="color:${getColorFromHour(time)}">${time}</td>`;
+          });
+          tableContent += '</tr>';
+        }
+        tableWrapperNode.innerHTML = `<table>${tableContent}</table>`;
+      }
+    }
+
+    function getColorFromHour(hour) {
+      return TIME_COLORS.find(timeColor => timeColor.time === hour).color;
+    }
+
+    function loadFromStorage() {
+      const storedInputs = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
+      if(storedInputs) {
+        storedInputs.forEach(inputValue => {
+          createItem();
+          const lastPrintedNode = getNodes('.menu-list-item')[getNodes('.menu-list-item').length - 1];
+          getNode('input', lastPrintedNode).value = inputValue.toString();
+        });
+        generateTable();
+      }
+    }loadFromStorage();
+	</script>
+</html>
