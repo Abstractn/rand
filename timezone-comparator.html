@@ -1,5 +1,12 @@
 <html>
 	<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Timezone comparator</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="">
+
 		<link rel="stylesheet" href="https://abstractn.github.io/repo/abs.css">
     <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/dayjs@1/plugin/utc.js"></script>
@@ -69,7 +76,7 @@
       <div class="menu">
         <div class="menu-controls">
           <button class="menu-add" onclick="createItem()">+</button>
-          <button class="menu-send" onclick="generateTable()">-></button>
+          <button class="menu-send" onclick="generateTable()" ontouchstart="generateTable()">-></button>
         </div>
         <div class="menu-list"></div>
       </div>
@@ -79,7 +86,7 @@
 
   <template data-abs-template="menu-list-item">
     <div class="menu-list-item">
-      <input type="number" class="menu-list-item-input" min="-12" max="12">
+      <input type="number" class="menu-list-item-input" min="-12" max="12" placeholder="offset">
       <button class="menu-list-item-delete" onclick="deleteItem(event)">X</button>
     </div>
   </template>
